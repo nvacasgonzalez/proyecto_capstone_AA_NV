@@ -1,0 +1,64 @@
+---
+title: "Desafíos para la implementación de las nuevas bases curriculares en la educación de personas privadas de libertad"
+subtitle: "Informe"
+author:
+  - name: "Ariel Álvarez"
+    email: "ariel.alvarez@mail.udp.cl"
+  - name: "Natalia Vacas González"
+    email: "natalia.vacasgonzalez@gmail.com"
+
+date: "`r Sys.Date()`"
+lang: es
+format:
+  html:
+    title-block-banner: "#ffffff"
+    smooth-scroll: true
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    number-sections: true
+    df-print: paged
+    number-depth: 3
+    code-fold: true
+    bibliography: ref.bib
+    theme: cosmo
+    fig-cap-location: bottom
+#    css: styles.css
+execute:
+  python: true
+  warning: false
+  message: false
+  fig-width: 8
+  fig-height: 6
+  output: pdf_document
+---
+
+<img src="logo.png" style="width: 250px; position:absolute; top:0; left:0; padding:10px;"/>
+
+## Objetivo general:
+
+Crear un método de clurtering para tipificar a la personas consumidoras de drogas .
+
+## Variables a incluir en el modelo según dimensión :
+
+1.  Variables socio demográficas: edad, género, situación civil, nacionalidad, religión, orientación sexual, nivel educacional, actividad laboral (trabaja no trabaja), urbano/rural, región, comuna
+2.  Variables opinión publica: percepción sobre consumo de marihuana en jóvenes, drogas peores que otras, drogas responsables de problemas país
+
+3, Variables de percepción y actitudes:
+
+-   percepción de riesgo: riesgo que corre las personas por consumir frecuentemente droga
+
+-   razones para consumir: para evitar problemas como ansiedad, estrés, nauses, problemas de concentración y otros
+
+4.  Factores contextuales:
+    -   **Ambiente social del consumo:** consumo de personas cercanas
+
+    -   **Disponibilidad de sustancias:** frecuencia de drogas en el barrio yaccesibilidad a drogas,
+
+5.  Variables hábitos y efectos del consumo:
+
+Consume, cuando fue la primera vez que consumió, que edad tenía, ultima vez que consumió, frecuencia de consumo, tipo de droga, hábitos y consecuencias de cons
+
+## Relevancia del proyecto:
+
+## Qué datos se usarán:
