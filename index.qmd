@@ -11,6 +11,7 @@ date: "`r Sys.Date()`"
 lang: es
 format:
   html:
+    css: styles.css
     title-block-banner: "#ffffff"
     smooth-scroll: true
     toc: true
@@ -20,10 +21,8 @@ format:
     df-print: paged
     number-depth: 3
     code-fold: true
-    bibliography: ref.bib
     theme: cosmo
     fig-cap-location: bottom
-#    css: styles.css
 execute:
   python: true
   warning: false
@@ -37,7 +36,7 @@ execute:
 
 ## Objetivo general:
 
-Crear un método de clurtering para tipificar a la personas consumidoras de drogas .
+Aplicar un mosdelo de clurtering para tipificar a la personas consumidoras de drogas.
 
 ## Variables a incluir en el modelo según dimensión :
 
@@ -51,9 +50,10 @@ Crear un método de clurtering para tipificar a la personas consumidoras de drog
 -   razones para consumir: para evitar problemas como ansiedad, estrés, nauses, problemas de concentración y otros
 
 4.  Factores contextuales:
-    -   **Ambiente social del consumo:** consumo de personas cercanas
 
-    -   **Disponibilidad de sustancias:** frecuencia de drogas en el barrio yaccesibilidad a drogas,
+**Ambiente social del consumo:** consumo de personas cercanas
+
+**Disponibilidad de sustancias:** frecuencia de drogas en el barrio yaccesibilidad a drogas.
 
 5.  Variables hábitos y efectos del consumo:
 
@@ -61,4 +61,23 @@ Consume, cuando fue la primera vez que consumió, que edad tenía, ultima vez qu
 
 ## Relevancia del proyecto:
 
+A través del clustering es posible generar una aproximación compleja al fenómeno de cosumo de drogas en miras a: 1. Identificar patrones ocultos de consumo. 2. Diseñar políticas y estrategias de intervención más específicas y efectivas. 3. Priorizar recursos hacia grupos de mayor riesgo. 4. Promover una comprensión más matizada del consumo de drogas
+
 ## Qué datos se usarán:
+
+Estudio Nacional de Drogas en Población General <https://www.senda.gob.cl/senda-presenta-principales-resultados-del-15-estudio-de-drogas-en-poblacion-general/>
+
+```{css, echo:false}
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+}
+
+h1 {
+  color: #333333;
+}
+
+p {
+  text-align: justify;
+}
+```
