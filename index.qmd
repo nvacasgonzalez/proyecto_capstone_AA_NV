@@ -1,5 +1,5 @@
 ---
-title: "Desafíos para la implementación de las nuevas bases curriculares en la educación de personas privadas de libertad"
+title: "Clustering de perfiles de consumo de drogras en Chile"
 subtitle: "Informe"
 author:
   - name: "Ariel Álvarez"
@@ -21,6 +21,7 @@ format:
     df-print: paged
     number-depth: 3
     code-fold: true
+    #bibliography: ref.bib
     theme: cosmo
     fig-cap-location: bottom
 execute:
@@ -29,21 +30,21 @@ execute:
   message: false
   fig-width: 8
   fig-height: 6
-  output: pdf_document
 ---
 
 <img src="logo.png" style="width: 250px; position:absolute; top:0; left:0; padding:10px;"/>
 
 ## Objetivo general:
 
-Aplicar un mosdelo de clurtering para tipificar a la personas consumidoras de drogas.
+Aplicar un modelo de clurtering para tipificar a las personas consumidoras de drogas.
 
-## Variables a incluir en el modelo según dimensión :
+## Variables seleccionadas para generar el modelo:
 
-1.  Variables socio demográficas: edad, género, situación civil, nacionalidad, religión, orientación sexual, nivel educacional, actividad laboral (trabaja no trabaja), urbano/rural, región, comuna
-2.  Variables opinión publica: percepción sobre consumo de marihuana en jóvenes, drogas peores que otras, drogas responsables de problemas país
+1.  Variables socio demográficas: edad, género, situación civil, nacionalidad, religión, orientación sexual, nivel educacional, actividad laboral (trabaja no trabaja), urbano/rural, región, comuna.
 
-3, Variables de percepción y actitudes:
+2.  Variables opinión publica: percepción sobre consumo de marihuana en jóvenes, drogas peores que otras, drogas responsables de problemas país.
+
+3.  Variables de percepción y actitudes:
 
 -   percepción de riesgo: riesgo que corre las personas por consumir frecuentemente droga
 
@@ -51,23 +52,22 @@ Aplicar un mosdelo de clurtering para tipificar a la personas consumidoras de dr
 
 4.  Factores contextuales:
 
-**Ambiente social del consumo:** consumo de personas cercanas
+-   **Ambiente social del consumo:** consumo de personas cercanas
 
-**Disponibilidad de sustancias:** frecuencia de drogas en el barrio yaccesibilidad a drogas.
+-   **Disponibilidad de sustancias:** frecuencia de drogas en el barrio yaccesibilidad a drogas.
 
-5.  Variables hábitos y efectos del consumo:
-
-Consume, cuando fue la primera vez que consumió, que edad tenía, ultima vez que consumió, frecuencia de consumo, tipo de droga, hábitos y consecuencias de cons
+5.  Variables hábitos y efectos del consumo:consume, cuando fue la primera vez que consumió, que edad tenía, última vez que consumió, frecuencia de consumo, tipo de droga, hábitos y consecuencias del consumo.
 
 ## Relevancia del proyecto:
 
-A través del clustering es posible generar una aproximación compleja al fenómeno de cosumo de drogas en miras a: 1. Identificar patrones ocultos de consumo. 2. Diseñar políticas y estrategias de intervención más específicas y efectivas. 3. Priorizar recursos hacia grupos de mayor riesgo. 4. Promover una comprensión más matizada del consumo de drogas
+A través del clustering es posible generar una aproximación compleja al fenómeno de cosumo de drogas en miras a: 1. Identificar patrones ocultos de consumo. 2. Diseñar políticas y estrategias de intervención más específicas y efectivas. 3. Priorizar recursos hacia grupos de mayor riesgo. 4. Promover una comprensión más matizada del consumo de drogas.
 
-## Qué datos se usarán:
+## Bases de datos a utilizar:
 
 Estudio Nacional de Drogas en Población General <https://www.senda.gob.cl/senda-presenta-principales-resultados-del-15-estudio-de-drogas-en-poblacion-general/>
 
 ```{css, echo:false}
+
 body {
   font-family: Arial, sans-serif;
   line-height: 1.5;
