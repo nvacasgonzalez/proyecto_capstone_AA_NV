@@ -1,0 +1,77 @@
+---
+title: "Desafíos para la implementación de las nuevas bases curriculares en la educación de personas privadas de libertad"
+subtitle: "Informe"
+author:
+  - name: "Ariel Álvarez"
+    email: "ariel.alvarez@mail.udp.cl"
+  - name: "Natalia Vacas González"
+    email: "natalia.vacasgonzalez@gmail.com"
+
+date: "`r Sys.Date()`"
+lang: es
+format:
+  html:
+    title-block-banner: "#ffffff"
+    smooth-scroll: true
+    toc: true
+    toc-depth: 3
+    toc-location: right
+    number-sections: true
+    df-print: paged
+    number-depth: 3
+    code-fold: true
+    bibliography: ref.bib
+    theme: cosmo
+    fig-cap-location: bottom
+#    css: styles.css
+execute:
+  python: true
+  warning: false
+  message: false
+  fig-width: 8
+  fig-height: 6
+  output: pdf_document
+---
+
+<img src="logo.png" style="width: 250px; position:absolute; top:0; left:0; padding:10px;"/>
+
+## Objetivo general:
+
+Crear un método de clurtering para tipificar a la personas consumidoras de drogas .
+
+## Relevancia del proyecto:
+
+A través del clustering es posible generar una aproximación compleja al fenómeno de cosumo de drogas :
+
+1.  Identificar patrones ocultos de consumo.
+
+2.  Diseñar políticas y estrategias de intervención más específicas y efectivas.
+
+3.  Priorizar recursos hacia grupos de mayor riesgo.
+
+4.  Promover una comprensión más matizada del consumo de drogas.
+
+
+## Variables a incluir en el modelo según dimensión :
+
+1.  Variables sobre patrones de consumo: Consume, cuando fue la primera vez que consumió, que edad tenía, ultima vez que consumió, frecuencia de consumo.
+
+2.  Variables socio demográficas: edad, género, situación civil, nacionalidad, religión, orientación sexual, nivel educacional, actividad laboral (trabaja no trabaja), tramo de ingreso, región, comuna
+
+3.  Variables opinión publica: percepción sobre consumo de marihuana en jóvenes, drogas peores que otras, drogas responsables de problemas país.
+
+4.  Variables de percepción y actitudes: percepción de riesgo: riesgo que corren las personas por consumir frecuentemente droga, razones para consumir: para evitar problemas como ansiedad, estrés, nauses, problemas de concentración y otros
+
+5.  Variables sobre factores contextuales:
+
+    -   **Ambiente social del consumo:** consumo de personas cercanas
+
+    -   **Disponibilidad de sustancias:** frecuencia de drogas en el barrio yaccesibilidad a drogas,
+
+6.  Variables efectos del consumo: efectos de consumo en la salud física y mental, ha recibido tratamiento y si ha buscado ayuda para un tratamiento
+
+
+
+## Qué datos se usarán:
+
+Estudio Nacional de Drogas en Población General <https://www.senda.gob.cl/senda-presenta-principales-resultados-del-15-estudio-de-drogas-en-poblacion-general/>
