@@ -34,8 +34,6 @@ execute:
 
 <img src="logo.png" style="width: 250px; position:absolute; top:0; left:0; padding:10px;"/>
 
-
-
 ## Antecedentes contextuales:
 
 El alcohol y la marihuna son dos de las drogas más consumidas a nivel nacional y regional, en Chile.
@@ -68,7 +66,7 @@ Tipificar grupos de personas consumidoras de alcohol y marihuana integrando info
 
 El consumo extendido de susbtancias psicoactivas, tales como el alcohol y la marihuna, constituye un problema de salud pública con consecuencias tanto en el sistema asistencial, como en la productividad a lo largo de la vida, el entorno social y familiar y la salud de las personas usuarias de este tipo de substancias [@Altamirano2024]
 
-El informe "El Consumo de Alcohol en Chile: Situación Epidemiológica" [@SENDA2016] destaca el consumo de alcohol como principal factor de riesgo que causa muerte y discapacidad en Chile, representando el 12,4% de los años de vida saludables perdidos por muerte o discapacidad (AVISA). Junto a lo anterior, también se señala la dependencia del alcohol como una de las cuatro principales enfermedades que generan carga de enfermedad en el país, explicando un 7,7% de los AVISA perdidos.
+El informe "El Consumo de Alcohol en Chile: Situación Epidemiológica" [@SENDA2024] destaca el consumo de alcohol como principal factor de riesgo que causa muerte y discapacidad en Chile, representando el 12,4% de los años de vida saludables perdidos por muerte o discapacidad (AVISA). Junto a lo anterior, también se señala la dependencia del alcohol como una de las cuatro principales enfermedades que generan carga de enfermedad en el país, explicando un 7,7% de los AVISA perdidos.
 
 Adiconalmente, el informe "Marihuana" [@SENDA2020marihuana] donde se destaca que Alrededor del 9% de los consumidores adultos desarrollan adicción a la marihuana. Este porcentaje aumenta al 17% si el consumo comienza en la adolescencia y al 25-50% en consumidores diarios. Además de los efectos adictivos, SENDA señala los efectos sobre la salud respiratoria, el incremento del riesgo de psicosis y el deficit cognitivo (particularmente en adolescentes), el desempeño académico y laboral, en términos de ausentismo y menor productividad y los riesgos cariovasculares.
 
@@ -78,7 +76,7 @@ En función de estos antecedentes, se vuelve relavante trazar una estrategia par
 2.  Priorizar recursos hacia grupos de mayor riesgo.
 3.  Promover una comprensión más matizada del consumo de estas substancias psicoactivas.
 
-## Selección de bases de datos y variables de trabajo: 
+## Selección de bases de datos y variables de trabajo:
 
 Se trabajará con un conjunto de bases de datos adpatadas, procedentes del Estudio Nacional de Drogas en Población General (ENPG) disponible en: <https://www.senda.gob.cl/senda-presenta-principales-resultados-del-15-estudio-de-drogas-en-poblacion-general/>
 
@@ -90,7 +88,7 @@ Las variables seleccionadas para el presente proyecto se agupan en:
 
     -   consumo de marihuana durante los últimos 30 días y consumo de marihuana hace más de un mes pero menos de un año.
 
-2.  Variables socio demográficas: edad, género y región.
+2.  Variables socio demográficas: edad, género, nivel socioeconómico y nivel educacional.
 
 3.  Variables de percepción de riesgo relacionadas al consumo de marihuana y/o alcohol.
 
