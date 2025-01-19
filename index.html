@@ -9,7 +9,7 @@
 <meta name="author" content="Ariel Álvarez">
 <meta name="author" content="Natalia Vacas González">
 
-<title>Clustering de perfiles de consumo de drogras en Chile</title>
+<title>Patrones latentes de consumo, percepción de riego y acceso, en personas usuarias de alcohol y marihuana</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,7 +22,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="index_files/libs/clipboard/clipboard.min.js"></script>
@@ -52,7 +72,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Clustering de perfiles de consumo de drogras en Chile</h1>
+      <h1 class="title">Patrones latentes de consumo, percepción de riego y acceso, en personas usuarias de alcohol y marihuana</h1>
             <p class="subtitle lead">Informe</p>
                       </div>
   </div>
@@ -85,10 +105,15 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-  <li><a href="#objetivo-general" id="toc-objetivo-general" class="nav-link active" data-scroll-target="#objetivo-general"><span class="header-section-number">1</span> Objetivo general:</a></li>
-  <li><a href="#variables-seleccionadas-para-generar-el-modelo" id="toc-variables-seleccionadas-para-generar-el-modelo" class="nav-link" data-scroll-target="#variables-seleccionadas-para-generar-el-modelo"><span class="header-section-number">2</span> Variables seleccionadas para generar el modelo:</a></li>
-  <li><a href="#relevancia-del-proyecto" id="toc-relevancia-del-proyecto" class="nav-link" data-scroll-target="#relevancia-del-proyecto"><span class="header-section-number">3</span> Relevancia del proyecto:</a></li>
-  <li><a href="#bases-de-datos-a-utilizar" id="toc-bases-de-datos-a-utilizar" class="nav-link" data-scroll-target="#bases-de-datos-a-utilizar"><span class="header-section-number">4</span> Bases de datos a utilizar:</a></li>
+  <li><a href="#antecedentes-contextuales" id="toc-antecedentes-contextuales" class="nav-link active" data-scroll-target="#antecedentes-contextuales"><span class="header-section-number">1</span> Antecedentes contextuales:</a></li>
+  <li><a href="#objetivos" id="toc-objetivos" class="nav-link" data-scroll-target="#objetivos"><span class="header-section-number">2</span> Objetivos</a>
+  <ul class="collapse">
+  <li><a href="#objetivo-general" id="toc-objetivo-general" class="nav-link" data-scroll-target="#objetivo-general"><span class="header-section-number">2.1</span> Objetivo general:</a></li>
+  <li><a href="#objetivos-específicos" id="toc-objetivos-específicos" class="nav-link" data-scroll-target="#objetivos-específicos"><span class="header-section-number">2.2</span> Objetivos específicos:</a></li>
+  </ul></li>
+  <li><a href="#relevancia-del-caso-de-estudio" id="toc-relevancia-del-caso-de-estudio" class="nav-link" data-scroll-target="#relevancia-del-caso-de-estudio"><span class="header-section-number">3</span> Relevancia del caso de estudio:</a></li>
+  <li><a href="#selección-de-bases-de-datos-y-variables-de-trabajo" id="toc-selección-de-bases-de-datos-y-variables-de-trabajo" class="nav-link" data-scroll-target="#selección-de-bases-de-datos-y-variables-de-trabajo"><span class="header-section-number">4</span> Selección de bases de datos y variables de trabajo:</a></li>
+  <li><a href="#bases-de-datos-a-utilizar" id="toc-bases-de-datos-a-utilizar" class="nav-link" data-scroll-target="#bases-de-datos-a-utilizar"><span class="header-section-number">5</span> Bases de datos a utilizar:</a></li>
   </ul>
 </nav>
 </div>
@@ -99,55 +124,81 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p><img src="logo.png" style="width: 250px; position:absolute; top:0; left:0; padding:10px;"></p>
-<section id="objetivo-general" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="objetivo-general"><span class="header-section-number">1</span> Objetivo general:</h2>
-<p>Aplicar un modelo de clurtering para tipificar a las personas consumidoras de drogas.</p>
-</section>
-<section id="variables-seleccionadas-para-generar-el-modelo" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="variables-seleccionadas-para-generar-el-modelo"><span class="header-section-number">2</span> Variables seleccionadas para generar el modelo:</h2>
-<ol type="1">
-<li><p>Variables socio demográficas: edad, género, situación civil, nacionalidad, religión, orientación sexual, nivel educacional, actividad laboral (trabaja no trabaja), urbano/rural, región, comuna.</p></li>
-<li><p>Variables opinión publica: percepción sobre consumo de marihuana en jóvenes, drogas peores que otras, drogas responsables de problemas país.</p></li>
-<li><p>Variables de percepción y actitudes:</p></li>
-</ol>
+<section id="antecedentes-contextuales" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="antecedentes-contextuales"><span class="header-section-number">1</span> Antecedentes contextuales:</h2>
+<p>El alcohol y la marihuna son dos de las drogas más consumidas a nivel nacional y regional, en Chile.</p>
+<p>En el último Estudio Nacional de Dogras en Población General (ENPG) en Chile, la prevalencia del consumo de alcohol en el último año alcanza un 53,6%. Mientras que la proporción de personas usuarias de marihuna en el último año es del 10,9% <span class="citation" data-cites="SENDA2024">(<a href="#ref-SENDA2024" role="doc-biblioref">Prevención y Rehabilitación del Consumo de Drogas y Alcohol (SENDA) 2024</a>)</span>.</p>
+<p>Así mismo, en la ENPG 2022 se destacan dos aspectos funamentales:</p>
 <ul>
-<li><p>percepción de riesgo: riesgo que corre las personas por consumir frecuentemente droga</p></li>
-<li><p>razones para consumir: para evitar problemas como ansiedad, estrés, nauses, problemas de concentración y otros</p></li>
+<li><p>La tendencia a la baja en la prevalencia del consumo de alcohol (-4,9%) y del consumo de marihuna (-0,5%) en el último año, respecto a 2020.</p></li>
+<li><p>La tendencia al alza en la percepción de riesgo asociada al uso de alcohol y marihuna (entre otras substancias).</p></li>
 </ul>
-<ol start="4" type="1">
-<li>Factores contextuales:</li>
+<p>Teniendo en cuenta este escenario general, el presente proyecto se enfoca en las personas usuarias de alcohol y/o marihuna; definidas como aquellas personas que han consumido alguna de estas substancias en el último años y en su percepción de riesgo y acceso a ambas substancias.</p>
+<p>A continuación, se presenta el objetivo general y los objetivos específicos del caso.</p>
+</section>
+<section id="objetivos" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="objetivos"><span class="header-section-number">2</span> Objetivos</h2>
+<section id="objetivo-general" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="objetivo-general"><span class="header-section-number">2.1</span> Objetivo general:</h3>
+<p>Identificar patrones latentes de consumo, percepción de riego y acceso, en personas usuarias de alcohol y marihuana.</p>
+</section>
+<section id="objetivos-específicos" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="objetivos-específicos"><span class="header-section-number">2.2</span> Objetivos específicos:</h3>
+<p>Desribir las características socio demográficas de las personas consumidoras de alcohol y/ o marihuna en el último año, en Chile</p>
+<p>Tipificar grupos de personas consumidoras de alcohol y marihuana integrando información socio demográfica e información sobre perceción de riesgo y acceso a una o ambas substancias.</p>
+</section>
+</section>
+<section id="relevancia-del-caso-de-estudio" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="relevancia-del-caso-de-estudio"><span class="header-section-number">3</span> Relevancia del caso de estudio:</h2>
+<p>El consumo extendido de susbtancias psicoactivas, tales como el alcohol y la marihuna, constituye un problema de salud pública con consecuencias tanto en el sistema asistencial, como en la productividad a lo largo de la vida, el entorno social y familiar y la salud de las personas usuarias de este tipo de substancias <span class="citation" data-cites="Altamirano2024">(<a href="#ref-Altamirano2024" role="doc-biblioref">Altamirano Altamirano, Catalán Sandoval, y González Sepúlveda 2024</a>)</span></p>
+<p>El informe “El Consumo de Alcohol en Chile: Situación Epidemiológica” <span class="citation" data-cites="SENDA2016">(<a href="#ref-SENDA2016" role="doc-biblioref">Prevención y Rehabilitación del Consumo de Drogas y Alcohol (SENDA) 2016</a>)</span> destaca el consumo de alcohol como principal factor de riesgo que causa muerte y discapacidad en Chile, representando el 12,4% de los años de vida saludables perdidos por muerte o discapacidad (AVISA). Junto a lo anterior, también se señala la dependencia del alcohol como una de las cuatro principales enfermedades que generan carga de enfermedad en el país, explicando un 7,7% de los AVISA perdidos.</p>
+<p>Adiconalmente, el informe “Marihuana” <span class="citation" data-cites="SENDA2020marihuana">(<a href="#ref-SENDA2020marihuana" role="doc-biblioref">Prevención y Rehabilitación del Consumo de Drogas y Alcohol (SENDA) 2020</a>)</span> donde se destaca que Alrededor del 9% de los consumidores adultos desarrollan adicción a la marihuana. Este porcentaje aumenta al 17% si el consumo comienza en la adolescencia y al 25-50% en consumidores diarios. Además de los efectos adictivos, SENDA señala los efectos sobre la salud respiratoria, el incremento del riesgo de psicosis y el deficit cognitivo (particularmente en adolescentes), el desempeño académico y laboral, en términos de ausentismo y menor productividad y los riesgos cariovasculares.</p>
+<p>En función de estos antecedentes, se vuelve relavante trazar una estrategia para la identificación de patrones latentes de consumo, percepción de riego y acceso, en personas usuarias de alcohol y marihuana en miras a:</p>
+<ol type="1">
+<li>Diseñar políticas y estrategias de intervención más específicas y efectivas para la población consumidora.</li>
+<li>Priorizar recursos hacia grupos de mayor riesgo.</li>
+<li>Promover una comprensión más matizada del consumo de estas substancias psicoactivas.</li>
+</ol>
+</section>
+<section id="selección-de-bases-de-datos-y-variables-de-trabajo" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="selección-de-bases-de-datos-y-variables-de-trabajo"><span class="header-section-number">4</span> Selección de bases de datos y variables de trabajo:</h2>
+<p>Se trabajará con un conjunto de bases de datos adpatadas, procedentes del Estudio Nacional de Drogas en Población General (ENPG) disponible en: <a href="https://www.senda.gob.cl/senda-presenta-principales-resultados-del-15-estudio-de-drogas-en-poblacion-general/" class="uri">https://www.senda.gob.cl/senda-presenta-principales-resultados-del-15-estudio-de-drogas-en-poblacion-general/</a></p>
+<p>Las variables seleccionadas para el presente proyecto se agupan en:</p>
+<ol type="1">
+<li><p>Variables de consumo de alcohol y marihuna:</p>
+<ul>
+<li><p>consumo del alcohol durante los últimos 30 días y consumo de alcohol hace más de un mes pero menos de un año.</p></li>
+<li><p>consumo de marihuana durante los últimos 30 días y consumo de marihuana hace más de un mes pero menos de un año.</p></li>
+</ul></li>
+<li><p>Variables socio demográficas: edad, género y región.</p></li>
+<li><p>Variables de percepción de riesgo relacionadas al consumo de marihuana y/o alcohol.</p></li>
+<li><p>Factores contextuales:</p></li>
 </ol>
 <ul>
 <li><p><strong>Ambiente social del consumo:</strong> consumo de personas cercanas</p></li>
 <li><p><strong>Disponibilidad de sustancias:</strong> frecuencia de drogas en el barrio yaccesibilidad a drogas.</p></li>
 </ul>
-<ol start="5" type="1">
-<li>Variables hábitos y efectos del consumo:consume, cuando fue la primera vez que consumió, que edad tenía, última vez que consumió, frecuencia de consumo, tipo de droga, hábitos y consecuencias del consumo.</li>
-</ol>
 </section>
-<section id="relevancia-del-proyecto" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="relevancia-del-proyecto"><span class="header-section-number">3</span> Relevancia del proyecto:</h2>
-<p>A través del clustering es posible generar una aproximación compleja al fenómeno de cosumo de drogas en miras a: 1. Identificar patrones ocultos de consumo. 2. Diseñar políticas y estrategias de intervención más específicas y efectivas. 3. Priorizar recursos hacia grupos de mayor riesgo. 4. Promover una comprensión más matizada del consumo de drogas.</p>
-</section>
-<section id="bases-de-datos-a-utilizar" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="bases-de-datos-a-utilizar"><span class="header-section-number">4</span> Bases de datos a utilizar:</h2>
+<section id="bases-de-datos-a-utilizar" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="bases-de-datos-a-utilizar"><span class="header-section-number">5</span> Bases de datos a utilizar:</h2>
 <p>Estudio Nacional de Drogas en Población General <a href="https://www.senda.gob.cl/senda-presenta-principales-resultados-del-15-estudio-de-drogas-en-poblacion-general/" class="uri">https://www.senda.gob.cl/senda-presenta-principales-resultados-del-15-estudio-de-drogas-en-poblacion-general/</a></p>
-<pre class="{css, echo:false}"><code>
-body {
-  font-family: Arial, sans-serif;
-  line-height: 1.5;
-}
 
-h1 {
-  color: #333333;
-}
-
-p {
-  text-align: justify;
-}</code></pre>
 </section>
 
-</main>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Referencias</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Altamirano2024" class="csl-entry" role="listitem">
+Altamirano Altamirano, Bárbara Estefanía, Cristopher Eduardo Catalán Sandoval, y Mauricio González Sepúlveda. 2024. <span>«Percepción de riesgo en torno al consumo de alcohol, marihuana y cocaína que tienen estudiantes de educación superior en una universidad pública de la región de los Lagos»</span>. <em>LATAM Revista Latinoamericana de Ciencias Sociales y Humanidades</em> 5 (6): 2817-31. <a href="https://doi.org/10.56712/latam.v5i6.3207">https://doi.org/10.56712/latam.v5i6.3207</a>.
+</div>
+<div id="ref-SENDA2016" class="csl-entry" role="listitem">
+Prevención y Rehabilitación del Consumo de Drogas y Alcohol (SENDA), Servicio Nacional para la. 2016. <span>«El Consumo de Alcohol en Chile: Situación Epidemiológica»</span>. Santiago, Chile: Gobierno de Chile. <a href="https://www.senda.gob.cl/wp-content/uploads/media/estudios/otrosSENDA/2016_Consumo_Alcohol_Chile.pdf">https://www.senda.gob.cl/wp-content/uploads/media/estudios/otrosSENDA/2016_Consumo_Alcohol_Chile.pdf</a>.
+</div>
+<div id="ref-SENDA2020marihuana" class="csl-entry" role="listitem">
+———. 2020. <span>«Marihuana»</span>. Santiago, Chile: Gobierno de Chile. <a href="https://www.senda.gob.cl/wp-content/uploads/2020/12/marihuana-1.pdf">https://www.senda.gob.cl/wp-content/uploads/2020/12/marihuana-1.pdf</a>.
+</div>
+<div id="ref-SENDA2024" class="csl-entry" role="listitem">
+———. 2024. <span>«15° Estudio Nacional de Drogas en Población General (ENPG) 2022»</span>. Santiago, Chile: Gobierno de Chile. <a href="https://bibliodrogas.gob.cl/wp-content/uploads/2024/11/ENPG-2022-OK.pdf">https://bibliodrogas.gob.cl/wp-content/uploads/2024/11/ENPG-2022-OK.pdf</a>.
+</div>
+</div></section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {

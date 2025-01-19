@@ -1,5 +1,5 @@
 ---
-title: "Clustering de perfiles de consumo de drogras en Chile"
+title: "Patrones latentes de consumo, percepción de riego y acceso, en personas usuarias de alcohol y marihuana"
 subtitle: "Informe"
 author:
   - name: "Ariel Álvarez"
@@ -21,7 +21,7 @@ format:
     df-print: paged
     number-depth: 3
     code-fold: true
-    #bibliography: ref.bib
+    bibliography: ref.bib
     theme: cosmo
     fig-cap-location: bottom
 execute:
@@ -34,21 +34,65 @@ execute:
 
 <img src="logo.png" style="width: 250px; position:absolute; top:0; left:0; padding:10px;"/>
 
-## Objetivo general:
 
-Aplicar un modelo de clurtering para tipificar a las personas consumidoras de drogas.
 
-## Variables seleccionadas para generar el modelo:
+## Antecedentes contextuales:
 
-1.  Variables socio demográficas: edad, género, situación civil, nacionalidad, religión, orientación sexual, nivel educacional, actividad laboral (trabaja no trabaja), urbano/rural, región, comuna.
+El alcohol y la marihuna son dos de las drogas más consumidas a nivel nacional y regional, en Chile.
 
-2.  Variables opinión publica: percepción sobre consumo de marihuana en jóvenes, drogas peores que otras, drogas responsables de problemas país.
+En el último Estudio Nacional de Dogras en Población General (ENPG) en Chile, la prevalencia del consumo de alcohol en el último año alcanza un 53,6%. Mientras que la proporción de personas usuarias de marihuna en el último año es del 10,9% [@SENDA2024].
 
-3.  Variables de percepción y actitudes:
+Así mismo, en la ENPG 2022 se destacan dos aspectos funamentales:
 
--   percepción de riesgo: riesgo que corre las personas por consumir frecuentemente droga
+-   La tendencia a la baja en la prevalencia del consumo de alcohol (-4,9%) y del consumo de marihuna (-0,5%) en el último año, respecto a 2020.
 
--   razones para consumir: para evitar problemas como ansiedad, estrés, nauses, problemas de concentración y otros
+-   La tendencia al alza en la percepción de riesgo asociada al uso de alcohol y marihuna (entre otras substancias).
+
+Teniendo en cuenta este escenario general, el presente proyecto se enfoca en las personas usuarias de alcohol y/o marihuna; definidas como aquellas personas que han consumido alguna de estas substancias en el último años y en su percepción de riesgo y acceso a ambas substancias.
+
+A continuación, se presenta el objetivo general y los objetivos específicos del caso.
+
+## Objetivos
+
+### Objetivo general:
+
+Identificar patrones latentes de consumo, percepción de riego y acceso, en personas usuarias de alcohol y marihuana.
+
+### Objetivos específicos:
+
+Desribir las características socio demográficas de las personas consumidoras de alcohol y/ o marihuna en el último año, en Chile
+
+Tipificar grupos de personas consumidoras de alcohol y marihuana integrando información socio demográfica e información sobre perceción de riesgo y acceso a una o ambas substancias.
+
+## Relevancia del caso de estudio:
+
+El consumo extendido de susbtancias psicoactivas, tales como el alcohol y la marihuna, constituye un problema de salud pública con consecuencias tanto en el sistema asistencial, como en la productividad a lo largo de la vida, el entorno social y familiar y la salud de las personas usuarias de este tipo de substancias [@Altamirano2024]
+
+El informe "El Consumo de Alcohol en Chile: Situación Epidemiológica" [@SENDA2016] destaca el consumo de alcohol como principal factor de riesgo que causa muerte y discapacidad en Chile, representando el 12,4% de los años de vida saludables perdidos por muerte o discapacidad (AVISA). Junto a lo anterior, también se señala la dependencia del alcohol como una de las cuatro principales enfermedades que generan carga de enfermedad en el país, explicando un 7,7% de los AVISA perdidos.
+
+Adiconalmente, el informe "Marihuana" [@SENDA2020marihuana] donde se destaca que Alrededor del 9% de los consumidores adultos desarrollan adicción a la marihuana. Este porcentaje aumenta al 17% si el consumo comienza en la adolescencia y al 25-50% en consumidores diarios. Además de los efectos adictivos, SENDA señala los efectos sobre la salud respiratoria, el incremento del riesgo de psicosis y el deficit cognitivo (particularmente en adolescentes), el desempeño académico y laboral, en términos de ausentismo y menor productividad y los riesgos cariovasculares.
+
+En función de estos antecedentes, se vuelve relavante trazar una estrategia para la identificación de patrones latentes de consumo, percepción de riego y acceso, en personas usuarias de alcohol y marihuana en miras a:
+
+1.  Diseñar políticas y estrategias de intervención más específicas y efectivas para la población consumidora.
+2.  Priorizar recursos hacia grupos de mayor riesgo.
+3.  Promover una comprensión más matizada del consumo de estas substancias psicoactivas.
+
+## Selección de bases de datos y variables de trabajo: 
+
+Se trabajará con un conjunto de bases de datos adpatadas, procedentes del Estudio Nacional de Drogas en Población General (ENPG) disponible en: <https://www.senda.gob.cl/senda-presenta-principales-resultados-del-15-estudio-de-drogas-en-poblacion-general/>
+
+Las variables seleccionadas para el presente proyecto se agupan en:
+
+1.  Variables de consumo de alcohol y marihuna:
+
+    -   consumo del alcohol durante los últimos 30 días y consumo de alcohol hace más de un mes pero menos de un año.
+
+    -   consumo de marihuana durante los últimos 30 días y consumo de marihuana hace más de un mes pero menos de un año.
+
+2.  Variables socio demográficas: edad, género y región.
+
+3.  Variables de percepción de riesgo relacionadas al consumo de marihuana y/o alcohol.
 
 4.  Factores contextuales:
 
@@ -56,28 +100,6 @@ Aplicar un modelo de clurtering para tipificar a las personas consumidoras de dr
 
 -   **Disponibilidad de sustancias:** frecuencia de drogas en el barrio yaccesibilidad a drogas.
 
-5.  Variables hábitos y efectos del consumo:consume, cuando fue la primera vez que consumió, que edad tenía, última vez que consumió, frecuencia de consumo, tipo de droga, hábitos y consecuencias del consumo.
-
-## Relevancia del proyecto:
-
-A través del clustering es posible generar una aproximación compleja al fenómeno de cosumo de drogas en miras a: 1. Identificar patrones ocultos de consumo. 2. Diseñar políticas y estrategias de intervención más específicas y efectivas. 3. Priorizar recursos hacia grupos de mayor riesgo. 4. Promover una comprensión más matizada del consumo de drogas.
-
 ## Bases de datos a utilizar:
 
 Estudio Nacional de Drogas en Población General <https://www.senda.gob.cl/senda-presenta-principales-resultados-del-15-estudio-de-drogas-en-poblacion-general/>
-
-```{css, echo:false}
-
-body {
-  font-family: Arial, sans-serif;
-  line-height: 1.5;
-}
-
-h1 {
-  color: #333333;
-}
-
-p {
-  text-align: justify;
-}
-```
