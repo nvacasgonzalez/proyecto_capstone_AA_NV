@@ -108,6 +108,11 @@ if(!require(rio)){install.packages("rio")}; library(rio) # Importar archivos des
 if(!require(corrplot)){install.packages("corrplot")}; library(corrplot) # Visualización
 if(!require(ggplot2)){install.packages("ggplot2")}; library(ggplot2) # Visualización
 if(!require(psych)){install.packages("psych")}; library(psych) # Descriptivo
+if(!require(renv)){install.packages("renv")}; library(renv)# Reproducibilidad
+
+# Se procede a ejecutar las funciones renv::init() y renv::snapshot() en la consola
+
+
 ```
 
 
