@@ -98,6 +98,10 @@ Las variables seleccionadas para el presente proyecto se agupan en:
 
 4.  Variables relacionadas a factores contextuales: consumo de drogas en el hogar ; dificultad en el acceso a la marihuana. 
 
+```{r}
+rm(list = ls())
+```
+
 
 ```{r, warning=FALSE, message=FALSE} 
 # Paquetes necesarios
