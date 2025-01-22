@@ -34,7 +34,7 @@ execute:
 
 <img src="logo.png" style="width: 250px; position:absolute; top:0; left:0; padding:10px;"/>
 
-## Antecedentes contextuales:
+# Antecedentes contextuales:
 
 El alcohol y la marihuna son dos de las drogas más consumidas a nivel nacional y regional, en Chile.
 
@@ -50,13 +50,13 @@ Teniendo en cuenta este escenario general, el presente proyecto se enfoca en las
 
 A continuación, se presenta el objetivo general y los objetivos específicos del caso.
 
-## Objetivos
+# Objetivos
 
-### Objetivo general:
+## Objetivo general:
 
 Identificar patrones latentes de consumo, percepción de riego y acceso, en personas usuarias de alcohol y marihuana.
 
-### Objetivos específicos:
+## Objetivos específicos:
 
 Describir las características socio demográficas de las personas consumidoras de alcohol y/ o marihuna en el último año, en Chile.
 
@@ -64,7 +64,7 @@ Analizar la relación entre la percepción de riego y el consumo de marihuna y/o
 
 Tipificar grupos de personas consumidoras de alcohol y marihuana integrando información socio demográfica e información sobre perceción de riesgo y acceso a una o ambas substancias.
 
-## Relevancia del caso de estudio:
+# Relevancia del caso de estudio:
 
 El consumo extendido de susbtancias psicoactivas, tales como el alcohol y la marihuna, constituye un problema de salud pública con consecuencias tanto en el sistema asistencial, como en la productividad a lo largo de la vida, el entorno social y familiar y la salud de las personas usuarias de este tipo de substancias [@Altamirano2024]
 
@@ -78,7 +78,7 @@ En función de estos antecedentes, se vuelve relevante trazar una estrategia par
 2.  Priorizar recursos hacia grupos de mayor riesgo.
 3.  Promover una comprensión más matizada del consumo de estas substancias psicoactivas.
 
-## Selección de bases de datos y variables de trabajo:
+# Selección de bases de datos y variables de trabajo:
 
 Se trabajará con un conjunto de bases de datos adpatadas, procedentes del Estudio Nacional de Drogas en Población General (ENPG) disponible en: <https://www.senda.gob.cl/senda-presenta-principales-resultados-del-15-estudio-de-drogas-en-poblacion-general/>
 
@@ -108,6 +108,7 @@ if(!require(psych)){install.packages("psych")}; library(psych)
 if(!require(tidyr)){install.packages("tidyr")}; library(tidyr) 
 if(!require(table1)){install.packages("table1")};library(table1)
 if(!require(knitr)){install.packages("knitr")}; library(knitr)
+if(!require(kableExtra)){install.packages("kableExtra")}; library(kableExtra)
 ```
 
 
@@ -132,7 +133,7 @@ senda_full <- left_join(senda_full, senda_opinion, by = "folio")
 rm(list = setdiff(ls(), "senda_full"))
 ```
 
-## Manipulación de la base
+# Manipulación de la base
 
 En este apartado vamos a limpiar las respuestas de la base, quitar NA, analizar si las respuestas abiertas aportan información relevante y recodificar respuestas a variables dummy para facilitar el posterior análisis.
 
@@ -141,7 +142,7 @@ senda_full <- senda_full %>%
    mutate_all(~ifelse(. %in% c(88,99), NA, .))  #Valores NA
 ```
 
-## Estadísticos Descriptivos 
+# Estadísticos Descriptivos 
 
 Sobre el consumo de alcohol: un 47% ha consumido alcohol duramente el último mes, un 19% hace más de un menos pero no menos de un año y un 34% hace más de un año. Mientras que la última vez que las personas que consumieron Marihuana se distruyen de la siguiente forma. un 21% reporta haber consumido Marihuana durante el último mes, un 9% hace más de un mes pero menos de un año y un 71% no consume marihuana hace más de un año. 
 
@@ -185,31 +186,17 @@ tabla_consumo
 
 
 
-## Cruce de variables
+# Cruce de variables
 
 Analizando las caracteristicas sociodemográficas de las personas que consumen alcohol o marihuana obtuvimos los siguientes resultados, por temas de análsis la variable de frecuencia de consumo (oh_4 y mar_04) fue recodificada sobre el último año. Es decir, si consumieron alcohol o marihuana durante el último año como valor 1, mientras que los demas resultados como valores restantes.
 
 El análisis también se realizó observando la variación dentro de cada grupo y no a nivel total muestral. Es decir, nos interesaba saber cuanto hombres fuman dentro del grupo de hombres y así dentro de todas las categorías. Posteriormente en la visualización se realiza una comparación por grupo general.
 
 
-### Sexo
-
-Cruce de sexo con alcohol
-
-Sobre el consumo de Alcohol según sexo, se identifica que un 76% de los hombres ha consumido alguna vez Alcohol en su vida, mientras que las mujeres un 70% ha probado el Alcohol. En esta misma línea, la pregunta sobre si han consumido durante el último año, se identifica que: el 72% de los hombres ha consumido alcohol, mientras que el 61% de las mujeres ha consumido durante el último año.
-
-Cruce de sexo con Marihuana
-
-Sobre el consumo de Marihuana según sexo, el 36% de los hombres afirma haber probado la marihuana alguna vez en sus vidas, mientras que las mujeres en un 24%. Por su parte, el consumo de marihuana el último año es menor al consumo de alcohol. Un 15% de los hombres ha fumado marihuana el último año, mientras que solo un 8% de las mujeres ha fumado durante el último tiempo.
-
-
-
+## Sexo
 ```{r}
 tabla_frecuencias <- senda_full %>%
   filter(!is.na(consumo) & !is.na(sexo)) %>% # Excluir valores NA
-  mutate(sexo = recode(sexo,                # Recodificar sexo
-                       `1` = "Hombre", 
-                       `2` = "Mujer")) %>%
   group_by(sexo, consumo) %>%               # Agrupar por Sexo y Tipo de Consumo
   summarise(Frecuencia = n(), .groups = "drop") %>% # Calcular frecuencia absoluta
   group_by(sexo) %>%                        # Agrupar por Sexo para calcular porcentajes
@@ -221,12 +208,32 @@ tabla_frecuencias <- senda_full %>%
 
 # Mostrar la tabla
 tabla_frecuencias
-
 ```
 
 
 
-### Tramos de edad
+
+
+
+
+
+
+
+Cruce de sexo con alcohol
+
+Sobre el consumo de Alcohol según sexo, se identifica que un 76% de los hombres ha consumido alguna vez Alcohol en su vida, mientras que las mujeres un 70% ha probado el Alcohol. En esta misma línea, la pregunta sobre si han consumido durante el último año, se identifica que: el 72% de los hombres ha consumido alcohol, mientras que el 61% de las mujeres ha consumido durante el último año.
+
+Cruce de sexo con Marihuana
+
+Sobre el consumo de Marihuana según sexo, el 36% de los hombres afirma haber probado la marihuana alguna vez en sus vidas, mientras que las mujeres en un 24%. Por su parte, el consumo de marihuana el último año es menor al consumo de alcohol. Un 15% de los hombres ha fumado marihuana el último año, mientras que solo un 8% de las mujeres ha fumado durante el último tiempo.
+
+
+
+
+
+`
+
+## Tramos de edad
 
 Edad y Alcohol
 
@@ -274,7 +281,7 @@ tabla_frecuencias_edad
 ```
 
 
-### Nivel educacional
+## Nivel educacional
 
 Sobre el nivel educacional y el consumo de Alcohol y Marihuana hemos observado patrones bastantes llamativos sobre el nivel educacional. La variable original DP_12 fue recodificada y agrupada en grupos para facilitar el análisis, siendo codificadas en grupos de "Sin educación", "sistema antiguo" y educación básica, media, técnica, universitaria y postgrados.
 
@@ -323,7 +330,7 @@ tabla_frecuencias_educ
 ```
 
 
-### Tramos de ingresos
+## Tramos de ingresos
 
 Observando los datos según tramos de ingresos, estos fueron agrupados en nivel socioeconomicos bajo, medio y alto. El informe de SENDA (2022) categoriza el nivel socioeconomico en a la calidad de la vivienda y el barrio. En nuestra investigación la justificación de variable de nivel socioeconomica será en base al tramo de ingresos que se encuetra la persona de la variable (DP_16).
 
@@ -364,7 +371,7 @@ tabla_frecuencias_nse <- senda_full %>%
 tabla_frecuencias_nse
 ```
 
-## Gráficos
+# Gráficos
 
 Para visualización de nuestros datos y cruce de variables, hemos generado dos nuevas variables de agrupación para futuros análisis. En primer lugar, formulamos una variable de "Prueba" sobre el cruce de las variables oh_1 y mar_1 donde se distribuyen en 4 grupos dependiendo si han probado alguna vez ambas drogas, solo alcohol o marihuana o ninguna de las dos. También generamos una nueva variable de consumo durante el último año, esta nueva variable se desprende de las personas que afirman haber probado alcohol o marihuana. Esta variable tiene 3 grupos en base a las variables oh_4 y mar_4, donde el grupo 1 son las personas que han consumido alcohol y marihuana durante el último año, 2 personas que solo han han consumido alcohol durante el último año y 3 personas que solo han consumiendo marihuana durante el último año.
 
@@ -431,7 +438,7 @@ senda_gr <- senda_gr %>% filter(!is.na(sexo))
 ```
 
 
-Gráfico de Sexo por consumo de droga el último año
+## Gráfico de Sexo por consumo de droga el último año
 
 En cuanto a la variable sexo, los hombres lideran el consumo en las tres categorías, consumo de alcohol y marihuana, consumo exclusivo de alcohol y consumo exclusivo de marihuana. Sin embargo, en la categoría de consumo simultaneo de alcohol y marihuana, existe mayor disparidad en la composición por sexo; el consumo de ambas substancias está más presente en hombres (61,3%) que en mujeres (38,7%). 
 
@@ -512,7 +519,7 @@ grafico_2 <- ggplot(senda_porcentaje_edad, aes(x = consumo, y = porcentaje, fill
 grafico_2
 
 ```
-# Gráfico de NSE por consumo de droga el último año
+## Gráfico de NSE por consumo de droga el último año
 
 Por último, en relación a la frecuencia relativa de consumo  de alcohol y/o marihuana según nivel socioeconómico, caben destacar los siguientes hallazgos. (1) La personas que pertenecen al nivel socioeconómico medio y bajo poseen prevalencias de consumo simultaneo similares, con un 43,9% y un 42,1% respectivamente. (2) En el consumo exclusivo de alcohol predomina el grupo socioeconómico medio (46,9%), mientras que cuando se trata de consumo exclusivo de marihuana la mayor frecuencia se da en el nivel socioeconómico más bajo (49,2%).
 
@@ -550,7 +557,7 @@ ggplot(senda_porcentaje_nse, aes(x = consumo, y = porcentaje, fill = nse)) +
 
 
 
-## Pasos a seguir: 
+# Pasos a seguir: 
 
 Nuestros siguientes pasos a seguir para continuar con nuestra investigación y realizar un modelo no supervisado de clustering es:
 
