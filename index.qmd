@@ -46,23 +46,13 @@ Así mismo, en la ENPG 2022 se destacan dos aspectos funamentales:
 
 -   La tendencia al alza en la percepción de riesgo asociada al uso de alcohol y marihuna (entre otras substancias).
 
-Teniendo en cuenta este escenario general, el presente proyecto se enfoca en las personas usuarias de alcohol y/o marihuna; definidas como aquellas personas que han consumido alguna de estas substancias en el último años y en su percepción de riesgo y acceso a ambas substancias.
+Teniendo en cuenta este escenario general, el presente proyecto se enfoca en las personas que declaran haber consumido alcohol y/o marihuna en el último año y en su percepción de riesgo y acceso a ambas substancias.
 
 A continuación, se presenta el objetivo general y los objetivos específicos del caso.
 
-# Objetivos
-
-## Objetivo general:
+# Objetivo:
 
 Identificar patrones latentes de consumo, percepción de riego y acceso, en personas usuarias de alcohol y marihuana.
-
-## Objetivos específicos:
-
-Describir las características socio demográficas de las personas consumidoras de alcohol y/ o marihuna en el último año, en Chile.
-
-Analizar la relación entre la percepción de riego y el consumo de marihuna y/o alcohol.
-
-Tipificar grupos de personas consumidoras de alcohol y marihuana integrando información socio demográfica e información sobre perceción de riesgo y acceso a una o ambas substancias.
 
 # Relevancia del caso de estudio:
 
@@ -96,7 +86,7 @@ Las variables seleccionadas para el presente proyecto se agupan en:
 
 4.  Variables relacionadas a factores contextuales: consumo de drogas en el hogar ; dificultad en el acceso a la marihuana.
 
-```{r, warning=FALSE, message=FALSE} 
+```{r, warning=FALSE, message=FALSE}
 # Paquetes necesarios
 if(!require(readxl)){install.packages("readxl")}; library(readxl) #Importar Archivos Excel
 if(!require(dplyr)){install.packages("dplyr")}; library(dplyr) # Manipulación
@@ -111,8 +101,7 @@ if(!require(knitr)){install.packages("knitr")}; library(knitr)
 if(!require(kableExtra)){install.packages("kableExtra")}; library(kableExtra)
 ```
 
-
-```{r, warning=FALSE} 
+```{r, warning=FALSE}
 # Bases
 senda <- 
   import("https://raw.githubusercontent.com/nvacasgonzalez/proyecto_capstone_AA_NV/main/data/senda.rds")
@@ -122,8 +111,7 @@ senda_opinion <-
   import("https://raw.githubusercontent.com/nvacasgonzalez/proyecto_capstone_AA_NV/main/data/senda_opinion.dta")
 ```
 
-
-```{r, warning=FALSE} 
+```{r, warning=FALSE}
 # Union con bases y limpieza de enviroment
 senda_full <- left_join(senda, senda_data, by = "folio")
 senda_full <- left_join(senda_full, senda_opinion, by = "folio")
@@ -137,16 +125,16 @@ rm(list = setdiff(ls(), "senda_full"))
 
 En este apartado vamos a limpiar las respuestas de la base, quitar NA, analizar si las respuestas abiertas aportan información relevante y recodificar respuestas a variables dummy para facilitar el posterior análisis.
 
-```{r, warning=FALSE} 
+```{r, warning=FALSE}
 senda_full <- senda_full %>%
    mutate_all(~ifelse(. %in% c(88,99), NA, .))  #Valores NA
 ```
 
-# Estadísticos Descriptivos 
+# Estadísticos Descriptivos
 
-Sobre el consumo de alcohol: un 47% ha consumido alcohol duramente el último mes, un 19% hace más de un menos pero no menos de un año y un 34% hace más de un año. Mientras que la última vez que las personas que consumieron Marihuana se distruyen de la siguiente forma. un 21% reporta haber consumido Marihuana durante el último mes, un 9% hace más de un mes pero menos de un año y un 71% no consume marihuana hace más de un año. 
+Sobre el consumo de alcohol: un 47% ha consumido alcohol duramente el último mes, un 19% hace más de un menos pero no menos de un año y un 34% hace más de un año. Mientras que la última vez que las personas que consumieron Marihuana se distruyen de la siguiente forma. un 21% reporta haber consumido Marihuana durante el último mes, un 9% hace más de un mes pero menos de un año y un 71% no consume marihuana hace más de un año.
 
-```{r, warning=FALSE} 
+```{r, warning=FALSE}
 # Creación de variable de consumo
 #alcohol ano
 senda_full$oh_ano <- NA
@@ -184,40 +172,57 @@ tabla_consumo
 
 ```
 
-
-
 # Cruce de variables
 
 Analizando las caracteristicas sociodemográficas de las personas que consumen alcohol o marihuana obtuvimos los siguientes resultados, por temas de análsis la variable de frecuencia de consumo (oh_4 y mar_04) fue recodificada sobre el último año. Es decir, si consumieron alcohol o marihuana durante el último año como valor 1, mientras que los demas resultados como valores restantes.
 
 El análisis también se realizó observando la variación dentro de cada grupo y no a nivel total muestral. Es decir, nos interesaba saber cuanto hombres fuman dentro del grupo de hombres y así dentro de todas las categorías. Posteriormente en la visualización se realiza una comparación por grupo general.
 
-
 ## Sexo
+
+En primer lugar es necesio re-codificar la variable sexo de 1 y 2 a Hombre y Mujer:
+
 ```{r}
+
 tabla_frecuencias <- senda_full %>%
   filter(!is.na(consumo) & !is.na(sexo)) %>% # Excluir valores NA
+  mutate(sexo = recode(sexo, `1` = "Hombre", `2` = "Mujer")) %>% # Recodificar sexo
   group_by(sexo, consumo) %>%               # Agrupar por Sexo y Tipo de Consumo
   summarise(Frecuencia = n(), .groups = "drop") %>% # Calcular frecuencia absoluta
   group_by(sexo) %>%                        # Agrupar por Sexo para calcular porcentajes
   mutate(Porcentaje = round(Frecuencia / sum(Frecuencia) * 100, 1)) %>%
+  mutate(Resumen = paste0(Frecuencia, " (", Porcentaje, "%)")) %>% # Crear el string n (porcentaje)
+  select(-Frecuencia, -Porcentaje) %>%      # Eliminar columnas separadas de frecuencia y porcentaje
   pivot_wider(names_from = consumo,         # Convertir "consumo" en columnas
-              values_from = c(Frecuencia, Porcentaje),
-              names_glue = "{.value}_{consumo}") %>% 
+              values_from = Resumen) %>%    # Usar el campo combinado
   ungroup()
+
+# Ver la tabla final
+print(tabla_frecuencias)
+
 
 # Mostrar la tabla
 tabla_frecuencias
 ```
 
+```{r}
+tabla_frecuencias_transpuesta <- senda_full %>%
+  filter(!is.na(consumo) & !is.na(sexo)) %>% # Excluir valores NA
+  mutate(sexo = recode(sexo, `1` = "Hombre", `2` = "Mujer")) %>% # Recodificar sexo
+  group_by(sexo, consumo) %>%               # Agrupar por Sexo y Tipo de Consumo
+  summarise(Frecuencia = n(), .groups = "drop") %>% # Calcular frecuencia absoluta
+  group_by(consumo) %>%                     # Agrupar por Consumo para calcular porcentajes
+  mutate(Porcentaje = round(Frecuencia / sum(Frecuencia) * 100, 1)) %>%
+  mutate(Resumen = paste0(Frecuencia, " (", Porcentaje, "%)")) %>% # Crear el string n (porcentaje)
+  select(-Frecuencia, -Porcentaje) %>%      # Eliminar columnas separadas de frecuencia y porcentaje
+  pivot_wider(names_from = sexo,            # Convertir "sexo" en columnas
+              values_from = Resumen) %>%    # Usar el campo combinado
+  ungroup()
 
+# Ver la tabla final
+print(tabla_frecuencias_transpuesta)
 
-
-
-
-
-
-
+```
 
 Cruce de sexo con alcohol
 
@@ -227,11 +232,7 @@ Cruce de sexo con Marihuana
 
 Sobre el consumo de Marihuana según sexo, el 36% de los hombres afirma haber probado la marihuana alguna vez en sus vidas, mientras que las mujeres en un 24%. Por su parte, el consumo de marihuana el último año es menor al consumo de alcohol. Un 15% de los hombres ha fumado marihuana el último año, mientras que solo un 8% de las mujeres ha fumado durante el último tiempo.
 
-
-
-
-
-`
+\`
 
 ## Tramos de edad
 
@@ -251,8 +252,7 @@ En cuanto al haber probado la marihuana, un 12% de las personas menores de edad 
 
 Sobre si se ha consumido marihuana en el último año, las personas afirman lo siguiente: Menores de edad solo un 7% ha consumido marihuana, siguiendo con un 17% de 19 a 25 años, un 17% de 26 a 34 años, un 9% de 35 a 44 años y mayores de 45 solo un 3%.
 
-
-```{r, warning=FALSE} 
+```{r, warning=FALSE}
 senda_full <- senda_full %>%
   mutate(
     tramos_edad = case_when(
@@ -280,7 +280,6 @@ tabla_frecuencias_edad
 
 ```
 
-
 ## Nivel educacional
 
 Sobre el nivel educacional y el consumo de Alcohol y Marihuana hemos observado patrones bastantes llamativos sobre el nivel educacional. La variable original DP_12 fue recodificada y agrupada en grupos para facilitar el análisis, siendo codificadas en grupos de "Sin educación", "sistema antiguo" y educación básica, media, técnica, universitaria y postgrados.
@@ -295,12 +294,11 @@ En cuanto si han consumido alguna bebida alcoholica en el último año, las pers
 
 Nivel educacional y Marihuana
 
-Analizando el consumo de Marihuana y nivel educacional encontramos que: las personas sin educación y con nivel educacional bajo un pequeño porcentaje ha probado alguna vez la marihuana con un 9% y 15% respectivamente, mientras la casi la mayoría de peersonas con grado universitario y de postgrado ha consumido marihuana alguna vez en su vida con un 41% y 44% respectivamente. 
+Analizando el consumo de Marihuana y nivel educacional encontramos que: las personas sin educación y con nivel educacional bajo un pequeño porcentaje ha probado alguna vez la marihuana con un 9% y 15% respectivamente, mientras la casi la mayoría de peersonas con grado universitario y de postgrado ha consumido marihuana alguna vez en su vida con un 41% y 44% respectivamente.
 
-Sin embargo, los porcentajes disminuyen cuando se analiza si han consumido marihuana durante el último año. Donde las personas con educación básica, media y del sistema antiguo (4%, 7% y 5%) presentan menos frecuencia de consumo a diferencia de los grupos más educados con formación técnica, universitaria y de postgrados (11%, 13% y 12%).  Esto podría estar fundado en los espacios de sociabilización que tiene cada grupo dentro de sus espacios siendo una droga común o de fácil acceso entre ellos.
+Sin embargo, los porcentajes disminuyen cuando se analiza si han consumido marihuana durante el último año. Donde las personas con educación básica, media y del sistema antiguo (4%, 7% y 5%) presentan menos frecuencia de consumo a diferencia de los grupos más educados con formación técnica, universitaria y de postgrados (11%, 13% y 12%). Esto podría estar fundado en los espacios de sociabilización que tiene cada grupo dentro de sus espacios siendo una droga común o de fácil acceso entre ellos.
 
-
-```{r, warning=FALSE} 
+```{r, warning=FALSE}
 # Recode Nivel educacional
 senda_full <- senda_full %>% 
   mutate(educ = case_when(
@@ -329,15 +327,11 @@ tabla_frecuencias_educ <- senda_full %>%
 tabla_frecuencias_educ
 ```
 
-
 ## Tramos de ingresos
 
 Observando los datos según tramos de ingresos, estos fueron agrupados en nivel socioeconomicos bajo, medio y alto. El informe de SENDA (2022) categoriza el nivel socioeconomico en a la calidad de la vivienda y el barrio. En nuestra investigación la justificación de variable de nivel socioeconomica será en base al tramo de ingresos que se encuetra la persona de la variable (DP_16).
 
-
-NSE nivel bajo 500k 
-Nivel medio entre 501k y 1,5m
-Nivel alto sobre 1.5M 
+NSE nivel bajo 500k Nivel medio entre 501k y 1,5m Nivel alto sobre 1.5M
 
 Tramo de ingresos y alcohol
 
@@ -347,8 +341,7 @@ Tramo de ingresos y marihuana
 
 El cruce entre tramo de ingreso y consumo de marihuana, resulta en que las personas con nivel socioeconomico bajo un 26% ha probado la marihuana al menos una vez, mientras que el nivel medio solo un 35% y el nivel alto un 40%. Este patrón se mantiene sobre si han consumido durante el últoimo año. El nivel bajo un 7% afirma haber fumado algun tipo de marihuana, seguido con 10% de la gente de nivel medio y un 12% del nivel alto.
 
-
-```{r, warning=FALSE} 
+```{r, warning=FALSE}
 senda_full <- senda_full %>% 
   mutate(nse = case_when(
     dp_16 %in% 1:5 ~ "Nivel socioeconomico Bajo", 
@@ -420,7 +413,6 @@ senda_gr$consumo <- factor(senda_gr$consumo,
                                    "Solo marihuana"))
 ```
 
-
 ```{r, warning=FALSE}
 # Manipulación para graficar gráfico de Sexo y consumo
 
@@ -437,13 +429,11 @@ senda_gr <- senda_gr %>% filter(!is.na(consumo))
 senda_gr <- senda_gr %>% filter(!is.na(sexo))
 ```
 
-
 ## Gráfico de Sexo por consumo de droga el último año
 
-En cuanto a la variable sexo, los hombres lideran el consumo en las tres categorías, consumo de alcohol y marihuana, consumo exclusivo de alcohol y consumo exclusivo de marihuana. Sin embargo, en la categoría de consumo simultaneo de alcohol y marihuana, existe mayor disparidad en la composición por sexo; el consumo de ambas substancias está más presente en hombres (61,3%) que en mujeres (38,7%). 
+En cuanto a la variable sexo, los hombres lideran el consumo en las tres categorías, consumo de alcohol y marihuana, consumo exclusivo de alcohol y consumo exclusivo de marihuana. Sin embargo, en la categoría de consumo simultaneo de alcohol y marihuana, existe mayor disparidad en la composición por sexo; el consumo de ambas substancias está más presente en hombres (61,3%) que en mujeres (38,7%).
 
 Sin embargo, en la categoría de consumo exclusivo de alcohol, el consumo de mujeres (48,3%) y hombres (51,7%) se encuentra más cercano.
-
 
 ```{r, warning=FALSE}
 # Grafico Sexo
@@ -479,11 +469,8 @@ grafico_1
 
 Gráfico de Tramos de edad por consumo de droga el último año
 
-Respecto al consumo de alcohol y marihuana en relación a los tramos etarios es posible realizar el segundo desglose según substancia: 
-- Consumo simultaneo de alcohol y marihuana: la mayor prevalencia de este tipo de consumo se da en las personas con edades comprendidas entre 26 y 34 años (38,4%), seguidas de aquellas entre 19 y 25 años (25,1%)
-- Consumo exclusivo de alcohol: este tipo de consumo es más prevalente en personas entre los 45 y 65 años (34,2%) 
-- Consumo exclusivo de marihuana: si bien los porcentajes de prevalencia de este tipo de consumo por cohorte etaria no son tan dispares, el grupo etario que muestra mayor consumo exclusivo de marihuana es el conformado por personas entre 35 y 44 años (28,2%). Junto a lo anterior, llama particularmente la atención la prevalencia del consumo de marihuana en menores de edad (9,9% del total de la composición etaria de este grupo de personas consumidoras)
-  
+Respecto al consumo de alcohol y marihuana en relación a los tramos etarios es posible realizar el segundo desglose según substancia: - Consumo simultaneo de alcohol y marihuana: la mayor prevalencia de este tipo de consumo se da en las personas con edades comprendidas entre 26 y 34 años (38,4%), seguidas de aquellas entre 19 y 25 años (25,1%) - Consumo exclusivo de alcohol: este tipo de consumo es más prevalente en personas entre los 45 y 65 años (34,2%) - Consumo exclusivo de marihuana: si bien los porcentajes de prevalencia de este tipo de consumo por cohorte etaria no son tan dispares, el grupo etario que muestra mayor consumo exclusivo de marihuana es el conformado por personas entre 35 y 44 años (28,2%). Junto a lo anterior, llama particularmente la atención la prevalencia del consumo de marihuana en menores de edad (9,9% del total de la composición etaria de este grupo de personas consumidoras)
+
 ```{r, warning=FALSE}
 
 senda_porcentaje_edad <- senda_gr %>%
@@ -519,10 +506,10 @@ grafico_2 <- ggplot(senda_porcentaje_edad, aes(x = consumo, y = porcentaje, fill
 grafico_2
 
 ```
+
 ## Gráfico de NSE por consumo de droga el último año
 
-Por último, en relación a la frecuencia relativa de consumo  de alcohol y/o marihuana según nivel socioeconómico, caben destacar los siguientes hallazgos. (1) La personas que pertenecen al nivel socioeconómico medio y bajo poseen prevalencias de consumo simultaneo similares, con un 43,9% y un 42,1% respectivamente. (2) En el consumo exclusivo de alcohol predomina el grupo socioeconómico medio (46,9%), mientras que cuando se trata de consumo exclusivo de marihuana la mayor frecuencia se da en el nivel socioeconómico más bajo (49,2%).
-
+Por último, en relación a la frecuencia relativa de consumo de alcohol y/o marihuana según nivel socioeconómico, caben destacar los siguientes hallazgos. (1) La personas que pertenecen al nivel socioeconómico medio y bajo poseen prevalencias de consumo simultaneo similares, con un 43,9% y un 42,1% respectivamente. (2) En el consumo exclusivo de alcohol predomina el grupo socioeconómico medio (46,9%), mientras que cuando se trata de consumo exclusivo de marihuana la mayor frecuencia se da en el nivel socioeconómico más bajo (49,2%).
 
 ```{r}
 # Calcular porcentajes por consumo y nivel socioeconómico, pero sobre el total de consumo
@@ -555,17 +542,14 @@ ggplot(senda_porcentaje_nse, aes(x = consumo, y = porcentaje, fill = nse)) +
 
 ```
 
-
-
-# Pasos a seguir: 
+# Pasos a seguir:
 
 Nuestros siguientes pasos a seguir para continuar con nuestra investigación y realizar un modelo no supervisado de clustering es:
 
-* Continuar preparando la base de datos, si bien realizamos tecnicas exploratorias como frecuencias y visualización de datos, existen otras varaibles que podrían ser importantes para continuar nuestro trabajo como datos de opinión pública, percepción de riesgo y accesibilidad a drogas.
-* Una vez preparada la base realizar modelos de clustering de forma exploratoria
-* Analizar las posibles agrupaciones
-* Concluir nuestra investigación en base a nuestros objetivos especificos.
-
+-   Continuar preparando la base de datos, si bien realizamos tecnicas exploratorias como frecuencias y visualización de datos, existen otras varaibles que podrían ser importantes para continuar nuestro trabajo como datos de opinión pública, percepción de riesgo y accesibilidad a drogas.
+-   Una vez preparada la base realizar modelos de clustering de forma exploratoria
+-   Analizar las posibles agrupaciones
+-   Concluir nuestra investigación en base a nuestros objetivos especificos.
 
 ```{r, warning=FALSE}
 # Datos de percepción
@@ -596,15 +580,6 @@ senda_full <- senda_full %>%
 table(senda_full$op_1_1_rp)
 ```
 
-
-
 ```{r}
 table(senda_gr$consumo)
 ```
-
-
-
-
-
-
-
