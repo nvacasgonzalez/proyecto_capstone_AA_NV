@@ -1,5 +1,5 @@
 ---
-title: "Patrones latentes de consumo, percepción de riego y acceso, en personas que declaran haber consumido alcohol y marihuana en le último año en la ENPG 2022"
+title: "Patrones latentes de consumo en personas que declaran haber consumido alcohol y marihuana en le último año en la ENPG 2022"
 subtitle: "Informe"
 author:
   - name: "Ariel Álvarez"
@@ -390,7 +390,7 @@ grafico_1 <- ggplot(senda_porcentaje_sexo, aes(x = consumo, y = porcentaje, fill
     position = position_dodge(width = 0.9),
     vjust = -0.5
   ) +
-  scale_fill_manual(values = c("Hombre" = "cyan",   
+  scale_fill_manual(values = c("Hombre" = "lightblue",   
                                "Mujer" = "purple")) +
   labs(
     title = "Consumo por Categorías según Sexo",
