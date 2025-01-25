@@ -85,24 +85,32 @@ Junto a estos paquetes instalamos:
 - Para las visualizaciones: "corrplot" y "ggplot2"
 
 ```{r}
+# Lista de paquetes necesarios
+paquetes <- c("dplyr", "haven", "rio", "ggplot2", "psych", "tidyr", "table1", "knitr", "kableExtra", "survey")
 
-# Paquetes necesarios
-if(!require(readxl)){install.packages("readxl")}; library(readxl) #Importar Archivos Excel
-if(!require(dplyr)){install.packages("dplyr")}; library(dplyr) # Manipulación
-if(!require(haven)){install.packages("haven")}; library(haven) # Importar archivos SPPS/STATA
-if(!require(rio)){install.packages("rio")}; library(rio) # Importar archivos desde GITHUB
-if(!require(corrplot)){install.packages("corrplot")}; library(corrplot) # Visualización
-if(!require(ggplot2)){install.packages("ggplot2")}; library(ggplot2) # Visualización
-if(!require(psych)){install.packages("psych")}; library(psych) # Descriptivo
-if(!require(tidyr)){install.packages("tidyr")}; library(tidyr) # Descriptivo
-if(!require(table1)){install.packages("table1")}; library(table1) # Descriptivo
-if(!require(knitr)){install.packages("knitr")}; library(knitr) # Descriptivo
-if(!require(kableExtra)){install.packages("kableExtra")}; library(kableExtra) # Descriptivo
-if(!require(survey)){install.packages("survey")}; library(survey) # Descriptivo
+# Función para instalar y cargar paquetes
+load_packages <- function(paquetes) {
+  paquetes_faltantes <- paquetes[!paquetes %in% installed.packages()]
+  if(length(paquetes_faltantes) > 0) install.packages(paquetes_faltantes)
+  invisible(lapply(paquetes, library, character.only = TRUE))
+}
+
+# Ejecutar la función de carga de paquetes
+load_packages(paquetes)
+
+
+# Borrado de objetos, data frames, vectores y otros elmentos del environment previos 
+# a la ejecuión de presente archivo.  
+
+rm(list = ls())
+
 ```
 
-```{r}
+```{r, warning=TRUE}
+# Aquí importamos la base desde github, 
+
 senda <-  import("https://raw.githubusercontent.com/nvacasgonzalez/proyecto_capstone_AA_NV/main/data/senda.xlsx")
+
 ```
 
 
@@ -111,61 +119,40 @@ senda <-  import("https://raw.githubusercontent.com/nvacasgonzalez/proyecto_caps
 
 A continuación se describe la serie de oporaciones realizadas para manipular nuestra base de datos final, es decir, la base ENPG 2022 original. 
 
-En primer lugar, se aplicó el factor de expasión especificado en la encuesta a la base de datos para poder trabajar con valores representativos a nivel nacional y regional 
+Se aplicó el factor de expasión especificado en la encuesta a la base de datos para poder trabajar con valores representativos a nivel nacional y regional 
 
-A continuación, se construyeron 2 variable de interés de tipo binario: 
+Se construyeron 2 variable de interés de tipo binario: 
 
 - oh_rec: que incluyen a personas que declaran consumo de alcohol en el último mes o hace menos de un mes y más de un año 
 
 - mar_rec: que contempla a personas que declaran consumo de marihuana en el últimos mes o hace menos de un mes pero menos de un año. 
 
-El resto de alternativas de las variables originales realtivas al consumo de alcohol y marihuana () fueron recodificadas como valores NA, junto a los valores 88 y 99. Este conjunto de valores fue extraido de las operaciones mediante la función ifelse.
+```{r, warning=TRUE}
+#Seleccionamos variables referentes al consumo de alcohol y marihuana, variables sociodemográficas y factores de expansión.
+# Además, generames dos varaibles nuevas sobre la prevalencia del consumo de Alcohol o marihuana
 
-```{r, warning=FALSE}
-# Base
+senda <- senda %>% 
+  select(FOLIO, OH_1, OH_4, MAR_1, MAR_4, EDAD, REGION, SEXO, DP_12, DP_16, OP_1_1_Rp, OP_1_2_Rp, OP_1_4_Rp, OP_2_2_Rp, OP_2_3_Rp, OP_2_5_Rp, CC_2, CC_3, PR_1_2_Rp, PR_1_3_Rp, PR_1_4_Rp, PR_1_5_Rp, FACTOR_EXPANSION, UPM) %>%
+  rename_with(tolower)
 
-senda <- senda %>%
-  rename_with(tolower) 
-
-
-senda_exp1 <- svydesign(ids = ~1, data = senda, weights = ~factor_expansion)
-senda_exp <- svydesign(id=~1, strata=~upm, weights = ~factor_expansion, data=senda)
-
-# Creación de variable de consumo
-#alcohol ano
-senda$oh_ano <- NA
-senda$oh_ano <- ifelse(
-  senda$oh_1 == 1,
-  ifelse(senda$oh_4 %in% c(1, 2), 1,
-         ifelse(senda$oh_4 %in% c(3, 88, 99), 0, NA)),
-  NA)
-# marihuana ano
-senda$mar_ano <- NA
-senda$mar_ano <- ifelse(
-  senda$mar_1 == 1,
-  ifelse(senda$mar_4 %in% c(1, 2), 1,
-         ifelse(senda$mar_4 %in% c(3, 88, 99), 0, NA)),
-  NA)
-
-senda <- senda %>%
-  mutate(consumo = case_when(
-    oh_ano == 1 & mar_ano == 1 ~ 1, # Personas que consumen alcohol y marihuana
-    oh_ano == 1 & mar_ano == 0 ~ 2, # Personas que consume solo alcohol 
-     oh_ano == 0 & mar_ano == 1 ~ 3, # Personas que consume solo marihuana
-  ))
-senda$consumo <- factor(senda$consumo, 
-                        levels = c("1", "2", "3"), 
-                        labels = c("Consume alcohol y marihuana", 
-                                   "Solo alcohol", 
-                                   "Solo marihuana"))
+#Variable Marihuana y 
+senda$mar_rec <- with(senda, ifelse(mar_4 %in% 1:2, 1, 0))
+senda <- senda[senda$mar_1 %in% c(1, 2), ]
+ponderador <- svydesign(ids = ~1, data = senda, weights = ~factor_expansion) # Va el ponderador por cambios en la base
+# Variable alcohol
+senda$oh_rec <- with(senda, ifelse(oh_4 %in% 1:2, 1, 0))
+senda <- senda[senda$oh_1 %in% c(1, 2), ]
+ponderador <- svydesign(ids = ~1, data = senda, weights = ~factor_expansion) # Va el ponderador por cambios en la base
 ```
 
 
+El resto de alternativas de las variables originales realtivas al consumo de alcohol y marihuana (Hace más de un año, No sabe -88-, No contesta -99- ) fueron recodificadas como valores NA. Este conjunto de valores fue extraido de las operaciones mediante la función ifelse.
 
-Adicionalmente, se recodificaron, y normalizaron algunasde las variables críticas que nos interesaba incluir en nuestro análisis: 
+
+Se recodificaron, y normalizaron algunas variables críticas adicionales que nos interesaba incluir en nuestro análisis: 
 
 
-Por último, se aplicaron técnicas de estandarización al conjunto de variables de interés utilizadas para la exploración de clusters mediante la aplicación de  el algoritmo de jerarquización aglomerativa. 
+Por último, se aplicaron técnicas de estandarización al conjunto de variables de interés utilizadas para la generación de clusters en base al algoritmo de jerarquización aglomerativa. 
 
 
 
@@ -196,31 +183,44 @@ Las variables seleccionadas para el presente proyecto se agupan en:
 
 
 
-
-
-# Datos descriptivos y Cruce de variables
+# Exploración y análisis descriptivo de variables de interés: 
 
 Nuestra variable de interés fue generada a apartir de personas que afirmaron haber consumido alguna vez en su vida alcohol y/o marihuana (oh_1 y mar_1). Apartir de esto, se creó una variable para identificar a quienes consumen solo alcohol, solo marihuana y quienes consumen de ambos durante el último año (oh_4 y mar_4).
 
 De esto, se identifica que el 64% de las personas consume solo alcohol, un 4% solo marihuana y un 32% consume alcohol y marihuana.
 
 ```{r}
-tabla_consumo <- senda %>%
-  filter(!is.na(consumo)) %>% # Excluir valores NA
-  count(consumo) %>% 
-  mutate(Porcentaje = round(n / sum(n) * 100, 1))
+# Generar la tabla ponderada para mar_rec
+mar_pond <- svytable(~mar_rec, design = ponderador)
+tabla_ponderada_mar <- as.data.frame(mar_pond) %>%
+  mutate(Porcentaje = round(Freq / sum(Freq) * 100, 1)) %>%
+  rename(Frecuencia = Freq) %>%
+  filter(mar_rec == 1) %>%  # Filtrar de consumidores
+  mutate(Consume = "Consume Marihuana")  # Título
 
-# Mostrar la tabla
-tabla_consumo %>%
+# Generar la tabla ponderada para oh_rec
+oh_pond <- svytable(~oh_rec, design = ponderador)
+tabla_ponderada_oh <- as.data.frame(oh_pond) %>%
+  mutate(Porcentaje = round(Freq / sum(Freq) * 100, 1)) %>%
+  rename(Frecuencia = Freq) %>%
+  filter(oh_rec == 1) %>%  # Filtro de consumidores 
+  mutate(Consume = "Consume Alcohol")  # Título 
+
+# Unir ambas tablas en una sola
+tabla_consumo_combinada <- bind_rows(tabla_ponderada_mar, tabla_ponderada_oh) %>%
+  select(Consume, Frecuencia, Porcentaje)  # Seleccionar y renombrar columnas
+
+# Mostrar la tabla combinada en HTML
+tabla_consumo_combinada %>%
   rename(
-    "Tipo de Consumo" = "consumo",  # Renombrar la columnas
-    "Número de observaciones" = "n", 
-    "Porcentaje" = "Porcentaje"
+    "Tipo de Consumo" = "Consume",  # Renombrar la columna 'Consume'
+    "Número de observaciones" = "Frecuencia",  # Renombrar la columna 'Frecuencia'
+    "Porcentaje" = "Porcentaje"  # Mantener 'Porcentaje' igual
   ) %>%
-  kable("html", caption = "Tabla de tipo de conusmo") %>%
+  kable("html", caption = "Tabla de tipo de consumo") %>% #Titulo de la tabla
   kable_styling("striped", full_width = F) %>%
-  kable_styling(font_size = 15) %>%
-  add_header_above(c(" " = 1, "Porcentajes" = ncol(tabla_consumo) - 1))  # Encabezado
+  kable_styling(font_size = 18) %>% # Tamaño de la letra
+  add_header_above(c(" " = 1, "Estadísticos" = ncol(tabla_consumo_combinada) - 1))
 ```
 
 A raíz de esto de analizaron variables sociodemograficas cruzadas sobre el tipo de consumo. Las variables sociodemográficas fueron sexo, edad, niveles de educación y tramos de ingreso. También otras variables como percepción de riesgo, accesibildiad y consumo en conducción.
@@ -230,31 +230,28 @@ A raíz de esto de analizaron variables sociodemograficas cruzadas sobre el tipo
 Los datos descriptivos de la base nos muestra que en promedio hay más mujeres que hombres y que sobre el tipo de consumo se identifica que: Sobre consumos de ambos alcohol y marihuana, los hombres consumen más que las mujeres (63% y 37% respectivamente). Sobre solo un tipo de consumo los valores se invierten, los hombres consumen en medida más solo alcohol, mientras que las mujeres consumen en medida solo marihuana.
 
 ```{r}
+# Tabla de Porcenajaje sexo
 tabla_porcentajes_sexo <- senda %>%
-  filter(!is.na(consumo) & !is.na(sexo)) %>% # Valores NA
-  mutate(sexo = recode(sexo, `1` = "Hombre", `2` = "Mujer")) %>% # Etiquetas de Var
-  group_by(sexo, consumo) %>%               # Agrupación por var
-  summarise(Frecuencia = n(), .groups = "drop") %>% # Frecuencia
-  group_by(consumo) %>%                        # Porcentaje
-  mutate(Porcentaje = round(Frecuencia / sum(Frecuencia) * 100, 1)) %>%
-  select(-Frecuencia) %>%                   # Eliminar la columna de Frecuencia
-  pivot_wider(names_from = consumo,         # Convertir "consumo" en columnas
-              values_from = Porcentaje,     # Usar solo la columna Porcentaje
-              names_glue = "Porcentaje_{consumo}") %>% 
-  ungroup()
+  filter(mar_rec == 1 | oh_rec == 1) %>%  # Filtrar valores 1 de mar_rec y oh_rec
+  mutate( Variable = case_when(
+      mar_rec == 1 ~ "Consume Marihuana",
+      oh_rec == 1 ~ "Consume Alcohol" ),
+    sexo = recode(sexo, `1` = "Hombre", `2` = "Mujer")) %>% 
+  group_by(sexo, Variable) %>%
+  summarise( Frecuencia = sum(factor_expansion),  # Sumar ponderaciones por grupo
+    .groups = "drop") %>%
+  mutate(
+    Porcentaje = round(Frecuencia / sum(Frecuencia) * 100, 1),  # Calcular porcentaje total
+    Porcentaje = paste0(Porcentaje, "%")) %>%  # Agregar el símbolo de porcentaje
+  select(Sexo = sexo, Variable, Porcentaje) %>%  # Renombrar columnas para claridad
+  pivot_wider(names_from = Sexo, values_from = Porcentaje)  # Convertir columnas por sexo
 
-# Mostrar la tabla
+# Visualización de la tabla en HTML
 tabla_porcentajes_sexo %>%
-  rename(
-    "Sexo" = "sexo",  # Renombrar la columnas
-    "Consume Alcohol y Marihuana" = "Porcentaje_Consume alcohol y marihuana", 
-    "Solo Alcohol" = "Porcentaje_Solo alcohol", 
-    "Solo Marihuana" = "Porcentaje_Solo marihuana"
-  ) %>%
-  kable("html", caption = "Tabla de Porcentajes por NSE y Consumo") %>%
+  rename("Tipo de Consumo" = "Variable") %>%
+  kable("html", caption = "Porcentaje de consumo por sexo") %>%
   kable_styling("striped", full_width = F) %>%
-  kable_styling(font_size = 15) %>%
-  add_header_above(c(" " = 1, "Porcentajes" = ncol(tabla_porcentajes_sexo) - 1))  # Encabezado
+  kable_styling(font_size = 15)
 ```
 
 ## Cruce de Edad con consumo
@@ -263,7 +260,8 @@ La variable de edad en pro de temas de análisis fue agrupada en Tramos de edad 
 
 En cuanto al tipo de consumo: Los tramos de edad que consumen más alcohol y marihuana son las personas de 26 a 34 años con un 37%, mientras quienes menos consumen ambos son personas de 12 a 18 años con un 4%. Esto tiene sentido debido a las leyes en Chile donde está prohibido que menores consuman algún tipo de droga. En cuanto a personas que consumen solo alcohol son las personas mayores de 45 a 65 años con un 34%, mientras que los tramos edad que consumen solo marihuana son las personas de 26 a 34 años con un 31%
 
-```{r}
+```{r, warning=FALSE}
+describe(senda$edad)
 senda <- senda %>%
   mutate(
     tramos_edad = case_when(
@@ -273,32 +271,20 @@ senda <- senda %>%
       edad >= 35 & edad <= 44 ~ "35 a 44 años",
       edad >= 45 & edad <= 65 ~ "45 a 65 años"
       ))
-
+# Tabla de porcentajes de Edad
 tabla_porcentajes_edad <- senda %>%
-  filter(!is.na(consumo) & !is.na(tramos_edad)) %>% # Valores NA
-  group_by(tramos_edad, consumo) %>%               # Agrupación por var
-  summarise(Frecuencia = n(), .groups = "drop") %>% # Frecuencia
-  group_by(consumo) %>%                        # Porcentaje
+  filter(mar_rec == 1 | oh_rec == 1) %>%  # Filtro de solo los valores 1 
+  mutate(Variable = case_when(
+    mar_rec == 1 ~ "Consume Marihuana",
+    oh_rec == 1 ~ "Consume Alcohol"
+  )) %>%
+  group_by(tramos_edad, Variable) %>% 
+  summarise(Frecuencia = sum(factor_expansion),  # Sumar ponderaciones por grupo
+            .groups = "drop") %>%
   mutate(Porcentaje = round(Frecuencia / sum(Frecuencia) * 100, 1)) %>%
-  select(-Frecuencia) %>%                   # Eliminar la columna de Frecuencia
-  pivot_wider(names_from = consumo,         # Convertir "consumo" en columnas
-              values_from = Porcentaje,     # Usar solo la columna Porcentaje
-              names_glue = "Porcentaje_{consumo}") %>% 
-  ungroup()
-
-
-# Mostrar la tabla
-tabla_porcentajes_edad %>%
-  rename(
-    "Tramos de edad" = "tramos_edad",  # Renombrar la columnas
-    "Consume Alcohol y Marihuana" = "Porcentaje_Consume alcohol y marihuana", 
-    "Solo Alcohol" = "Porcentaje_Solo alcohol", 
-    "Solo Marihuana" = "Porcentaje_Solo marihuana"
-  ) %>%
-  kable("html", caption = "Tabla de Porcentajes por Edad y Consumo") %>%
-  kable_styling("striped", full_width = F) %>%
-  kable_styling(font_size = 15) %>%
-  add_header_above(c(" " = 1, "Porcentajes" = ncol(tabla_porcentajes_edad) - 1))  # Encabezado
+  mutate(Porcentaje = paste0(Porcentaje, "%")) %>%  # Agregar el símbolo de porcentaje
+  select(-Frecuencia) %>%  # Eliminar la columna 'Frecuencia' si no es necesaria
+  pivot_wider(names_from = tramos_edad, values_from = Porcentaje)  # Convertir columnas
 
 ```
 
@@ -311,6 +297,7 @@ Estos resultados si bien pueden no ser tan representativos debido al número de 
 Las personas que consumen en mayor medida alcohol y marihuana son las personas con un nivel educacional media con un 35%, mientras quienes menos consumen ambos tipos son las personas sin educación con 0,1%. Sobre los grupos que consumen mayor alcohol son nuevamente personas con educación media con un 37%, y personas que consumen solo marihuana sigue la misma tendencia de educación con 39%.
 
 ```{r}
+# Recodificación de nivel educacional
 senda <- senda %>% 
   mutate(educ = case_when(
     dp_12 == 1 ~ "Sin educación", 
@@ -322,31 +309,41 @@ senda <- senda %>%
     dp_12 %in% 11:13 ~ "Postgrado" )) %>%
   arrange(desc(educ))
 
-tabla_porcentajes_educ <- senda %>%
-  filter(!is.na(consumo) & !is.na(educ)) %>% # Valores NA
-  group_by(educ, consumo) %>%               # Agrupación por var
-  summarise(Frecuencia = n(), .groups = "drop") %>% # Frecuencia
-  group_by(consumo) %>%                        # Porcentaje
-  mutate(Porcentaje = round(Frecuencia / sum(Frecuencia) * 100, 1)) %>%
-  select(-Frecuencia) %>%                   # Eliminar la columna de Frecuencia
-  pivot_wider(names_from = consumo,         # Convertir "consumo" en columnas
-              values_from = Porcentaje,     # Usar solo la columna Porcentaje
-              names_glue = "Porcentaje_{consumo}") %>% 
-  ungroup()
-
-# Mostrar la tabla
-tabla_porcentajes_educ %>%
-  rename(
-    "Nivel educacional" = "educ",  # Renombrar la columna 'nse' a 'NSE'
-    "Consume Alcohol y Marihuana" = "Porcentaje_Consume alcohol y marihuana", 
-    "Solo Alcohol" = "Porcentaje_Solo alcohol", 
-    "Solo Marihuana" = "Porcentaje_Solo marihuana"
+# Tabla de Porcentajes de Nivel educacional y asignación de valores para ordenar tabla
+tabla_porcentajes_educacion <- senda %>%
+  filter(mar_rec == 1 | oh_rec == 1) %>%  # Filtrar valores 1 de mar_rec y oh_rec
+  mutate(Variable = case_when(
+      mar_rec == 1 ~ "Consume Marihuana",
+      oh_rec == 1 ~ "Consume Alcohol"),
+    educ = recode(educ, 
+      `1` = "Sin educación",
+      `2` = "Sistema antiguo",
+      `3` = "Educación básica",
+      `4` = "Educación media",
+      `5` = "Técnico",
+      `6` = "Universitaria",
+      `7` = "Postgrado"),
+    educ = factor(educ, levels = c(
+      "Sin educación", "Sistema antiguo", "Educación básica",
+      "Educación media", "Técnico", "Universitaria", "Postgrado"
+    ))) %>%  # Orden personalizado
+  group_by(educ, Variable) %>%
+  filter(!is.na(educ)) %>%
+  summarise( Frecuencia = sum(factor_expansion),  # Sumar ponderaciones por grupo
+    .groups = "drop") %>%
+  mutate(
+    Porcentaje = round(Frecuencia / sum(Frecuencia) * 100, 1),  # Calcular porcentaje total
+    Porcentaje = paste0(Porcentaje, "%")  # Agregar el símbolo de porcentaje
   ) %>%
-  kable("html", caption = "Tabla de Porcentajes por NSE y Consumo") %>%
-  kable_styling("striped", full_width = F) %>%
-  kable_styling(font_size = 15) %>%
-  add_header_above(c(" " = 1, "Porcentajes" = ncol(tabla_porcentajes_educ) - 1))  # Encabezado
+  select(educ = educ, Variable, Porcentaje) %>%  # Renombrar columnas
+  pivot_wider(names_from = educ, values_from = Porcentaje)  # Convertir columnas por educación
 
+# Visualización en HTML
+tabla_porcentajes_educacion %>%
+  rename("Tipo de Consumo" = "Variable") %>%
+  kable("html", caption = "Porcentaje de consumo por nivel educativo") %>%
+  kable_styling("striped", full_width = F) %>%
+  kable_styling(font_size = 15)
 ```
 
 ## Cruce de Ingreso con consumo
@@ -356,42 +353,48 @@ Observando los datos según tramos de ingresos, estos fueron agrupados en nivel 
 Sobre los grupos socioeconomicos que consumen ambos tipos son en mayor medida las personas de nivel socioeconómico medio 45%, y que también son quienes más consumen solo alcohol 47%. Respecto al consumo de solo marihuana son las personas de nivel socioeconómico bajo quienes más consumen con un 49%.
 
 ```{r}
+# Recodificación tramo de ingresos
 senda <- senda %>% 
   mutate(nse = case_when(
     dp_16 %in% 1:5 ~ "Nivel socioeconomico Bajo", 
     dp_16 %in% 6:8 ~ "Nivel socioeconomico Medio",  
     dp_16 %in% 9:10 ~ "Nivel socioeconomico Alto"  
-  ))
-
+  )) 
+# Tabla porcentaje de Tramos de Ingresos
 tabla_porcentajes_nse <- senda %>%
-  filter(!is.na(consumo) & !is.na(nse)) %>% # Valores NA
-  group_by(nse, consumo) %>%               # Agrupación por var
-  summarise(Frecuencia = n(), .groups = "drop") %>% # Frecuencia
-  group_by(consumo) %>%                        # Porcentaje
+  filter(mar_rec == 1 | oh_rec == 1) %>% # Filtro de solo los valores 1 
+   filter(!is.na(nse)) %>%
+  mutate(Variable = case_when(
+    mar_rec == 1 ~ "Consume Marihuana",
+    oh_rec == 1 ~ "Consume Alcohol")) %>%  
+  mutate(nse = recode(nse, 
+                      `1` = "Nivel socioeconomico Bajo",
+                      `2` = "Nivel socioeconomico Medio", 
+                      `3` = "Nivel socioeconomico Alto")) %>%  # Recodificar nse
+  mutate(nse = factor(nse, levels = c("Nivel socioeconomico Bajo", 
+                                      "Nivel socioeconomico Medio", 
+                                      "Nivel socioeconomico Alto"))) %>%  # Orden personalizado de los niveles
+  group_by(nse, Variable) %>% 
+  summarise(Frecuencia = sum(factor_expansion),  # Sumar ponderaciones por grupo
+            .groups = "drop") %>%
   mutate(Porcentaje = round(Frecuencia / sum(Frecuencia) * 100, 1)) %>%
-  select(-Frecuencia) %>%                   # Eliminar la columna de Frecuencia
-  pivot_wider(names_from = consumo,         # Convertir "consumo" en columnas
-              values_from = Porcentaje,     # Usar solo la columna Porcentaje
-              names_glue = "Porcentaje_{consumo}") %>% 
-  ungroup() 
+  mutate(Porcentaje = paste0(Porcentaje, "%")) %>%  # Agregar el símbolo de porcentaje
+  select(-Frecuencia) %>%  # Eliminar la columna 'Frecuencia'
+  pivot_wider(names_from = nse, values_from = Porcentaje)  # Convertir columnas de 'nse'
 
+
+# Visualización de la tabla
 tabla_porcentajes_nse %>%
   rename(
-    "NSE" = "nse",  # Renombrar la columna 'nse' a 'NSE'
-    "Consume Alcohol y Marihuana" = "Porcentaje_Consume alcohol y marihuana", 
-    "Solo Alcohol" = "Porcentaje_Solo alcohol", 
-    "Solo Marihuana" = "Porcentaje_Solo marihuana"
+    "Tipo de Consumo" = "Variable"  # Renombrar la columna 'Variable'
   ) %>%
-  kable("html", caption = "Tabla de Porcentajes por NSE y Consumo") %>%
+  kable("html", caption = "Porcentaje de consumo por tipo y Nivel socioecónomico") %>%
   kable_styling("striped", full_width = F) %>%
-  kable_styling(font_size = 15) %>%
-  add_header_above(c(" " = 1, "Porcentajes" = ncol(tabla_porcentajes_nse) - 1))  # Encabezado
+  kable_styling(font_size = 15)
 
 ```
 
-```{r,warning=FALSE, message=FALSE, echo=FALSE}
-rm(list = setdiff(ls(), "senda"))
-```
+
 
 # Gráficos
 
@@ -404,42 +407,26 @@ En cuanto a la variable sexo, los hombres lideran el consumo en las tres categor
 Sin embargo, en la categoría de consumo exclusivo de alcohol, el consumo de mujeres (48,3%) y hombres (51,7%) se encuentra más cercano.
 
 ```{r}
-# Manipulación previa
-senda$consumo <- as.factor(senda$consumo)
-senda$sexo <- as.factor(senda$sexo)
-# Valores NA
-senda <- senda %>% filter(!is.na(consumo))
-senda <- senda %>% filter(!is.na(sexo))
+# Preparar los datos en formato largo
+tabla_porcentajes_sexo_long <- tabla_porcentajes_sexo %>%
+  pivot_longer(cols = c("Hombre", "Mujer"), 
+               names_to = "Sexo", 
+               values_to = "Porcentaje") %>%
+  mutate(Porcentaje = as.numeric(gsub("%", "", Porcentaje)))  # Convertir Porcentaje a numérico
 
-# Grafico Sexo
-senda_porcentaje_sexo <- senda %>%
-  filter(!is.na(sexo)) %>%
-  group_by(consumo, sexo) %>%
-  summarise(N = n(), .groups = "drop") %>%
-  group_by(consumo) %>%  
-  mutate(porcentaje = N / sum(N) * 100)  
 
-senda_porcentaje_sexo$sexo <- factor(senda_porcentaje_sexo$sexo, levels = c(1, 2), labels = c("Hombre", "Mujer"))
-
-# Gráfico N°1
-
-grafico_1 <- ggplot(senda_porcentaje_sexo, aes(x = consumo, y = porcentaje, fill = sexo)) +
+# Gráfico
+grafico_1 <- ggplot(tabla_porcentajes_sexo_long, aes(x = Variable, y = Porcentaje, fill = Sexo)) +
   geom_bar(stat = "identity", position = "dodge") +
   geom_text(
-    aes(label = paste0(round(porcentaje, 1), "%")),
+    aes(label = paste0(round(Porcentaje, 1), "%")),
     position = position_dodge(width = 0.9),
     vjust = -0.5
   ) +
-  scale_fill_manual(values = c("Hombre" = "lightblue",   
-                               "Mujer" = "purple")) +
-  labs(
-    title = "Consumo por Categorías según Sexo",
-    x = "Categoría de Consumo",
-    y = "Porcentaje",
-    fill = "Sexo"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  labs(title = "Porcentaje de Consumo por Sexo", x = "Tipo de Consumo", y = "Porcentaje") +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +  # Formato de porcentaje en el eje Y
+  scale_fill_manual(values = c("Hombre" = "lightblue", "Mujer" = "lightcoral")) +  # Colores personalizados
+  theme_classic()
 
 grafico_1
 
@@ -450,37 +437,30 @@ grafico_1
 Respecto al consumo de alcohol y marihuana en relación a los tramos etarios es posible realizar el segundo desglose según substancia: - Consumo simultaneo de alcohol y marihuana: la mayor prevalencia de este tipo de consumo se da en las personas con edades comprendidas entre 26 y 34 años (38,4%), seguidas de aquellas entre 19 y 25 años (25,1%) - Consumo exclusivo de alcohol: este tipo de consumo es más prevalente en personas entre los 45 y 65 años (34,2%) - Consumo exclusivo de marihuana: si bien los porcentajes de prevalencia de este tipo de consumo por cohorte etaria no son tan dispares, el grupo etario que muestra mayor consumo exclusivo de marihuana es el conformado por personas entre 35 y 44 años (28,2%). Junto a lo anterior, llama particularmente la atención la prevalencia del consumo de marihuana en menores de edad (9,9% del total de la composición etaria de este grupo de personas consumidoras)
 
 ```{r}
-# Gráfico N°2
-senda_porcentaje_edad <- senda %>%
-  filter(!is.na(tramos_edad)) %>% 
-  group_by(consumo, tramos_edad) %>%
-  summarise(N = n(), .groups = "drop") %>%
-  group_by(consumo) %>%  
-  mutate(porcentaje = N / sum(N) * 100)  
+# Preparar los datos en formato largo
+tabla_porcentajes_edad_long <- tabla_porcentajes_edad %>%
+  pivot_longer(cols = c("12 a 18 años", "19 a 25 años", "26 a 34 años", "35 a 44 años", "45 a 65 años"), 
+               names_to = "TramosEdad", 
+               values_to = "Porcentaje") %>%
+  mutate(Porcentaje = as.numeric(gsub("%", "", Porcentaje)))  # Convertir Porcentaje a numérico
 
-
-grafico_2 <- ggplot(senda_porcentaje_edad, aes(x = consumo, y = porcentaje, fill = tramos_edad)) +
+# Gráfico
+grafico_2 <- ggplot(tabla_porcentajes_edad_long, aes(x = Variable, y = Porcentaje, fill = TramosEdad)) +
   geom_bar(stat = "identity", position = "dodge") +
   geom_text(
-    aes(label = paste0(round(porcentaje, 1), "%")),
+    aes(label = paste0(round(Porcentaje, 1), "%")),
     position = position_dodge(width = 0.9),
     vjust = -0.5
   ) +
-  scale_fill_manual(values = c("12 a 18 años" = "lightblue",  
-                               "19 a 25 años" = "orange", 
-                               "26 a 34 años" = "yellow", 
-                               "35 a 44 años" = "green", 
-                               "45 a 65 años" = "purple")) +
-  labs(
-    title = "Consumo por Categorías según Tramos de Edad",
-    x = "Categoría de Consumo",
-    y = "Porcentaje",
-    fill = "Tramos de Edad"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  labs(title = "Porcentaje de Consumo por Tramos de Edad", x = "Tipo de Consumo", y = "Porcentaje") +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +  # Formato de porcentaje en el eje Y
+  scale_fill_manual(values = c("12 a 18 años" = "lightblue", "19 a 25 años" = "lightgreen", 
+                               "26 a 34 años" = "lightcoral", "35 a 44 años" = "lightskyblue", 
+                               "45 a 65 años" = "lightgoldenrodyellow")) +  # Colores personalizados
+  theme_classic()
 
 grafico_2
+
 ```
 
 ## Gráfico de Ingreso
@@ -488,42 +468,35 @@ grafico_2
 Por último, en relación a la frecuencia relativa de consumo de alcohol y/o marihuana según nivel socioeconómico, caben destacar los siguientes hallazgos. (1) La personas que pertenecen al nivel socioeconómico medio y bajo poseen prevalencias de consumo simultaneo similares, con un 43,9% y un 42,1% respectivamente. (2) En el consumo exclusivo de alcohol predomina el grupo socioeconómico medio (46,9%), mientras que cuando se trata de consumo exclusivo de marihuana la mayor frecuencia se da en el nivel socioeconómico más bajo (49,2%).
 
 ```{r}
-# Calcular porcentajes por consumo y nivel socioeconómico, pero sobre el total de consumo
-senda_porcentaje_nse <- senda %>%
-  filter(!is.na(nse)) %>%  # Eliminar filas donde nse es NA
-  group_by(consumo, nse) %>%
-  summarise(N = n(), .groups = "drop") %>%
-  group_by(consumo) %>%  # Agrupar por consumo para calcular el porcentaje sobre cada consumo
-  mutate(porcentaje = N / sum(N) * 100)  # Calcular el porcentaje sobre el total de cada consumo
+# Preparar los datos en formato largo
+tabla_porcentajes_nse_long <- tabla_porcentajes_nse %>%
+  pivot_longer(cols = c("Nivel socioeconomico Bajo", "Nivel socioeconomico Medio", "Nivel socioeconomico Alto"), 
+               names_to = "NivelSocioeconomico", 
+               values_to = "Porcentaje") %>%
+  mutate(Porcentaje = as.numeric(gsub("%", "", Porcentaje)))  # Convertir Porcentaje a numérico
 
 # Gráfico
-grafico_3 <- ggplot(senda_porcentaje_nse, aes(x = consumo, y = porcentaje, fill = nse)) +
+grafico_3 <- ggplot(tabla_porcentajes_nse_long, aes(x = Variable, y = Porcentaje, fill = NivelSocioeconomico)) +
   geom_bar(stat = "identity", position = "dodge") +
   geom_text(
-    aes(label = paste0(round(porcentaje, 1), "%")),
+    aes(label = paste0(round(Porcentaje, 1), "%")),
     position = position_dodge(width = 0.9),
     vjust = -0.5
   ) +
+  labs(title = "Porcentaje de Consumo por Nivel Socioeconómico", x = "Tipo de Consumo", y = "Porcentaje") +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +  # Formato de porcentaje en el eje Y
   scale_fill_manual(values = c("Nivel socioeconomico Bajo" = "lightblue", 
-                               "Nivel socioeconomico Medio" = "orange", 
-                               "Nivel socioeconomico Alto" = "green")) +  # Colores personalizados
-  labs(
-    title = "Consumo por Categorías según Nivel Socioeconómico",
-    x = "Categoría de Consumo",
-    y = "Porcentaje",
-    fill = "Nivel Socioeconómico"
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+                               "Nivel socioeconomico Medio" = "lightgreen", 
+                               "Nivel socioeconomico Alto" = "lightcoral")) +  # Colores personalizados
+  theme_classic()
 
 grafico_3
+
+
 ```
 
-```{r,warning=FALSE, message=FALSE, echo=FALSE}
-rm(list = setdiff(ls(), "senda"))
-```
 
-# Preparación de variables para modelo de Machine Learning
+# Prepación de variables para modelo de Machine Learning
 
 Otras variables de interés para generar posibles clusters son: Percepción de riesgo, accesibilidad y conducción y tratamiento. Estas variables fueron seleccionadas solo las que hacen referencia sea a alcohol o marihuana, ya que existen otras categorías sobre otros tipos de droga.
 
@@ -533,10 +506,8 @@ Las variables fueron recodificadas de variables categoricas a variables binarias
 
 Dentro de estas variables se encuentra la percepción de riesgo de consumir ciertos tipos de drogas o la frecuencia de consumo de estos. Para esta variable se transformo de una variable categorica (4 categorías) a una variabla binaria (2 categorías), donde los valores 1,2,3 fueron catalogados como "Ningún o algo de riesgo", mientras que el valor 4 fue catalago como "Gran riesgo". A partir de esto se identificaron las principales hábitos que pueden tener un gran riesgo de alcohol y marihuana.
 
-Donde consumir más de 5 tragos diarios un 88% cree que es gran riesgo, seguido con consumir marihuana frecuentemente con un 52%. Mientras que tomar tres o más tragos por ocasión un 36% cree que tiene alto riesgo, mientras que consumir marihuana de forma experimental es el menor caso que las personas identifican con alto riesgo con un 21%.
-
 ```{r}
-# Datos de percepción
+# Recodificación de variables de Percepción
   senda <- senda %>%
     mutate(across(starts_with("pr"), ~ case_when(
       . %in% c(1,2,3) ~ 0,  # Valores 1 ningun riesgo se mantiene pero como 0
@@ -546,64 +517,50 @@ Donde consumir más de 5 tragos diarios un 88% cree que es gran riesgo, seguido 
     mutate(across(starts_with("pr"), ~ factor(., 
                                               levels = c(0, 1),
                                               labels = c("Ningún o algo de riesgo", "Gran riesgo"))))
+# Definir las etiquetas
+etiquetas_preguntas <- c(
+  "pr_1_2_rp" = "Tomar más de 3 tragos ocasional",
+  "pr_1_3_rp" = "Tomar más de 5 tragos diarios",
+  "pr_1_4_rp" = "Marihuana de forma experimental",
+  "pr_1_5_rp" = "Fumar marihuana frecuentemente")
 
-# Filtrar las columnas "pr" con valor "Gran riesgo"
-tabla_pr_gran_riesgo <- senda %>%
-  select(starts_with("pr")) %>%
-  summarise(across(everything(), ~ round(mean(. == "Gran riesgo", na.rm = TRUE) * 100, 1))) %>%
+# Crear la tabla con factor de expansión y etiquetas
+tabla_pr_gran_riesgo_expansion <- senda %>%
+  select(starts_with("pr"), factor_expansion) %>%  # Seleccionar las columnas que empiezan con "pr" y el factor de expansión
+  summarise(across(starts_with("pr"), 
+  ~ round(sum((. == "Gran riesgo") * factor_expansion, na.rm = TRUE) / sum(factor_expansion, na.rm = TRUE) * 100, 1))) %>%  #  factor de expansión
   pivot_longer(
     cols = everything(),
     names_to = "Pregunta",
     values_to = "Porcentaje_Gran_Riesgo"
   ) %>%
-   arrange(desc(Porcentaje_Gran_Riesgo)) 
+  mutate(Pregunta = recode(Pregunta, !!!etiquetas_preguntas)) %>%  # Aplicar etiquetas
+  arrange(desc(Porcentaje_Gran_Riesgo))  # Ordenar en orden descendente
 
-etiquetas_preguntas <- c(
-  "pr_1_2_rp" = "Tomar más de 3 tragos ocasional",
-  "pr_1_3_rp" = "Tomar más de 5 tragos diarios",
-  "pr_1_4_rp" = "Marihuana de forma experimental",
-  "pr_1_5_rp" = "Fumar marihuana frecuentemente"
-  # Agregar más etiquetas según corresponda
-)
-
-# Reemplazar las etiquetas en la tabla
-tabla_pr_gran_riesgo <- tabla_pr_gran_riesgo %>%
-  mutate(Pregunta = recode(Pregunta, !!!etiquetas_preguntas))
-
-# Crear tabla HTML con etiquetas actualizadas
-tabla_pr_gran_riesgo %>%
+# Percepción a tabla HTML
+tabla_pr_gran_riesgo_expansion %>%
   rename(
     "Percepción de riesgo" ="Pregunta",
     "Gran riesgo" = "Porcentaje_Gran_Riesgo" ) %>%
   kable("html", caption = "Porcentaje de Gran Riesgo por Pregunta") %>%
   kable_styling("striped", full_width = F) %>%
   kable_styling(font_size = 15)
-
 ```
 
 ## Opinión Pública
 
 A los encuestados se le realizaron sobre su nivel de acuerdo en temas de consumo, legalización y penalización de drogas. Para esta variable también fue recodificada de forma binaria para facilitar su análisis. Donde los valores 3 y 4 fueron dejados como No estoy de acuerdo, mientras que valores 1 y 2 fueron catalogados como Estoy de acuerdo. Es esta tabla se presentan donde hay mayores niveles de acuerdo según diversos temas:
 
-Por ejemplo un 95% de los encuestados está de de acuerdo con que la marihuana pueda ser usada con fines terapeuticos. Pero también un gran porcentaje (88%) está de acuerdo con que las drogas han hecho más violentos a los jóvenes, siguiendo en tendencia con el 77% que cree que el tráfico de drogas y el consumo son el principal responasble de la delincuencia en el país. Si bien en estas preguntas se contempla todo el abanico de drogas es interesante observar como si bien se aceptan ciertas conductas también se recrimina el uso ilegalizado que fomenta la violencia y delincuencia.
-
-Por tanto, existe una mayor concenso que hay drogas principalmente dañinas, no así tanto el uso de marihuana. Donde si bien un 82% está de acuerdo que gran mayoría de los jóvenes consume marihuana (82%), están de acuerdo que debería ser legal para mayores de edad (69%) y que además produce menos daño que el alcohol (62%).
-
-Asímismo, existe un menor consenso sobre la penalización de la marihuana a diferencia de otras drogas. Un 49% Está de acuerdo con que se le de la misma pena a quienes trafican marihuana con personas que trafican cocaína o pasta base. Mientras que el 38% está de acuerdo en penalizar el porte y consumo de marihuana aunque sea en pequeñas cantidades.
-
 ```{r}
-# Datos de opinión pública
-
+# Recodificación de Var de opinión
 senda <- senda %>%
   mutate(across(starts_with("op"), ~ case_when(
     . %in% c(1, 2) ~ 1,      # Valores 1 y 2 se recodifican como 1
     . %in% c(3, 4) ~ 0,      # Valores 3 y 4 se recodifican como 0
-    TRUE ~ NA_real_   
-  ))) %>%
+    TRUE ~ NA_real_   ))) %>% 
   mutate(across(starts_with("op"), ~ factor(., 
                                             levels = c(1, 0),
                                             labels = c("Estoy de acuerdo", "No estoy de acuerdo"))))
-
 # Selección de Alcohol y Marihuana, y otros
 tabla_op_opinion <- senda %>%
   select(op_1_1_rp, op_1_2_rp, op_1_4_rp, op_2_2_rp, op_2_3_rp, op_2_5_rp ) %>%
@@ -614,6 +571,7 @@ tabla_op_opinion <- senda %>%
     values_to = "Porcentaje_Acuerdo") %>%
   arrange(desc(Porcentaje_Acuerdo)) 
 
+# Eiquetas
 etiquetas_preguntas_op <- c(
   "op_1_1_rp" = "La mayoría de jóvenes consume Marihuana",
   "op_1_2_rp" = "La Marihuana produce menos daño que el Alcohol",
@@ -622,19 +580,25 @@ etiquetas_preguntas_op <- c(
   "op_2_3_rp" = "Permitir el uso de Marihuana para fines terapéuticos",
   "op_2_5_rp" = "Penalizar el porte y consumo de marihuana aunque sea en pequeñas cantidades y para uso personal")
 
-# Borrar quizás la penalización de mar 
-
-# Reemplazar las etiquetas en la tabla
-tabla_op_opinion <- tabla_op_opinion %>%
-  mutate(Pregunta = recode(Pregunta, !!!etiquetas_preguntas_op))
-
-# Crear tabla HTML con etiquetas
-tabla_op_opinion %>%
-  rename(
-    "Pregunta" = "Pregunta",
-    "Porcentaje de Acuerdo" = "Porcentaje_Acuerdo"
+# Crear la tabla con factor de expansión y etiquetas
+tabla_op_opinion_exp <- senda %>%
+  select(starts_with("op"), factor_expansion) %>%  # Seleccionar las columnas que empiezan con "pr" y el factor de expansión
+  summarise(across(starts_with("op"), 
+  ~ round(sum((. == "Estoy de acuerdo") * factor_expansion, na.rm = TRUE) / sum(factor_expansion, na.rm = TRUE) * 100, 1))) %>%  #  factor de expansión
+  pivot_longer(
+    cols = everything(),
+    names_to = "Pregunta",
+    values_to = "Porcentaje_de_acuerdo"
   ) %>%
-  kable("html", caption = "Porcentaje de Acuerdo por Pregunta") %>%
+  mutate(Pregunta = recode(Pregunta, !!!etiquetas_preguntas_op)) %>%  # Aplicar etiquetas
+  arrange(desc(Porcentaje_de_acuerdo))  # Ordenar en orden descendente
+
+# Percepción a tabla HTML
+tabla_op_opinion_exp %>%
+  rename(
+    "Frase" ="Pregunta",
+    "Estoy de acuerdo" = "Porcentaje_de_acuerdo" ) %>%
+  kable("html", caption = "Porcentaje de Nivel de Acuerdo por Pregunta") %>%
   kable_styling("striped", full_width = F) %>%
   kable_styling(font_size = 15)
 
@@ -642,7 +606,6 @@ tabla_op_opinion %>%
 
 ## Conducción y tratamiento
 
-En cuanto al consumo de Alcohol y Marihuana y si han manejado bajo alguno de estos efectos. Un 21% de los encuestados afirma haber manejado después de beber alcohol, independiente de la cantidad consumida. Por otro lado, un 10% afirma haber manejado después de consumir marihuana.
 
 ```{r}
 # Datos de conducción
@@ -650,6 +613,7 @@ senda <- senda %>%
   mutate(across(starts_with("cc"), ~ factor(.,
                                             levels =c(1,2),
                                             labels = c("Sí", "No"))))
+
 # Tabla
 tabla_cc_conduccion <- senda %>%
   select(starts_with("cc")) %>%
@@ -657,8 +621,7 @@ tabla_cc_conduccion <- senda %>%
   pivot_longer(
     cols = everything(),
     names_to = "Pregunta",
-    values_to = "Porcentaje_Conduce"
-  ) %>%
+    values_to = "Porcentaje_Conduce" ) %>%
   arrange(desc(Porcentaje_Conduce))
 
 # Etiquetas
@@ -666,33 +629,33 @@ etiquetas_preguntas_cc <- c(
   "cc_2" = "Ha manejado despúes de beber Alcohol",
   "cc_3" = "Ha manejado después de fumar Marihuana")
 
-# Reemplazar las etiquetas en la tabla
-tabla_cc_conduccion <- tabla_cc_conduccion %>%
-  mutate(Pregunta = recode(Pregunta, !!!etiquetas_preguntas_cc))
-
-# Crear tabla HTML con etiquetas
-tabla_cc_conduccion %>%
-  rename(
-    "Pregunta" = "Pregunta",
-    "Porcentaje de Sí" = "Porcentaje_Conduce"
+# Crear la tabla con factor de expansión y etiquetas
+tabla_cc_conduccion_exp <- senda %>%
+  select(starts_with("cc"), factor_expansion) %>%  # Seleccionar las columnas que empiezan con "pr" y el factor de expansión
+  summarise(across(starts_with("cc"), 
+  ~ round(sum((. == "Sí") * factor_expansion, na.rm = TRUE) / sum(factor_expansion, na.rm = TRUE) * 100, 1))) %>%  #  factor de expansión
+  pivot_longer(
+    cols = everything(),
+    names_to = "Pregunta",
+    values_to = "Porcentaje_de_sí"
   ) %>%
-  kable("html", caption = "Porcentaje conducción") %>%
+  mutate(Pregunta = recode(Pregunta, !!!etiquetas_preguntas_cc)) %>%  # Aplicar etiquetas
+  arrange(desc(Porcentaje_de_sí))  # Ordenar en orden descendente
+
+# Percepción a tabla HTML
+tabla_cc_conduccion_exp %>%
+  rename(
+    "Ha conducido" = "Pregunta",
+    "Sí lo he hecho" = "Porcentaje_de_sí"
+  ) %>%
+  kable("html", caption = "Porcentaje Sí ha manejado bajo efectos de") %>%
   kable_styling("striped", full_width = F) %>%
-  kable_styling(font_size = 15)
+  kable_styling(font_size = 15)  # Cerrar correctamente el paréntesis aquí
 
+
+                
 ```
 
-```{r}
-# Region
-table(senda$region)
-
-
-
-
-
-
-
-```
 
 # Modelo de Machine Learning
 
