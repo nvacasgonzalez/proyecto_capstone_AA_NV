@@ -34,21 +34,22 @@ execute:
 
 <img src="logo.png" style="width: 250px; position:absolute; top:0; left:0; padding:10px;"/>
 
-# Antecedentes contextuales:
+# Relevancia del caso de estudio:
 
-El alcohol y la marihuna son dos de las drogas más consumidas a nivel nacional y regional, en Chile.
+El consumo extendido de susbtancias psicoactivas, tales como el alcohol y la marihuna, constituye un problema de salud pública con consecuencias tanto en el sistema asistencial, como en la productividad a lo largo de la vida, el entorno social y familiar y la salud de las personas usuarias de este tipo de substancias [@Altamirano2024]
 
-En el último Estudio Nacional de Dogras en Población General (ENPG) en Chile, la prevalencia del consumo de alcohol en el último año alcanza un 53,6%. Mientras que la proporción de personas usuarias de marihuna en el último año es del 10,9% [@SENDA2024].
+El informe "El Consumo de Alcohol en Chile: Situación Epidemiológica" [@SENDA2024] destaca el consumo de alcohol como principal factor de riesgo que causa muerte y discapacidad en Chile, representando el 12,4% de los años de vida saludables perdidos por muerte o discapacidad (AVISA). Junto a lo anterior, también se señala la dependencia del alcohol como una de las cuatro principales enfermedades que generan carga de enfermedad en el país, explicando un 7,7% de los AVISA perdidos.
 
-Así mismo, en la ENPG 2022 se destacan dos aspectos funamentales:
+Adicionalmente, en el informe "Marihuana" [@SENDA2020marihuana] se destaca que Alrededor del 9% de los consumidores adultos desarrollan adicción a la marihuana. Este porcentaje aumenta al 17% si el consumo comienza en la adolescencia y al 25-50% en consumidores diarios. Además de los efectos adictivos, SENDA señala los efectos sobre la salud respiratoria, el incremento del riesgo de psicosis y el deficit cognitivo (particularmente en adolescentes), el desempeño académico y laboral, en términos de ausentismo y menor productividad y los riesgos cariovasculares.
 
--   La tendencia a la baja en la prevalencia del consumo de alcohol (-4,9%) y del consumo de marihuna (-0,5%) en el último año, respecto a 2020.
+En función de estos antecedentes, se vuelve relevante trazar una estrategia para la identificación de patrones latentes de consumo, percepción de riego y acceso, en personas usuarias de alcohol y marihuana en miras a:
 
--   La tendencia al alza en la percepción de riesgo asociada al uso de alcohol y marihuna (entre otras substancias).
-
-Teniendo en cuenta este escenario general, el presente proyecto se enfoca en las personas que declaran haber consumido alcohol y/o marihuna en el último año y en su percepción de riesgo y acceso a ambas substancias.
+1.  Diseñar políticas y estrategias de intervención más específicas y efectivas para la población consumidora.
+2.  Priorizar recursos hacia grupos de mayor riesgo.
+3.  Promover una comprensión más matizada del consumo de estas substancias psicoactivas.
 
 A continuación, se presenta el objetivo general y los objetivos específicos del caso.
+
 
 # Objetivo:
 
@@ -62,43 +63,29 @@ Identificar patrones latentes de consumo, percepción de riego, opinión públic
 
 -   Identificar variables relevantes para la elaboración de grupos o perfiles de personas que declaran haber consumido alcohol y/ o marihuana en el último año a través de la extracción de características, aplicando el análisis de componentes principales (PCA)
 
--   Contrastar el desempeño de distintos algoritmos de clustering (particional y jerárquico aglomerativo) con respecto a su capacidad de generar grupos o perfiles bien definidos de personas que declaran haber consumido alcohol y/o marihuana en el último año.
+-   Explorar las agrupaciones producto de la aplicación de de algoritmo de clustering jerarquico aglomerativo. 
 
-# Relevancia del caso de estudio:
 
-El consumo extendido de susbtancias psicoactivas, tales como el alcohol y la marihuna, constituye un problema de salud pública con consecuencias tanto en el sistema asistencial, como en la productividad a lo largo de la vida, el entorno social y familiar y la salud de las personas usuarias de este tipo de substancias [@Altamirano2024]
+# Componentes clave de la arquitectura de datos de la propuesta: 
 
-El informe "El Consumo de Alcohol en Chile: Situación Epidemiológica" [@SENDA2024] destaca el consumo de alcohol como principal factor de riesgo que causa muerte y discapacidad en Chile, representando el 12,4% de los años de vida saludables perdidos por muerte o discapacidad (AVISA). Junto a lo anterior, también se señala la dependencia del alcohol como una de las cuatro principales enfermedades que generan carga de enfermedad en el país, explicando un 7,7% de los AVISA perdidos.
+El presente proyecto se rige bajo el modelo ETL (Extract, Transform, Load) para el proceso de integración y gestión de datos y, particularmente, en la creación de Data Warehouses o sistema de análisis de datos. A continuación desglosaremos cada una de las etapas que lo componen:
 
-Adicionalmente, el informe "Marihuana" [@SENDA2020marihuana] donde se destaca que Alrededor del 9% de los consumidores adultos desarrollan adicción a la marihuana. Este porcentaje aumenta al 17% si el consumo comienza en la adolescencia y al 25-50% en consumidores diarios. Además de los efectos adictivos, SENDA señala los efectos sobre la salud respiratoria, el incremento del riesgo de psicosis y el deficit cognitivo (particularmente en adolescentes), el desempeño académico y laboral, en términos de ausentismo y menor productividad y los riesgos cariovasculares.
+## Extracción: 
 
-En función de estos antecedentes, se vuelve relevante trazar una estrategia para la identificación de patrones latentes de consumo, percepción de riego y acceso, en personas usuarias de alcohol y marihuana en miras a:
 
-1.  Diseñar políticas y estrategias de intervención más específicas y efectivas para la población consumidora.
-2.  Priorizar recursos hacia grupos de mayor riesgo.
-3.  Promover una comprensión más matizada del consumo de estas substancias psicoactivas.
-
-# Selección de bases de datos y variables de trabajo:
-
-Inicialmente, se trabajó con un conjunto de bases de datos procedentes del Estudio Nacional de Drogas en Población General (ENPG 2022). No obstante, habiendo trabajado el objetivo de unión de bases de datos mediante la fundión fulljoint, se constató la perdida de un número de casos relevantes que respondían a la categoría consumo de marihuna, dentro de la variable consumo en el último año. Por ello se decidió trabajar con la base original del ENPG 2022.
+Inicialmente, se trabajó con un conjunto de bases de datos dumy procedentes del Estudio Nacional de Drogas en Población General (ENPG 2022). Posteriormente, habiendo trabajado el objetivo de unión de bases de datos mediante la fundión fulljoint, se constató la perdida de un número relevante de casos. Particularmente, aquello que respondían a la categoría consumo de marihuna en el último año. Junto a lo anterior, ampliamos la exploración de variables de interés. Por esta razones, se decidió trabajar con la base original del ENPG 2022.
 
 Esta base se encuentra disponible en: <https://www.senda.gob.cl/senda-presenta-principales-resultados-del-15-estudio-de-drogas-en-poblacion-general/>
 
-Las variables seleccionadas para el presente proyecto se agupan en:
+Para la importación y exploración inicial de las bases de datos dummy y la ENPG 2022 original utilizamos los paquetes"readxl", "haven" y "rio". 
 
-1.  Variables de consumo de alcohol y marihuna:
+Junto a estos paquetes instalamos: 
+- Para la manipulación: "dplyr"
+- Para la elaboración de los estadísticos descriptivos: "psych", "tidyr", "table1","knitr", "kableExtra" y "survey"
+- Para las visualizaciones: "corrplot" y "ggplot2"
 
-    -   consumo del alcohol durante los últimos 30 días y consumo de alcohol hace más de un mes pero menos de un año.
+```{r}
 
-    -   consumo de marihuana durante los últimos 30 días y consumo de marihuana hace más de un mes pero menos de un año.
-
-2.  Variables socio demográficas: edad, género, nivel socioeconómico y nivel educacional.
-
-3.  Variables de percepción de riesgo relacionadas al consumo de marihuana y/o alcohol.
-
-4.  Variables relacionadas a factores contextuales: consumo de drogas en el hogar ; dificultad en el acceso a la marihuana.
-
-```{r, warning=FALSE, message=FALSE}
 # Paquetes necesarios
 if(!require(readxl)){install.packages("readxl")}; library(readxl) #Importar Archivos Excel
 if(!require(dplyr)){install.packages("dplyr")}; library(dplyr) # Manipulación
@@ -114,15 +101,29 @@ if(!require(kableExtra)){install.packages("kableExtra")}; library(kableExtra) # 
 if(!require(survey)){install.packages("survey")}; library(survey) # Descriptivo
 ```
 
-# Manipulación de la base SENDA
+```{r}
+senda <-  import("https://raw.githubusercontent.com/nvacasgonzalez/proyecto_capstone_AA_NV/main/data/senda.xlsx")
+```
 
-Inicialmente utilizamos los archivos de SENDA de una selección previa, una selección sobre datos y opinión pública. Por temas de análisis y en función de la metadología, utilizaremos la base completa para tener la selección completa de variables de la encuesta. Esta selección se realizó de manera anexa y por motivos de espacio en nuestro repositario fue subida la base ya seleccionada.
 
-La base de datos fue manipulada para dejar los valores perdidos, valores NS/NR como NA en facilidad de los posteriores análisis. También se generaron variables de interés para identificar patrones de consumo en la muestra. Además, se seleccionaron tipos de consumo en especificos de Alcohol, Marihuana y variables sociodemograficas.
+
+## Transformación: 
+
+A continuación se describe la serie de oporaciones realizadas para manipular nuestra base de datos final, es decir, la base ENPG 2022 original. 
+
+En primer lugar, se aplicó el factor de expasión especificado en la encuesta a la base de datos para poder trabajar con valores representativos a nivel nacional y regional 
+
+A continuación, se construyeron 2 variable de interés de tipo binario: 
+
+- oh_rec: que incluyen a personas que declaran consumo de alcohol en el último mes o hace menos de un mes y más de un año 
+
+- mar_rec: que contempla a personas que declaran consumo de marihuana en el últimos mes o hace menos de un mes pero menos de un año. 
+
+El resto de alternativas de las variables originales realtivas al consumo de alcohol y marihuana () fueron recodificadas como valores NA, junto a los valores 88 y 99. Este conjunto de valores fue extraido de las operaciones mediante la función ifelse.
 
 ```{r, warning=FALSE}
 # Base
-senda <-  import("https://raw.githubusercontent.com/nvacasgonzalez/proyecto_capstone_AA_NV/main/data/senda.xlsx")
+
 senda <- senda %>%
   rename_with(tolower) 
 
@@ -158,6 +159,44 @@ senda$consumo <- factor(senda$consumo,
                                    "Solo alcohol", 
                                    "Solo marihuana"))
 ```
+
+
+
+Adicionalmente, se recodificaron, y normalizaron algunasde las variables críticas que nos interesaba incluir en nuestro análisis: 
+
+
+Por último, se aplicaron técnicas de estandarización al conjunto de variables de interés utilizadas para la exploración de clusters mediante la aplicación de  el algoritmo de jerarquización aglomerativa. 
+
+
+
+## Carga: 
+
+Nuestro Back Room o ambiente de trabajo donde se realizan todas las transformaciones, integraciones y armonizaciones de los datos es el presente repositorio de Github. Especificamente, nuestra carpeta data donde se enncuentra las base de datos ENPG 2022 original y las bases dumy. 
+
+En el caso de el Front Room o ambiente donde se comparten y publican los datos transformados y optimizados para consulta y análisis se ha generado la presente HTML producida en Github para la publicación de resultados.
+
+
+# Modelo entidad - relación y modelo lógico conceptual. 
+
+
+Las variables seleccionadas para el presente proyecto se agupan en:
+
+1.  Variables de consumo de alcohol y marihuna:
+
+    -   consumo del alcohol durante los últimos 30 días y consumo de alcohol hace más de un mes pero menos de un año.
+
+    -   consumo de marihuana durante los últimos 30 días y consumo de marihuana hace más de un mes pero menos de un año.
+
+2.  Variables socio demográficas: edad, género, nivel socioeconómico y nivel educacional.
+
+3.  Variables de percepción de riesgo relacionadas al consumo de marihuana y/o alcohol.
+
+4.  Variables relacionadas a factores contextuales: consumo de drogas en el hogar ; dificultad en el acceso a la marihuana.
+
+
+
+
+
 
 # Datos descriptivos y Cruce de variables
 
