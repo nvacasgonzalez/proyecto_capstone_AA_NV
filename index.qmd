@@ -52,16 +52,17 @@ A continuación, se presenta el objetivo general y los objetivos específicos de
 
 # Objetivo:
 
-## Objetivo General: 
-Identificar patrones latentes de consumo, percepción de riego, opinión pública y conductas de riesgo en la conducción en personas que declaran haber consumido alcohol y marihuna en el último año usando datos del Estudio Nacional de Drogas en Población General de Chile 2022. 
+## Objetivo General:
+
+Identificar patrones latentes de consumo, percepción de riego, opinión pública y conductas de riesgo en la conducción en personas que declaran haber consumido alcohol y marihuna en el último año usando datos del Estudio Nacional de Drogas en Población General de Chile 2022.
 
 ## Obetivos específicos:
 
--   Examinar las caracterísiticas sociodemográficas y la distribución espacial de las personas que declaran haber consumido alcohol y/ o marihuana en el último año, asi como de otras variables críticas relacionadas con la percepción de riesgo, la opinión pública y conductas de riesgo en la conducción.
+-   Examinar las caracterísiticas sociodemográficas y la distribución regional de las personas que declaran haber consumido alcohol y/ o marihuana en el último año, asi como de otras variables críticas relacionadas con la percepción de riesgo, la opinión pública y conductas de riesgo en la conducción.
 
--   Identificar variables relavantes para la elboración de grupos o perfiles de personas que declaran haber consumido alcohol y/ o marihuana en el último año a través de la extracción de características, aplicando el análisis de componentes principales (PCA)
+-   Identificar variables relevantes para la elaboración de grupos o perfiles de personas que declaran haber consumido alcohol y/ o marihuana en el último año a través de la extracción de características, aplicando el análisis de componentes principales (PCA)
 
--   Contrastar el desempeño de distintos algoritmos de clustering (particional y jerárquico aglomerativo) con respecto a su capacidad de generar grupos o perfiles bien definidos de personas que declaran haber consumido alcohol y/o marihuna.
+-   Contrastar el desempeño de distintos algoritmos de clustering (particional y jerárquico aglomerativo) con respecto a su capacidad de generar grupos o perfiles bien definidos de personas que declaran haber consumido alcohol y/o marihuana en el último año.
 
 # Relevancia del caso de estudio:
 
