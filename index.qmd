@@ -76,8 +76,7 @@ Esta base se encuentra disponible en: <https://www.senda.gob.cl/senda-presenta-p
 
 Para la importación y exploración inicial de las bases de datos dummy y la ENPG 2022 original utilizamos los paquetes"readxl", "haven" y "rio".
 
-Junto a estos paquetes instalamos "dplyr" y "tibbles" para la manipulación; "psych", "tidyr", "table1","knitr", "kableExtra" y "survey" para la elaboración de los estadísticos descriptivos; "DT" para la construcción de tablas interactivas; "corrplot", "ggplot2", "plotly" para las visualizaciones. 
-
+Junto a estos paquetes instalamos "dplyr" y "tibbles" para la manipulación; "psych", "tidyr", "table1","knitr", "kableExtra" y "survey" para la elaboración de los estadísticos descriptivos; "DT" para la construcción de tablas interactivas; "corrplot", "ggplot2", "plotly" para las visualizaciones.
 
 ```{r}
 knitr::opts_chunk$set(warning = FALSE)
@@ -142,6 +141,8 @@ El resto de alternativas de las variables originales realtivas al consumo de alc
 Se recodificaron, y normalizaron algunas variables críticas adicionales que nos interesaba incluir en nuestro análisis. Así:
 
 \- la variable de edad fue agrupada por tramos de edad siguiendo la misma agrupación utilizada en el informe oficial de la ENPG 2022.
+
+\- la variable relacionada con el nivel educacional (DP_12) fue recodificada y agrupada para facilitar el análisis. Se diseñaron las siguientes categorías  "Sin educación", "Sistema antiguo", "Educación básica", "Educación media", "Técnico", "Universitaria", "Postgrado".
 
 Por último, se aplicaron técnicas de estandarización al conjunto de variables de interés utilizadas para la generación de clusters en base al algoritmo de jerarquización aglomerativa.
 
@@ -264,7 +265,7 @@ grafico_1
 
 ## Edad y consumo declarado de alcohol y marihuana en el último año
 
-La exploración descriptiva de la variable edad nos muestra una edad promedio de 42 años. Esta coincide con el valor central (mediana), evidenciando una distribución simetrica de las edades. En cuanto a la desviación estándar, existe una dispersión significativa de 15,24 años, incluyendo a personas jóvenes y mayores con edades alejadas del promedio. Por otro lado exite un leve sego (-0,11) sesgo hacia edades más jovenes.
+La exploración descriptiva de la variable edad nos muestra una edad promedio de 42 años. Esta coincide con el valor central (mediana), evidenciando una distribución simetrica de las edades. En cuanto a la desviación estándar, existe una dispersión significativa de 15,24 años, incluyendo a personas jóvenes y mayores con edades alejadas del promedio. Por otro lado exite un leve sego (-0,11) hacia edades más jovenes.
 
 ```{r, echo=TRUE, results="hide"}
 describe(senda$edad)
@@ -326,7 +327,7 @@ datatable(
 
 ```
 
-En cuanto al tipo de consumo: Los tramos de edad que consumen más alcohol y marihuana son las personas de 26 a 34 años con un 37%, mientras quienes menos consumen ambos son personas de 12 a 18 años con un 4%. Esto tiene sentido debido a las leyes en Chile donde está prohibido que menores consuman algún tipo de droga. En cuanto a personas que consumen solo alcohol son las personas mayores de 45 a 65 años con un 34%, mientras que los tramos edad que consumen solo marihuana son las personas de 26 a 34 años con un 31%
+En cuanto al consumo declaradado de alcohol en el último año, el grupo etario que muestra mayor prevalencia es el conformado por personas mayores de 45 años (30,1%) seguido de personas con edades comprendidas entre los 12 y 19 años (18,1%) y entre los 26 y 34 (17,9%). Por su parte, el consumo declarado de marihuana en el último años posee su mayor prevalencia entre personas de 26 a 34 año (7,1%) y personas que se encuentran en el tramo etario de de 19 a 25 años (5,5%).
 
 ```{r}
 # Preparar los datos en formato largo
@@ -355,13 +356,10 @@ grafico_2
 
 ```
 
-## Cruce de Nivel educacional con consumo
+## Nivel educacional y consumo declarado de alcohol y marihuana en el último año
 
-Sobre el nivel educacional y el consumo de Alcohol y Marihuana hemos observado patrones bastantes llamativos sobre el nivel educacional. La variable original DP_12 fue recodificada y agrupada en grupos para facilitar el análisis, siendo codificadas en grupos de "Sin educación", "sistema antiguo" y educación básica, media, técnica, universitaria y postgrados.
+Si nos centramos en analizar el nivel educacional de las personas con consumo declarado en el último año, las personas cuyos estudios llegan a hasta la educación media concentran la mayor prevalencia de consumo declarado tanto en alcohol (31,6%) como en marihuana (7,1%). Seguidas de las personas con estudios universitarios que presentan la segunda mayor prevalencia tanto en el consumo de alcohol (22,8%) como de marihuana (6,3%) a nivel nacional. 
 
-Estos resultados si bien pueden no ser tan representativos debido al número de casos que compone cada grupo, siendo los niveles de mayor educación los grupos con menor casos, mientras que niveles básicos y medios contemplan una mayor cantidad de personas.
-
-Las personas que consumen en mayor medida alcohol y marihuana son las personas con un nivel educacional media con un 35%, mientras quienes menos consumen ambos tipos son las personas sin educación con 0,1%. Sobre los grupos que consumen mayor alcohol son nuevamente personas con educación media con un 37%, y personas que consumen solo marihuana sigue la misma tendencia de educación con 39%.
 
 ```{r}
 # Recodificación de nivel educacional
@@ -660,8 +658,6 @@ ggplot(data = chile_map) +
 
 
 ```
-
-
 
 # Prepación de variables para modelo de Machine Learning
 
