@@ -142,6 +142,8 @@ Se recodificaron, y normalizaron algunas variables críticas adicionales que nos
 
 \- la variable relacionada con el nivel educacional (DP_12) fue recodificada y agrupada para facilitar el análisis. Se diseñaron las siguientes categorías "Sin educación", "Sistema antiguo", "Educación básica", "Educación media", "Técnico", "Universitaria", "Postgrado".
 
+\-  se generó Observando los datos según tramos de ingresos, estos fueron agrupados en nivel socioeconomicos bajo, medio y alto. El informe de SENDA (2022) categoriza el nivel socioeconomico en a la calidad de la vivienda y el barrio. En nuestra investigación la justificación de variable de nivel socioeconomica será en base al tramo de ingresos que se encuetra la persona de la variable (DP_16).
+
 Por último, se aplicaron técnicas de estandarización al conjunto de variables de interés utilizadas para la generación de clusters en base al algoritmo de jerarquización aglomerativa.
 
 ## Carga:
@@ -410,7 +412,7 @@ tabla_porcentajes_educacion %>%
 
 ## ## Tramo de ingresos y consumo declarado de alcohol y marihuana en el último año
 
-Observando los datos según tramos de ingresos, estos fueron agrupados en nivel socioeconomicos bajo, medio y alto. El informe de SENDA (2022) categoriza el nivel socioeconomico en a la calidad de la vivienda y el barrio. En nuestra investigación la justificación de variable de nivel socioeconomica será en base al tramo de ingresos que se encuetra la persona de la variable (DP_16).
+
 
 Sobre los grupos socioeconomicos que consumen ambos tipos son en mayor medida las personas de nivel socioeconómico medio 45%, y que también son quienes más consumen solo alcohol 47%. Respecto al consumo de solo marihuana son las personas de nivel socioeconómico bajo quienes más consumen con un 49%.
 
