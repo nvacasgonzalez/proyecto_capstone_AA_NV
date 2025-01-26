@@ -100,6 +100,26 @@ div.csl-indent {
 
 <link href="index_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
+<link href="index_files/libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+
+<script src="index_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+<link href="index_files/libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+
+<script src="index_files/libs/datatables-binding-0.33/datatables.js"></script>
+
+<script src="index_files/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+
+<link href="index_files/libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+
+<link href="index_files/libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
+
+<script src="index_files/libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+
+<link href="index_files/libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+
+<script src="index_files/libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+
 <link href="index_files/libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
 
 <script src="index_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
@@ -163,7 +183,7 @@ div.csl-indent {
   <li><a href="#exploración-y-análisis-descriptivo-de-variables-de-interés" id="toc-exploración-y-análisis-descriptivo-de-variables-de-interés" class="nav-link" data-scroll-target="#exploración-y-análisis-descriptivo-de-variables-de-interés"><span class="header-section-number">5</span> Exploración y análisis descriptivo de variables de interés:</a>
   <ul class="collapse">
   <li><a href="#sexo-y-consumo-declarado-de-alcohol-y-marihuana-en-el-último-año" id="toc-sexo-y-consumo-declarado-de-alcohol-y-marihuana-en-el-último-año" class="nav-link" data-scroll-target="#sexo-y-consumo-declarado-de-alcohol-y-marihuana-en-el-último-año"><span class="header-section-number">5.1</span> Sexo y consumo declarado de alcohol y marihuana en el último año</a></li>
-  <li><a href="#cruce-de-edad-con-consumo" id="toc-cruce-de-edad-con-consumo" class="nav-link" data-scroll-target="#cruce-de-edad-con-consumo"><span class="header-section-number">5.2</span> Cruce de Edad con consumo</a></li>
+  <li><a href="#edad-y-consumo-declarado-de-alcohol-y-marihuana-en-el-último-año" id="toc-edad-y-consumo-declarado-de-alcohol-y-marihuana-en-el-último-año" class="nav-link" data-scroll-target="#edad-y-consumo-declarado-de-alcohol-y-marihuana-en-el-último-año"><span class="header-section-number">5.2</span> Edad y consumo declarado de alcohol y marihuana en el último año</a></li>
   <li><a href="#cruce-de-nivel-educacional-con-consumo" id="toc-cruce-de-nivel-educacional-con-consumo" class="nav-link" data-scroll-target="#cruce-de-nivel-educacional-con-consumo"><span class="header-section-number">5.3</span> Cruce de Nivel educacional con consumo</a></li>
   <li><a href="#cruce-de-ingreso-con-consumo" id="toc-cruce-de-ingreso-con-consumo" class="nav-link" data-scroll-target="#cruce-de-ingreso-con-consumo"><span class="header-section-number">5.4</span> Cruce de Ingreso con consumo</a></li>
   <li><a href="#cruce-de-región-con-consumo" id="toc-cruce-de-región-con-consumo" class="nav-link" data-scroll-target="#cruce-de-región-con-consumo"><span class="header-section-number">5.5</span> Cruce de Región con consumo</a></li>
@@ -314,7 +334,7 @@ div.csl-indent {
 </details>
 </div>
 <p>El resto de alternativas de las variables originales realtivas al consumo de alcohol y marihuana (Hace más de un año, No sabe -88-, No contesta -99- ) fueron recodificadas como valores NA. Este conjunto de valores fue extraido de las operaciones mediante la función ifelse.</p>
-<p>Se recodificaron, y normalizaron algunas variables críticas adicionales que nos interesaba incluir en nuestro análisis.</p>
+<p>Se recodificaron, y normalizaron algunas variables críticas adicionales que nos interesaba incluir en nuestro análisis. Así: - la variable de edad fue agrupada por tramos de edad siguiendo la misma agrupación utilizada en el informe oficial de la ENPG 2022.</p>
 <p>Por último, se aplicaron técnicas de estandarización al conjunto de variables de interés utilizadas para la generación de clusters en base al algoritmo de jerarquización aglomerativa.</p>
 </section>
 <section id="carga" class="level2" data-number="3.3">
@@ -339,7 +359,7 @@ div.csl-indent {
 </section>
 <section id="exploración-y-análisis-descriptivo-de-variables-de-interés" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Exploración y análisis descriptivo de variables de interés:</h1>
-<p>Como primer acercamiento, es posible señalar que la prevalencia del consumo declarado de alcohol en el último año alcanza un 52% en l apoblación chilena. Mientras que el consumo declarado de marihuana en el último año posee una prevalentcia del casi el 11%.</p>
+<p>Como primer acercamiento, es posible señalar que la prevalencia del consumo declarado de alcohol en el último año alcanza un 52% en la apoblación chilena. Mientras que el consumo declarado de marihuana en el último año posee una prevalentcia del casi el 11%.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
@@ -413,10 +433,10 @@ Estadísticos
 
 </div>
 </div>
-<p>A continuación examinaremos los valores relativos a otras variables sociodemográficas de interés tales como sexo, tramo etario, nivel de educación y tramos de ingreso.</p>
+<p>A continuación examinaremos los valores relativos a otras variables sociodemográficas de interés tales como sexo, tramo etario, nivel de educación y tramo de ingreso.</p>
 <section id="sexo-y-consumo-declarado-de-alcohol-y-marihuana-en-el-último-año" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="sexo-y-consumo-declarado-de-alcohol-y-marihuana-en-el-último-año"><span class="header-section-number">5.1</span> Sexo y consumo declarado de alcohol y marihuana en el último año</h2>
-<p>En términos generales, la población masculina lidera el consumo declarado de alcohol y de marihuana en el último año, representando un 42% y un 13% de l apoblación nacional. Sin embargo, la mayor distancia por género en términos de prevalencia de consumo declarado se produce con respecto a la marihuana. Donde las mujeres registran 5,7 puntos menos de consumo que los hombres, representando un 6,8% del total de la población Chilena.</p>
+<p>En términos generales, la población masculina lidera el consumo declarado de alcohol y de marihuana en el último año, representando un 42% y un 13% de la población nacional. Sin embargo, la mayor distancia por género en términos de prevalencia de consumo declarado se produce con respecto a la marihuana. Donde las mujeres registran 5,7 puntos menos de consumo que los hombres, representando un 6,8% del total de la población chilena.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
@@ -505,49 +525,74 @@ Estadísticos
 </div>
 </div>
 </section>
-<section id="cruce-de-edad-con-consumo" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="cruce-de-edad-con-consumo"><span class="header-section-number">5.2</span> Cruce de Edad con consumo</h2>
-<p>La variable de edad en pro de temas de análisis fue agrupada en Tramos de edad en base a información del informe oficial de la Encuesta Nacional de Drogas 2022. Los datos iniciales descriptivos de Edad nos muestra que la media de edad de la encuesta son 42 años, una desviación estándar de 15,24 ampliandose relativamente alrededor de la media, y una skew de -0,11 lo que significa que hay un leve sesgo hacia edades más jovenes.</p>
-<p>En cuanto al tipo de consumo: Los tramos de edad que consumen más alcohol y marihuana son las personas de 26 a 34 años con un 37%, mientras quienes menos consumen ambos son personas de 12 a 18 años con un 4%. Esto tiene sentido debido a las leyes en Chile donde está prohibido que menores consuman algún tipo de droga. En cuanto a personas que consumen solo alcohol son las personas mayores de 45 a 65 años con un 34%, mientras que los tramos edad que consumen solo marihuana son las personas de 26 a 34 años con un 31%</p>
+<section id="edad-y-consumo-declarado-de-alcohol-y-marihuana-en-el-último-año" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="edad-y-consumo-declarado-de-alcohol-y-marihuana-en-el-último-año"><span class="header-section-number">5.2</span> Edad y consumo declarado de alcohol y marihuana en el último año</h2>
+<p>La exploración descriptiva de la variable edad nos muestra una edad promedio de 42 años. Esta coincide con el valor central (mediana), evidenciando una distribución simetrica de las edades. En cuanto a la desviación estándar, existe una dispersión significativa de 15,24 años, incluyendo a personas jóvenes y mayores con edades alejadas del promedio. Por otro lado exite un leve sego (-0,11) sesgo hacia edades más jovenes.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(senda<span class="sc">$</span>edad)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(senda<span class="sc">$</span>edad)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>senda <span class="ot">&lt;-</span> senda <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">tramos_edad =</span> <span class="fu">case_when</span>(</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>      edad <span class="sc">&gt;=</span> <span class="dv">12</span> <span class="sc">&amp;</span> edad <span class="sc">&lt;=</span> <span class="dv">18</span> <span class="sc">~</span> <span class="st">"12 a 18 años"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>      edad <span class="sc">&gt;=</span> <span class="dv">19</span> <span class="sc">&amp;</span> edad <span class="sc">&lt;=</span> <span class="dv">25</span> <span class="sc">~</span> <span class="st">"19 a 25 años"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>      edad <span class="sc">&gt;=</span> <span class="dv">26</span> <span class="sc">&amp;</span> edad <span class="sc">&lt;=</span> <span class="dv">34</span> <span class="sc">~</span> <span class="st">"26 a 34 años"</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>      edad <span class="sc">&gt;=</span> <span class="dv">35</span> <span class="sc">&amp;</span> edad <span class="sc">&lt;=</span> <span class="dv">44</span> <span class="sc">~</span> <span class="st">"35 a 44 años"</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>      edad <span class="sc">&gt;=</span> <span class="dv">45</span> <span class="sc">&amp;</span> edad <span class="sc">&lt;=</span> <span class="dv">65</span> <span class="sc">~</span> <span class="st">"45 a 65 años"</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>      ))</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabla de porcentajes de Edad</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>tabla_porcentajes_edad <span class="ot">&lt;-</span> senda <span class="sc">%&gt;%</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mar_rec <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> oh_rec <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span>  <span class="co"># Filtro de solo los valores 1 </span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Variable =</span> <span class="fu">case_when</span>(</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    mar_rec <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Consume Marihuana"</span>,</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    oh_rec <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Consume Alcohol"</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(tramos_edad, Variable) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Frecuencia =</span> <span class="fu">sum</span>(factor_expansion),  <span class="co"># Sumar ponderaciones por grupo</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Porcentaje =</span> <span class="fu">round</span>(Frecuencia <span class="sc">/</span> <span class="fu">sum</span>(Frecuencia) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Porcentaje =</span> <span class="fu">paste0</span>(Porcentaje, <span class="st">"%"</span>)) <span class="sc">%&gt;%</span>  <span class="co"># Agregar el símbolo de porcentaje</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Frecuencia) <span class="sc">%&gt;%</span>  <span class="co"># Eliminar la columna 'Frecuencia' si no es necesaria</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> tramos_edad, <span class="at">values_from =</span> Porcentaje)  <span class="co"># Convertir columnas</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output-display">
-<div data-pagedtable="false">
-  <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["vars"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["n"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["sd"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["median"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["trimmed"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["mad"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["min"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["max"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["range"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["skew"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["kurtosis"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["se"],"name":[13],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"17378","3":"41.98786","4":"15.24003","5":"42","6":"42.33113","7":"19.2738","8":"12","9":"65","10":"53","11":"-0.1099459","12":"-1.170738","13":"0.1156075","_rn_":"X1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
 </div>
-</div>
+<div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>senda <span class="ot">&lt;-</span> senda <span class="sc">%&gt;%</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">tramos_edad =</span> <span class="fu">case_when</span>(</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>      edad <span class="sc">&gt;=</span> <span class="dv">12</span> <span class="sc">&amp;</span> edad <span class="sc">&lt;=</span> <span class="dv">18</span> <span class="sc">~</span> <span class="st">"12 a 18 años"</span>,</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>      edad <span class="sc">&gt;=</span> <span class="dv">19</span> <span class="sc">&amp;</span> edad <span class="sc">&lt;=</span> <span class="dv">25</span> <span class="sc">~</span> <span class="st">"19 a 25 años"</span>,</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>      edad <span class="sc">&gt;=</span> <span class="dv">26</span> <span class="sc">&amp;</span> edad <span class="sc">&lt;=</span> <span class="dv">34</span> <span class="sc">~</span> <span class="st">"26 a 34 años"</span>,</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>      edad <span class="sc">&gt;=</span> <span class="dv">35</span> <span class="sc">&amp;</span> edad <span class="sc">&lt;=</span> <span class="dv">44</span> <span class="sc">~</span> <span class="st">"35 a 44 años"</span>,</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>      edad <span class="sc">&gt;=</span> <span class="dv">45</span> <span class="sc">&amp;</span> edad <span class="sc">&lt;=</span> <span class="dv">65</span> <span class="sc">~</span> <span class="st">"45 a 65 años"</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>      ))</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabla de porcentajes de Edad</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>tabla_porcentajes_edad <span class="ot">&lt;-</span> senda <span class="sc">%&gt;%</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mar_rec <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> oh_rec <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span>  <span class="co"># Filtro de solo los valores 1 </span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Variable =</span> <span class="fu">case_when</span>(</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    mar_rec <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Consume Marihuana"</span>,</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    oh_rec <span class="sc">==</span> <span class="dv">1</span> <span class="sc">~</span> <span class="st">"Consume Alcohol"</span></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(tramos_edad, Variable) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Frecuencia =</span> <span class="fu">sum</span>(factor_expansion),  <span class="co"># Sumar ponderaciones por grupo</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Porcentaje =</span> <span class="fu">round</span>(Frecuencia <span class="sc">/</span> <span class="fu">sum</span>(Frecuencia) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Porcentaje =</span> <span class="fu">paste0</span>(Porcentaje, <span class="st">"%"</span>)) <span class="sc">%&gt;%</span>  <span class="co"># Agregar el símbolo de porcentaje</span></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Frecuencia) <span class="sc">%&gt;%</span>  <span class="co"># Eliminar la columna 'Frecuencia' si no es necesaria</span></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> tramos_edad, <span class="at">values_from =</span> Porcentaje)  <span class="co"># Convertir columnas</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear un data frame o tibble con los datos, incluyendo los nuevos estadísticos</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>df_interactivo <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">vars =</span> <span class="dv">1</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">17378</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean =</span> <span class="fu">round</span>(<span class="fl">41.99</span>, <span class="dv">2</span>),</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">sd =</span> <span class="fu">round</span>(<span class="fl">15.24</span>, <span class="dv">2</span>),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">median =</span> <span class="dv">42</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">trimmed =</span> <span class="fu">round</span>(<span class="fl">42.33</span>, <span class="dv">2</span>),</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">mad =</span> <span class="fu">round</span>(<span class="fl">19.27</span>, <span class="dv">2</span>),</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">min =</span> <span class="dv">12</span>,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">max =</span> <span class="dv">65</span>,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">range =</span> <span class="dv">53</span>,        <span class="co"># Rango (max - min)</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">skew =</span> <span class="sc">-</span><span class="fl">0.11</span>,      <span class="co"># Skew (sesgo)</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">kurtosis =</span> <span class="sc">-</span><span class="fl">1.17</span>,  <span class="co"># Kurtosis</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">se =</span> <span class="fu">round</span>(<span class="fl">0.12</span>, <span class="dv">2</span>)  <span class="co"># Error estándar</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear la tabla interactiva</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="fu">datatable</span>(</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  df_interactivo,</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">options =</span> <span class="fu">list</span>(</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">dom =</span> <span class="st">'t'</span>, <span class="co"># Muestra solo la tabla sin filtros adicionales</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">pageLength =</span> <span class="dv">5</span>,</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">columnDefs =</span> <span class="fu">list</span>(<span class="fu">list</span>(<span class="at">className =</span> <span class="st">'dt-center'</span>, <span class="at">targets =</span> <span class="st">"_all"</span>)) <span class="co"># Centra los valores</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-62fde9b7c99cc1d58e28" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-62fde9b7c99cc1d58e28">{"x":{"filter":"none","vertical":false,"data":[["1"],[1],[17378],[41.99],[15.24],[42],[42.33],[19.27],[12],[65],[53],[-0.11],[-1.17],[0.12]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>vars<\/th>\n      <th>n<\/th>\n      <th>mean<\/th>\n      <th>sd<\/th>\n      <th>median<\/th>\n      <th>trimmed<\/th>\n      <th>mad<\/th>\n      <th>min<\/th>\n      <th>max<\/th>\n      <th>range<\/th>\n      <th>skew<\/th>\n      <th>kurtosis<\/th>\n      <th>se<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","pageLength":5,"columnDefs":[{"className":"dt-center","targets":"_all"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"vars","targets":1},{"name":"n","targets":2},{"name":"mean","targets":3},{"name":"sd","targets":4},{"name":"median","targets":5},{"name":"trimmed","targets":6},{"name":"mad","targets":7},{"name":"min","targets":8},{"name":"max","targets":9},{"name":"range","targets":10},{"name":"skew","targets":11},{"name":"kurtosis","targets":12},{"name":"se","targets":13}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 </div>
+</div>
+<p>En cuanto al tipo de consumo: Los tramos de edad que consumen más alcohol y marihuana son las personas de 26 a 34 años con un 37%, mientras quienes menos consumen ambos son personas de 12 a 18 años con un 4%. Esto tiene sentido debido a las leyes en Chile donde está prohibido que menores consuman algún tipo de droga. En cuanto a personas que consumen solo alcohol son las personas mayores de 45 a 65 años con un 34%, mientras que los tramos edad que consumen solo marihuana son las personas de 26 a 34 años con un 31%</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
@@ -578,7 +623,7 @@ Estadísticos
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -789,7 +834,7 @@ Estadísticos
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -950,7 +995,7 @@ Estadísticos
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -987,7 +1032,7 @@ Estadísticos
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -1392,7 +1437,7 @@ Valparaíso          1.34075475 -0.2033517 -0.6874840 -0.2121714</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -1406,7 +1451,7 @@ Valparaíso          1.34075475 -0.2033517 -0.6874840 -0.2121714</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-28-2.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-29-2.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -1540,7 +1585,7 @@ Valparaíso         -0.69528078 -0.03907922</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -1552,7 +1597,7 @@ Valparaíso         -0.69528078 -0.03907922</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-31-2.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-32-2.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>

@@ -158,8 +158,8 @@ ponderador <- svydesign(ids = ~1, data = senda, weights = ~factor_expansion) # V
 El resto de alternativas de las variables originales realtivas al consumo de alcohol y marihuana (Hace más de un año, No sabe -88-, No contesta -99- ) fueron recodificadas como valores NA. Este conjunto de valores fue extraido de las operaciones mediante la función ifelse.
 
 
-Se recodificaron, y normalizaron algunas variables críticas adicionales que nos interesaba incluir en nuestro análisis. 
-
+Se recodificaron, y normalizaron algunas variables críticas adicionales que nos interesaba incluir en nuestro análisis. Así: 
+- la variable de edad fue agrupada por tramos de edad siguiendo la misma agrupación utilizada en el informe oficial de la ENPG 2022. 
 
 Por último, se aplicaron técnicas de estandarización al conjunto de variables de interés utilizadas para la generación de clusters en base al algoritmo de jerarquización aglomerativa. 
 
@@ -194,7 +194,7 @@ Las variables seleccionadas para el presente proyecto se agupan en:
 
 # Exploración y análisis descriptivo de variables de interés: 
 
-Como primer acercamiento, es posible señalar que la prevalencia del consumo declarado de alcohol en el último año alcanza un 52% en l apoblación chilena. Mientras que el consumo declarado de marihuana en el último año posee una prevalentcia del casi el 11%. 
+Como primer acercamiento, es posible señalar que la prevalencia del consumo declarado de alcohol en el último año alcanza un 52% en la apoblación chilena. Mientras que el consumo declarado de marihuana en el último año posee una prevalentcia del casi el 11%. 
 
 ```{r}
 # Generar la tabla ponderada para mar_rec
@@ -230,11 +230,11 @@ tabla_consumo_combinada %>%
   add_header_above(c(" " = 1, "Estadísticos" = ncol(tabla_consumo_combinada) - 1))
 ```
 
-A continuación examinaremos los valores relativos a otras variables sociodemográficas de interés tales como sexo, tramo etario, nivel de educación y tramos de ingreso. 
+A continuación examinaremos los valores relativos a otras variables sociodemográficas de interés tales como sexo, tramo etario, nivel de educación y tramo de ingreso. 
 
 ## Sexo y consumo declarado de alcohol y marihuana en el último año
 
-En términos generales, la población masculina lidera el consumo declarado  de alcohol y de marihuana en el último año, representando un 42% y un 13% de l apoblación nacional. Sin embargo, la mayor distancia por género en términos de prevalencia de consumo declarado se produce con respecto a la marihuana. Donde las mujeres registran 5,7 puntos menos de consumo que los hombres, representando un 6,8% del total de la población Chilena. 
+En términos generales, la población masculina lidera el consumo declarado  de alcohol y de marihuana en el último año, representando un 42% y un 13% de la población nacional. Sin embargo, la mayor distancia por género en términos de prevalencia de consumo declarado se produce con respecto a la marihuana. Donde las mujeres registran 5,7 puntos menos de consumo que los hombres, representando un 6,8% del total de la población chilena. 
 
 ```{r}
 # Tabla de Porcenajaje sexo
@@ -287,13 +287,11 @@ grafico_1
 
 ```
 
-## Cruce de Edad con consumo
+##  Edad y consumo declarado de alcohol y marihuana en el último año
 
-La variable de edad en pro de temas de análisis fue agrupada en Tramos de edad en base a información del informe oficial de la Encuesta Nacional de Drogas 2022. Los datos iniciales descriptivos de Edad nos muestra que la media de edad de la encuesta son 42 años, una desviación estándar de 15,24 ampliandose relativamente alrededor de la media, y una skew de -0,11 lo que significa que hay un leve sesgo hacia edades más jovenes.
+La exploración descriptiva de la variable edad nos muestra una edad promedio de 42 años. Esta coincide con el valor central (mediana), evidenciando una distribución simetrica de las edades. En cuanto a la desviación estándar, existe una dispersión significativa de 15,24 años, incluyendo a personas jóvenes y mayores con edades alejadas del promedio. Por otro lado exite un leve sego (-0,11) sesgo hacia edades más jovenes.
 
-En cuanto al tipo de consumo: Los tramos de edad que consumen más alcohol y marihuana son las personas de 26 a 34 años con un 37%, mientras quienes menos consumen ambos son personas de 12 a 18 años con un 4%. Esto tiene sentido debido a las leyes en Chile donde está prohibido que menores consuman algún tipo de droga. En cuanto a personas que consumen solo alcohol son las personas mayores de 45 a 65 años con un 34%, mientras que los tramos edad que consumen solo marihuana son las personas de 26 a 34 años con un 31%
-
-```{r, warning=FALSE}
+```{r, echo=TRUE, results="hide"}
 describe(senda$edad)
 senda <- senda %>%
   mutate(
@@ -320,6 +318,43 @@ tabla_porcentajes_edad <- senda %>%
   pivot_wider(names_from = tramos_edad, values_from = Porcentaje)  # Convertir columnas
 
 ```
+
+
+```{r}
+# Crear un data frame o tibble con los datos, incluyendo los nuevos estadísticos
+df_interactivo <- tibble(
+  vars = 1,
+  n = 17378,
+  mean = round(41.99, 2),
+  sd = round(15.24, 2),
+  median = 42,
+  trimmed = round(42.33, 2),
+  mad = round(19.27, 2),
+  min = 12,
+  max = 65,
+  range = 53,        # Rango (max - min)
+  skew = -0.11,      # Skew (sesgo)
+  kurtosis = -1.17,  # Kurtosis
+  se = round(0.12, 2)  # Error estándar
+)
+
+# Crear la tabla interactiva
+datatable(
+  df_interactivo,
+  options = list(
+    dom = 't', # Muestra solo la tabla sin filtros adicionales
+    pageLength = 5,
+    columnDefs = list(list(className = 'dt-center', targets = "_all")) # Centra los valores
+  )
+)
+
+
+
+```
+
+
+En cuanto al tipo de consumo: Los tramos de edad que consumen más alcohol y marihuana son las personas de 26 a 34 años con un 37%, mientras quienes menos consumen ambos son personas de 12 a 18 años con un 4%. Esto tiene sentido debido a las leyes en Chile donde está prohibido que menores consuman algún tipo de droga. En cuanto a personas que consumen solo alcohol son las personas mayores de 45 a 65 años con un 34%, mientras que los tramos edad que consumen solo marihuana son las personas de 26 a 34 años con un 31%
+
 
 
 ```{r}
