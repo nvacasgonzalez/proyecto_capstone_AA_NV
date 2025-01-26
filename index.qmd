@@ -74,9 +74,7 @@ Inicialmente, se trabajó con un conjunto de bases de datos dumy procedentes del
 
 Esta base se encuentra disponible en: <https://www.senda.gob.cl/senda-presenta-principales-resultados-del-15-estudio-de-drogas-en-poblacion-general/>
 
-Para la importación y exploración inicial de las bases de datos dummy y la ENPG 2022 original utilizamos los paquetes"readxl", "haven" y "rio".
-
-Junto a estos paquetes instalamos "dplyr" y "tibbles" para la manipulación; "psych", "tidyr", "table1","knitr", "kableExtra" y "survey" para la elaboración de los estadísticos descriptivos; "DT" para la construcción de tablas interactivas; "corrplot", "ggplot2", "plotly" para las visualizaciones.
+Para la importación y exploración inicial de las bases de datos dummy y la ENPG 2022 original utilizamos los paquetes"readxl", "haven" y "rio". Junto a estos paquetes instalamos "dplyr" y "tibbles" para la manipulación; "psych", "tidyr", "table1","knitr", "kableExtra" y "survey" para la elaboración de los estadísticos descriptivos; "DT" para la construcción de tablas interactivas; "corrplot", "ggplot2", "plotly" para las visualizaciones.
 
 ```{r}
 knitr::opts_chunk$set(warning = FALSE)
@@ -114,9 +112,9 @@ Se aplicó el factor de expasión especificado en la encuesta a la base de datos
 
 Se construyeron 2 variable de interés de tipo binario:
 
--   oh_rec: que incluyen a personas que declaran consumo de alcohol en el último mes o hace menos de un mes y más de un año
+\- oh_rec: que incluyen a personas que declaran consumo de alcohol en el último mes o hace menos de un mes y más de un año
 
--   mar_rec: que contempla a personas que declaran consumo de marihuana en el últimos mes o hace menos de un mes pero menos de un año.
+\- mar_rec: que contempla a personas que declaran consumo de marihuana en el últimos mes o hace menos de un mes pero menos de un año.
 
 ```{r, warning=TRUE}
 #Seleccionamos variables referentes al consumo de alcohol y marihuana, variables sociodemográficas y factores de expansión.
@@ -142,7 +140,7 @@ Se recodificaron, y normalizaron algunas variables críticas adicionales que nos
 
 \- la variable de edad fue agrupada por tramos de edad siguiendo la misma agrupación utilizada en el informe oficial de la ENPG 2022.
 
-\- la variable relacionada con el nivel educacional (DP_12) fue recodificada y agrupada para facilitar el análisis. Se diseñaron las siguientes categorías  "Sin educación", "Sistema antiguo", "Educación básica", "Educación media", "Técnico", "Universitaria", "Postgrado".
+\- la variable relacionada con el nivel educacional (DP_12) fue recodificada y agrupada para facilitar el análisis. Se diseñaron las siguientes categorías "Sin educación", "Sistema antiguo", "Educación básica", "Educación media", "Técnico", "Universitaria", "Postgrado".
 
 Por último, se aplicaron técnicas de estandarización al conjunto de variables de interés utilizadas para la generación de clusters en base al algoritmo de jerarquización aglomerativa.
 
@@ -358,8 +356,7 @@ grafico_2
 
 ## Nivel educacional y consumo declarado de alcohol y marihuana en el último año
 
-Si nos centramos en analizar el nivel educacional de las personas con consumo declarado en el último año, las personas cuyos estudios llegan a hasta la educación media concentran la mayor prevalencia de consumo declarado tanto en alcohol (31,6%) como en marihuana (7,1%). Seguidas de las personas con estudios universitarios que presentan la segunda mayor prevalencia tanto en el consumo de alcohol (22,8%) como de marihuana (6,3%) a nivel nacional. 
-
+Centrándo la exploración en el nivel educacional de las personas con consumo declarado en el último año, aquellas cuyos estudios llegan a hasta la educación media concentran la mayor prevalencia de consumo declarado tanto en alcohol (31,6%) como en marihuana (7,1%). Seguidas de las personas con estudios universitarios que presentan la segunda mayor prevalencia tanto en el consumo de alcohol (22,8%) como de marihuana (6,3%) a nivel nacional.
 
 ```{r}
 # Recodificación de nivel educacional
@@ -411,7 +408,7 @@ tabla_porcentajes_educacion %>%
   kable_styling(font_size = 15)
 ```
 
-## Cruce de Ingreso con consumo
+## ## Tramo de ingresos y consumo declarado de alcohol y marihuana en el último año
 
 Observando los datos según tramos de ingresos, estos fueron agrupados en nivel socioeconomicos bajo, medio y alto. El informe de SENDA (2022) categoriza el nivel socioeconomico en a la calidad de la vivienda y el barrio. En nuestra investigación la justificación de variable de nivel socioeconomica será en base al tramo de ingresos que se encuetra la persona de la variable (DP_16).
 
