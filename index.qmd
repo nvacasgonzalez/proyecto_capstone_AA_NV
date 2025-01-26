@@ -76,15 +76,8 @@ Esta base se encuentra disponible en: <https://www.senda.gob.cl/senda-presenta-p
 
 Para la importación y exploración inicial de las bases de datos dummy y la ENPG 2022 original utilizamos los paquetes"readxl", "haven" y "rio".
 
-Junto a estos paquetes instalamos:
+Junto a estos paquetes instalamos "dplyr" y "tibbles" para la manipulación; "psych", "tidyr", "table1","knitr", "kableExtra" y "survey" para la elaboración de los estadísticos descriptivos; "DT" para la construcción de tablas interactivas; "corrplot", "ggplot2", "plotly" para las visualizaciones. 
 
--   Para la manipulación: "dplyr", "tibbles"
-
--   Para la elaboración de los estadísticos descriptivos: "psych", "tidyr", "table1","knitr", "kableExtra" y "survey"
-
--   Para la construcción de tablas interactivas: "DT"
-
--   Para las visualizaciones: "corrplot", "ggplot2", "plotly"
 
 ```{r}
 knitr::opts_chunk$set(warning = FALSE)
@@ -104,12 +97,6 @@ load_packages <- function(paquetes) {
 
 # Ejecutar la función de carga de paquetes
 load_packages(paquetes)
-
-
-# Borrado de objetos, data frames, vectores y otros elmentos del environment previos 
-# a la ejecuión de presente archivo.  
-
-
 
 ```
 

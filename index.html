@@ -254,13 +254,7 @@ div.csl-indent {
 <p>Inicialmente, se trabajó con un conjunto de bases de datos dumy procedentes del Estudio Nacional de Drogas en Población General (ENPG 2022). Posteriormente, habiendo trabajado el objetivo de unión de bases de datos mediante la fundión fulljoint, se constató la perdida de un número relevante de casos. Particularmente, aquello que respondían a la categoría consumo de marihuna en el último año. Junto a lo anterior, ampliamos la exploración de variables de interés. Por esta razones, se decidió trabajar con la base original del ENPG 2022.</p>
 <p>Esta base se encuentra disponible en: <a href="https://www.senda.gob.cl/senda-presenta-principales-resultados-del-15-estudio-de-drogas-en-poblacion-general/" class="uri">https://www.senda.gob.cl/senda-presenta-principales-resultados-del-15-estudio-de-drogas-en-poblacion-general/</a></p>
 <p>Para la importación y exploración inicial de las bases de datos dummy y la ENPG 2022 original utilizamos los paquetes”readxl”, “haven” y “rio”.</p>
-<p>Junto a estos paquetes instalamos:</p>
-<ul>
-<li><p>Para la manipulación: “dplyr”, “tibbles”</p></li>
-<li><p>Para la elaboración de los estadísticos descriptivos: “psych”, “tidyr”, “table1”,“knitr”, “kableExtra” y “survey”</p></li>
-<li><p>Para la construcción de tablas interactivas: “DT”</p></li>
-<li><p>Para las visualizaciones: “corrplot”, “ggplot2”, “plotly”</p></li>
-</ul>
+<p>Junto a estos paquetes instalamos “dplyr” y “tibbles” para la manipulación; “psych”, “tidyr”, “table1”,“knitr”, “kableExtra” y “survey” para la elaboración de los estadísticos descriptivos; “DT” para la construcción de tablas interactivas; “corrplot”, “ggplot2”, “plotly” para las visualizaciones.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
@@ -281,11 +275,7 @@ div.csl-indent {
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Ejecutar la función de carga de paquetes</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">load_packages</span>(paquetes)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Borrado de objetos, data frames, vectores y otros elmentos del environment previos </span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># a la ejecuión de presente archivo.  </span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">load_packages</span>(paquetes)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
@@ -582,8 +572,8 @@ Estadísticos
 <span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-20b1059b0fc717eaafdf" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-20b1059b0fc717eaafdf">{"x":{"filter":"none","vertical":false,"data":[["1"],[1],[17378],[41.99],[15.24],[42],[42.33],[19.27],[12],[65],[53],[-0.11],[-1.17],[0.12]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>vars<\/th>\n      <th>n<\/th>\n      <th>mean<\/th>\n      <th>sd<\/th>\n      <th>median<\/th>\n      <th>trimmed<\/th>\n      <th>mad<\/th>\n      <th>min<\/th>\n      <th>max<\/th>\n      <th>range<\/th>\n      <th>skew<\/th>\n      <th>kurtosis<\/th>\n      <th>se<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","pageLength":5,"columnDefs":[{"className":"dt-center","targets":"_all"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"vars","targets":1},{"name":"n","targets":2},{"name":"mean","targets":3},{"name":"sd","targets":4},{"name":"median","targets":5},{"name":"trimmed","targets":6},{"name":"mad","targets":7},{"name":"min","targets":8},{"name":"max","targets":9},{"name":"range","targets":10},{"name":"skew","targets":11},{"name":"kurtosis","targets":12},{"name":"se","targets":13}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-410f11d82656d3b42449" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-410f11d82656d3b42449">{"x":{"filter":"none","vertical":false,"data":[["1"],[1],[17378],[41.99],[15.24],[42],[42.33],[19.27],[12],[65],[53],[-0.11],[-1.17],[0.12]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>vars<\/th>\n      <th>n<\/th>\n      <th>mean<\/th>\n      <th>sd<\/th>\n      <th>median<\/th>\n      <th>trimmed<\/th>\n      <th>mad<\/th>\n      <th>min<\/th>\n      <th>max<\/th>\n      <th>range<\/th>\n      <th>skew<\/th>\n      <th>kurtosis<\/th>\n      <th>se<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","pageLength":5,"columnDefs":[{"className":"dt-center","targets":"_all"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"vars","targets":1},{"name":"n","targets":2},{"name":"mean","targets":3},{"name":"sd","targets":4},{"name":"median","targets":5},{"name":"trimmed","targets":6},{"name":"mad","targets":7},{"name":"min","targets":8},{"name":"max","targets":9},{"name":"range","targets":10},{"name":"skew","targets":11},{"name":"kurtosis","targets":12},{"name":"se","targets":13}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>En cuanto al tipo de consumo: Los tramos de edad que consumen más alcohol y marihuana son las personas de 26 a 34 años con un 37%, mientras quienes menos consumen ambos son personas de 12 a 18 años con un 4%. Esto tiene sentido debido a las leyes en Chile donde está prohibido que menores consuman algún tipo de droga. En cuanto a personas que consumen solo alcohol son las personas mayores de 45 a 65 años con un 34%, mientras que los tramos edad que consumen solo marihuana son las personas de 26 a 34 años con un 31%</p>
