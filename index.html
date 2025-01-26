@@ -162,7 +162,7 @@ div.csl-indent {
   <li><a href="#modelo-entidad---relación-y-modelo-lógico-conceptual." id="toc-modelo-entidad---relación-y-modelo-lógico-conceptual." class="nav-link" data-scroll-target="#modelo-entidad---relación-y-modelo-lógico-conceptual."><span class="header-section-number">4</span> Modelo entidad - relación y modelo lógico conceptual.</a></li>
   <li><a href="#exploración-y-análisis-descriptivo-de-variables-de-interés" id="toc-exploración-y-análisis-descriptivo-de-variables-de-interés" class="nav-link" data-scroll-target="#exploración-y-análisis-descriptivo-de-variables-de-interés"><span class="header-section-number">5</span> Exploración y análisis descriptivo de variables de interés:</a>
   <ul class="collapse">
-  <li><a href="#cruce-de-sexo-con-consumo" id="toc-cruce-de-sexo-con-consumo" class="nav-link" data-scroll-target="#cruce-de-sexo-con-consumo"><span class="header-section-number">5.1</span> Cruce de Sexo con consumo</a></li>
+  <li><a href="#sexo-y-consumo-declarado-de-alcohol-y-marihuana-en-el-último-año" id="toc-sexo-y-consumo-declarado-de-alcohol-y-marihuana-en-el-último-año" class="nav-link" data-scroll-target="#sexo-y-consumo-declarado-de-alcohol-y-marihuana-en-el-último-año"><span class="header-section-number">5.1</span> Sexo y consumo declarado de alcohol y marihuana en el último año</a></li>
   <li><a href="#cruce-de-edad-con-consumo" id="toc-cruce-de-edad-con-consumo" class="nav-link" data-scroll-target="#cruce-de-edad-con-consumo"><span class="header-section-number">5.2</span> Cruce de Edad con consumo</a></li>
   <li><a href="#cruce-de-nivel-educacional-con-consumo" id="toc-cruce-de-nivel-educacional-con-consumo" class="nav-link" data-scroll-target="#cruce-de-nivel-educacional-con-consumo"><span class="header-section-number">5.3</span> Cruce de Nivel educacional con consumo</a></li>
   <li><a href="#cruce-de-ingreso-con-consumo" id="toc-cruce-de-ingreso-con-consumo" class="nav-link" data-scroll-target="#cruce-de-ingreso-con-consumo"><span class="header-section-number">5.4</span> Cruce de Ingreso con consumo</a></li>
@@ -182,8 +182,18 @@ div.csl-indent {
   </ul></li>
   <li><a href="#modelo-de-machine-learning" id="toc-modelo-de-machine-learning" class="nav-link" data-scroll-target="#modelo-de-machine-learning"><span class="header-section-number">8</span> Modelo de Machine Learning</a>
   <ul class="collapse">
-  <li><a href="#pasos" id="toc-pasos" class="nav-link" data-scroll-target="#pasos"><span class="header-section-number">8.1</span> pasos</a></li>
+  <li><a href="#pca-alcohol" id="toc-pca-alcohol" class="nav-link" data-scroll-target="#pca-alcohol"><span class="header-section-number">8.1</span> PCA Alcohol</a>
+  <ul class="collapse">
+  <li><a href="#cluster" id="toc-cluster" class="nav-link" data-scroll-target="#cluster"><span class="header-section-number">8.1.1</span> Cluster</a></li>
+  <li><a href="#gráfico-de-pca" id="toc-gráfico-de-pca" class="nav-link" data-scroll-target="#gráfico-de-pca"><span class="header-section-number">8.1.2</span> Gráfico de PCA</a></li>
   </ul></li>
+  <li><a href="#pca-marihuana" id="toc-pca-marihuana" class="nav-link" data-scroll-target="#pca-marihuana"><span class="header-section-number">8.2</span> PCA Marihuana</a>
+  <ul class="collapse">
+  <li><a href="#cluster-1" id="toc-cluster-1" class="nav-link" data-scroll-target="#cluster-1"><span class="header-section-number">8.2.1</span> Cluster</a></li>
+  </ul></li>
+  <li><a href="#gráfico-de-pca-1" id="toc-gráfico-de-pca-1" class="nav-link" data-scroll-target="#gráfico-de-pca-1"><span class="header-section-number">8.3</span> Gráfico de PCA</a></li>
+  </ul></li>
+  <li><a href="#cluster-2" id="toc-cluster-2" class="nav-link" data-scroll-target="#cluster-2"><span class="header-section-number">9</span> Cluster</a></li>
   </ul>
 </nav>
 </div>
@@ -230,7 +240,7 @@ div.csl-indent {
 <p>Inicialmente, se trabajó con un conjunto de bases de datos dumy procedentes del Estudio Nacional de Drogas en Población General (ENPG 2022). Posteriormente, habiendo trabajado el objetivo de unión de bases de datos mediante la fundión fulljoint, se constató la perdida de un número relevante de casos. Particularmente, aquello que respondían a la categoría consumo de marihuna en el último año. Junto a lo anterior, ampliamos la exploración de variables de interés. Por esta razones, se decidió trabajar con la base original del ENPG 2022.</p>
 <p>Esta base se encuentra disponible en: <a href="https://www.senda.gob.cl/senda-presenta-principales-resultados-del-15-estudio-de-drogas-en-poblacion-general/" class="uri">https://www.senda.gob.cl/senda-presenta-principales-resultados-del-15-estudio-de-drogas-en-poblacion-general/</a></p>
 <p>Para la importación y exploración inicial de las bases de datos dummy y la ENPG 2022 original utilizamos los paquetes”readxl”, “haven” y “rio”.</p>
-<p>Junto a estos paquetes instalamos: - Para la manipulación: “dplyr” - Para la elaboración de los estadísticos descriptivos: “psych”, “tidyr”, “table1”,“knitr”, “kableExtra” y “survey” - Para las visualizaciones: “corrplot”, “ggplot2”, “plotly”</p>
+<p>Junto a estos paquetes instalamos: - Para la manipulación: “dplyr”, “tibbles” - Para la elaboración de los estadísticos descriptivos: “psych”, “tidyr”, “table1”,“knitr”, “kableExtra” y “survey” - Para la construcción de tablas interactivas: “DT” - Para las visualizaciones: “corrplot”, “ggplot2”, “plotly”</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
@@ -241,7 +251,7 @@ div.csl-indent {
 <details class="code-fold">
 <summary>Código</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Lista de paquetes necesarios</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>paquetes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"dplyr"</span>, <span class="st">"haven"</span>, <span class="st">"rio"</span>, <span class="st">"ggplot2"</span>, <span class="st">"psych"</span>, <span class="st">"tidyr"</span>, <span class="st">"table1"</span>, <span class="st">"knitr"</span>, <span class="st">"kableExtra"</span>, <span class="st">"survey"</span>, <span class="st">"plotly"</span>, <span class="st">"sf"</span>, <span class="st">"tmap"</span>, <span class="st">"ggthemes"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>paquetes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"dplyr"</span>, <span class="st">"haven"</span>, <span class="st">"rio"</span>, <span class="st">"ggplot2"</span>, <span class="st">"psych"</span>, <span class="st">"tidyr"</span>, <span class="st">"table1"</span>, <span class="st">"knitr"</span>, <span class="st">"kableExtra"</span>, <span class="st">"survey"</span>, <span class="st">"plotly"</span>, <span class="st">"sf"</span>, <span class="st">"tmap"</span>, <span class="st">"ggthemes"</span>, <span class="st">"DT"</span>, <span class="st">"tibble"</span>  )</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Función para instalar y cargar paquetes</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>load_packages <span class="ot">&lt;-</span> <span class="cf">function</span>(paquetes) {</span>
@@ -293,7 +303,7 @@ div.csl-indent {
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(FOLIO, OH_1, OH_4, MAR_1, MAR_4, EDAD, REGION, SEXO, DP_12, DP_16, OP_1_1_Rp, OP_1_2_Rp, OP_1_4_Rp, OP_2_2_Rp, OP_2_3_Rp, OP_2_5_Rp, CC_2, CC_3, PR_1_2_Rp, PR_1_3_Rp, PR_1_4_Rp, PR_1_5_Rp, FACTOR_EXPANSION, UPM) <span class="sc">%&gt;%</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename_with</span>(tolower)</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Variable Marihuana y </span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Variable Marihuana </span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>senda<span class="sc">$</span>mar_rec <span class="ot">&lt;-</span> <span class="fu">with</span>(senda, <span class="fu">ifelse</span>(mar_4 <span class="sc">%in%</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>senda <span class="ot">&lt;-</span> senda[senda<span class="sc">$</span>mar_1 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), ]</span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>ponderador <span class="ot">&lt;-</span> <span class="fu">svydesign</span>(<span class="at">ids =</span> <span class="sc">~</span><span class="dv">1</span>, <span class="at">data =</span> senda, <span class="at">weights =</span> <span class="sc">~</span>factor_expansion) <span class="co"># Va el ponderador por cambios en la base</span></span>
@@ -304,7 +314,7 @@ div.csl-indent {
 </details>
 </div>
 <p>El resto de alternativas de las variables originales realtivas al consumo de alcohol y marihuana (Hace más de un año, No sabe -88-, No contesta -99- ) fueron recodificadas como valores NA. Este conjunto de valores fue extraido de las operaciones mediante la función ifelse.</p>
-<p>Se recodificaron, y normalizaron algunas variables críticas adicionales que nos interesaba incluir en nuestro análisis:</p>
+<p>Se recodificaron, y normalizaron algunas variables críticas adicionales que nos interesaba incluir en nuestro análisis.</p>
 <p>Por último, se aplicaron técnicas de estandarización al conjunto de variables de interés utilizadas para la generación de clusters en base al algoritmo de jerarquización aglomerativa.</p>
 </section>
 <section id="carga" class="level2" data-number="3.3">
@@ -329,8 +339,7 @@ div.csl-indent {
 </section>
 <section id="exploración-y-análisis-descriptivo-de-variables-de-interés" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Exploración y análisis descriptivo de variables de interés:</h1>
-<p>Nuestra variable de interés fue generada a apartir de personas que afirmaron haber consumido alguna vez en su vida alcohol y/o marihuana (oh_1 y mar_1). Apartir de esto, se creó una variable para identificar a quienes consumen solo alcohol, solo marihuana y quienes consumen de ambos durante el último año (oh_4 y mar_4).</p>
-<p>De esto, se identifica que el 64% de las personas consume solo alcohol, un 4% solo marihuana y un 32% consume alcohol y marihuana.</p>
+<p>Como primer acercamiento, es posible señalar que la prevalencia del consumo declarado de alcohol en el último año alcanza un 52% en l apoblación chilena. Mientras que el consumo declarado de marihuana en el último año posee una prevalentcia del casi el 11%.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
@@ -404,10 +413,10 @@ Estadísticos
 
 </div>
 </div>
-<p>A raíz de esto de analizaron variables sociodemograficas cruzadas sobre el tipo de consumo. Las variables sociodemográficas fueron sexo, edad, niveles de educación y tramos de ingreso. También otras variables como percepción de riesgo, accesibildiad y consumo en conducción.</p>
-<section id="cruce-de-sexo-con-consumo" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="cruce-de-sexo-con-consumo"><span class="header-section-number">5.1</span> Cruce de Sexo con consumo</h2>
-<p>Los datos descriptivos de la base nos muestra que en promedio hay más mujeres que hombres y que sobre el tipo de consumo se identifica que: Sobre consumos de ambos alcohol y marihuana, los hombres consumen más que las mujeres (63% y 37% respectivamente). Sobre solo un tipo de consumo los valores se invierten, los hombres consumen en medida más solo alcohol, mientras que las mujeres consumen en medida solo marihuana.</p>
+<p>A continuación examinaremos los valores relativos a otras variables sociodemográficas de interés tales como sexo, tramo etario, nivel de educación y tramos de ingreso.</p>
+<section id="sexo-y-consumo-declarado-de-alcohol-y-marihuana-en-el-último-año" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="sexo-y-consumo-declarado-de-alcohol-y-marihuana-en-el-último-año"><span class="header-section-number">5.1</span> Sexo y consumo declarado de alcohol y marihuana en el último año</h2>
+<p>En términos generales, la población masculina lidera el consumo declarado de alcohol y de marihuana en el último año, representando un 42% y un 13% de l apoblación nacional. Sin embargo, la mayor distancia por género en términos de prevalencia de consumo declarado se produce con respecto a la marihuana. Donde las mujeres registran 5,7 puntos menos de consumo que los hombres, representando un 6,8% del total de la población Chilena.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
@@ -1258,11 +1267,323 @@ Estadísticos
 </section>
 <section id="modelo-de-machine-learning" class="level1" data-number="8">
 <h1 data-number="8"><span class="header-section-number">8</span> Modelo de Machine Learning</h1>
-<section id="pasos" class="level2" data-number="8.1">
-<h2 data-number="8.1" class="anchored" data-anchor-id="pasos"><span class="header-section-number">8.1</span> pasos</h2>
-<p>Realizar selección agregar región quizá un mapa</p>
-
+<section id="pca-alcohol" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="pca-alcohol"><span class="header-section-number">8.1</span> PCA Alcohol</h2>
+<p>A partir de la recodificación y preparación de variable anteriores se propone un modelo de Clustering para identificar los posibles grupos de la encuesta. Para esto se harán diversos clusters en base a variables inciales de alcohol y variables de marihuana, esperamos encontrar diversos grupos en cuanto al consumo de alcohol/marihuana.</p>
+<p>Se generaron dos bases solo con información de alcohol y otra solo con información de marihuana tipificada por región.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Base nueva</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>senda_clusters <span class="ot">&lt;-</span> senda <span class="sc">%&gt;%</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(region, oh_rec, pr_1_2_rp, pr_1_3_rp, cc_2) <span class="sc">%&gt;%</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="sc">-</span>region, as.numeric))  <span class="co"># Convertir todo excepto 'region' a numérico</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Escalar las variables (excepto la región)</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>senda_clusters <span class="ot">&lt;-</span> senda_clusters <span class="sc">%&gt;%</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="sc">-</span>region, scale))  <span class="co"># Escalar las variables numéricas</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Manejo de valores faltantes: eliminar filas con NA</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>senda_clusters <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(senda_clusters)</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Asignar etiquetas de las regiones de Chile a la variable 'region'</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>regiones_chile <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Arica y Parinacota"</span>, <span class="st">"Tarapacá"</span>, <span class="st">"Antofagasta"</span>, <span class="st">"Atacama"</span>, <span class="st">"Coquimbo"</span>,</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Valparaíso"</span>, <span class="st">"Metropolitana"</span>, <span class="st">"O'Higgins"</span>, <span class="st">"Maule"</span>,</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ñuble"</span>, <span class="st">"Biobío"</span>, <span class="st">"Araucanía"</span>, <span class="st">"Los Ríos"</span>, <span class="st">"Los Lagos"</span>,</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Aysén"</span>, <span class="st">"Magallanes"</span>)</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear la base con las regiones y las demás variables</span></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>senda_clusters <span class="ot">&lt;-</span> senda <span class="sc">%&gt;%</span></span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(region, oh_rec, pr_1_2_rp, pr_1_3_rp, cc_2) <span class="sc">%&gt;%</span></span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="sc">-</span>region, as.numeric)) <span class="sc">%&gt;%</span>  <span class="co"># Convertir todo excepto 'region' a numérico</span></span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(region) <span class="sc">%&gt;%</span>  <span class="co"># Agrupar por región</span></span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), mean, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))  <span class="co"># Calcular promedio por región</span></span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Asignar las etiquetas de las regiones</span></span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>senda_clusters <span class="ot">&lt;-</span> senda_clusters <span class="sc">%&gt;%</span></span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">region =</span> <span class="fu">factor</span>(region, <span class="at">levels =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">16</span>, <span class="at">labels =</span> regiones_chile)) <span class="sc">%&gt;%</span></span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_to_rownames</span>(<span class="at">var =</span> <span class="st">"region"</span>)  <span class="co"># Convertir la columna 'region' en filas</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="cluster" class="level3" data-number="8.1.1">
+<h3 data-number="8.1.1" class="anchored" data-anchor-id="cluster"><span class="header-section-number">8.1.1</span> Cluster</h3>
+<p>Una vez estandarizada las variables y agrupadas por su promedio por región. Utilizaremos un Análisis de Componentes Principales (PCA) para transformar los datos originales estandarizados en nuevas variables que explican la variación de los datos.</p>
+<p>La justificación de uso de PCA es debido a reducir la dimensionalidad, donde identificar los componentes principales que expliquen de mejor manera la varianza de los datos sean utilizados para realizar clustering.</p>
+<p>Los resultados Arrojaron 9 componentes principales que pueden ayudar a entender la asociación de las variables y el componente principal. En la tabla se observa la contribución de cada variable al componente principal. Donde valores más cercanos al 1 o -1 indican la influencia que tiene ese componente principal. Por ejemplo nuestra variable de interés sobre prevalencia de alcohol que es oh_rec en PC1 posee 0.510 que tiene una contribución positiva, siendo un factor importante en la variabilidad que puede explicar el PC1; Mientras que en PC9 posee un valor negativo de -0,662 de forma que este componente está influenciado de manera significativa pero inversa de la variable oh_rec.</p>
+<p>En cuanto la interpratación de puntuaciones de (PCA$X) cada valor son cuanto puede contribuir cada componente a la representación de variabilidad de cada grupo. Esto permite identificar con mayor precisión para agrupar observaciones y visualizar cada PCA.</p>
+<p>También se realizaron pruebas de varianza y varianza acumulada para identificar cuantos componentes son necesarios para explicar de forma significativa la varianza. Esto para reducir la cantidad de PCA y no perder demasiada información. Primero realizamos una prueba de varianza y luego la acumulada, en la varianza acumulada identificamos que con 4 PC explicamos más del 80% de la varianzasiendo la mayor parte de información, por tanto los componentes principales de 5 a 9 aportan poca varianza acumulada y pueden ser descartadas.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Componentes Principales </span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(senda_clusters, <span class="at">scale =</span> <span class="cn">TRUE</span>) <span class="co">#Calculo de PCA</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(pca<span class="sc">$</span>rotation,<span class="dv">3</span>) <span class="co"># Visualización</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>             PC1    PC2    PC3    PC4
+oh_rec    -0.629 -0.171  0.452  0.609
+pr_1_2_rp  0.416 -0.577  0.665 -0.227
+pr_1_3_rp -0.053 -0.787 -0.593  0.163
+cc_2       0.655  0.138 -0.037  0.743</code></pre>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pca<span class="sc">$</span>x) <span class="co"># Puntuaciones de obs en PCA</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                           PC1        PC2        PC3        PC4
+Arica y Parinacota -0.34191312 -0.3840387 -0.3954515  0.2560324
+Tarapacá            1.20449934  1.0557723  0.9550266 -0.0239736
+Antofagasta         0.09628096 -0.6874829  1.7066983  0.4814640
+Atacama             0.33677886 -1.9445260  1.2411086  0.3974548
+Coquimbo            0.39243032  0.6975287 -0.3176753  0.9013300
+Valparaíso          1.34075475 -0.2033517 -0.6874840 -0.2121714</code></pre>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Varianza </span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>prop_varianza  <span class="ot">&lt;-</span> pca<span class="sc">$</span>sdev<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="fu">sum</span>(pca<span class="sc">$</span>sdev<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>prop_varianza</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4359317 0.3145651 0.1459235 0.1035798</code></pre>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Varianza acumulada</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>prop_varianza_acum <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(prop_varianza)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(prop_varianza_acum,<span class="dv">2</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.44 0.75 0.90 1.00</code></pre>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear el data frame para graficar</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear el data frame filtrando solo los primeros 4 componentes</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>varianza_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">prop_varianza_acum =</span> <span class="fu">cumsum</span>(prop_varianza)[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>],</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">pc =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </section>
+<section id="gráfico-de-pca" class="level3" data-number="8.1.2">
+<h3 data-number="8.1.2" class="anchored" data-anchor-id="gráfico-de-pca"><span class="header-section-number">8.1.2</span> Gráfico de PCA</h3>
+<p>En este gráfico se observa la distribución regional del país en cuanto variables de consumo de alcohol. Donde por ejemplo la región de Bío-Bío tiene mayor probabilidad de consumo de alcohol que la Araucanía. En cuanto a las variables p_1_2_rp y p_1_3_rp sobre la percepción de peligro por tomar 3 o 5 tragos respectivamente están bastente relacionadas, lo están así también la cercanía entre regiones. En done Ñuble, Aysén y Atacama existe una alta percepción de riesgo sobre consumir cierta cantidad de alcohol. Por último en la Araucanía, Tarapacá y Metropolitana se encuentran cerca de la variable cc_2 que es sobre sí ha maneja después de beber, donde es más probable de encontrar personas que lo hayan hecho. Esto es interesante en el caso de la Araucanía, ya que se encuentra alejada de oh_rec pero está cercana a cc_2, lo que podría interpretarte como que apesar de que no haya tanta probabilidad de personas que beban alcohol, los que lo hacen es probable que hayan manejado después de hacerlo.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de la varianza acumulada</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> varianza_data, <span class="fu">aes</span>(<span class="at">x =</span> pc, <span class="at">y =</span> prop_varianza_acum)) <span class="sc">+</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span>  <span class="co"># Puntos en azul</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"darkblue"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span>  <span class="co"># Línea azul oscuro</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span>  <span class="co"># Tema de fondo limpio</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Proporción de varianza explicada acumulada (primeros 4 PCA)"</span>,</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Componente principal"</span>,</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Prop. varianza explicada acumulada"</span></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) <span class="sc">+</span>  <span class="co"># Mostrar solo los primeros 4 componentes</span></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>(<span class="at">accuracy =</span> <span class="dv">1</span>))  <span class="co"># Etiquetas en porcentaje</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de regiones</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>pca<span class="sc">$</span>rotation <span class="ot">&lt;-</span> <span class="sc">-</span>pca<span class="sc">$</span>rotation</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>pca<span class="sc">$</span>x        <span class="ot">&lt;-</span> <span class="sc">-</span>pca<span class="sc">$</span>x</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="fu">biplot</span>(pca, <span class="at">scale =</span> <span class="dv">0</span>, <span class="at">cex =</span> <span class="fl">0.5</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"blue2"</span>, <span class="st">"red2"</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-28-2.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="pca-marihuana" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="pca-marihuana"><span class="header-section-number">8.2</span> PCA Marihuana</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Base nueva</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>senda_clusters_mar <span class="ot">&lt;-</span> senda <span class="sc">%&gt;%</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(region, mar_rec, pr_1_4_rp, pr_1_5_rp, op_1_2_rp, op_1_4_rp, op_2_3_rp, cc_3) <span class="sc">%&gt;%</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="sc">-</span>region, as.numeric))  <span class="co"># Convertir todo excepto 'region' a numérico</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Escalar las variables (excepto la región)</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>senda_clusters_mar <span class="ot">&lt;-</span> senda_clusters_mar <span class="sc">%&gt;%</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="sc">-</span>region, scale))  <span class="co"># Escalar las variables numéricas</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Manejo de valores faltantes: eliminar filas con NA</span></span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>senda_clusters_mar <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(senda_clusters_mar)</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Asignar etiquetas de las regiones de Chile a la variable 'region'</span></span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>regiones_chile <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Arica y Parinacota"</span>, <span class="st">"Tarapacá"</span>, <span class="st">"Antofagasta"</span>, <span class="st">"Atacama"</span>, <span class="st">"Coquimbo"</span>,</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Valparaíso"</span>, <span class="st">"Metropolitana"</span>, <span class="st">"O'Higgins"</span>, <span class="st">"Maule"</span>,</span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ñuble"</span>, <span class="st">"Biobío"</span>, <span class="st">"Araucanía"</span>, <span class="st">"Los Ríos"</span>, <span class="st">"Los Lagos"</span>,</span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Aysén"</span>, <span class="st">"Magallanes"</span>)</span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear la base con las regiones y las demás variables</span></span>
+<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a>senda_clusters_mar <span class="ot">&lt;-</span> senda <span class="sc">%&gt;%</span></span>
+<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a> <span class="fu">select</span>(region, mar_rec, pr_1_4_rp, pr_1_5_rp, op_1_2_rp, op_1_4_rp, op_2_3_rp, cc_3) <span class="sc">%&gt;%</span></span>
+<span id="cb42-23"><a href="#cb42-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="sc">-</span>region, as.numeric)) <span class="sc">%&gt;%</span>  <span class="co"># Convertir todo excepto 'region' a numérico</span></span>
+<span id="cb42-24"><a href="#cb42-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(region) <span class="sc">%&gt;%</span>  <span class="co"># Agrupar por región</span></span>
+<span id="cb42-25"><a href="#cb42-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), mean, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))  <span class="co"># Calcular promedio por región</span></span>
+<span id="cb42-26"><a href="#cb42-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-27"><a href="#cb42-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Asignar las etiquetas de las regiones</span></span>
+<span id="cb42-28"><a href="#cb42-28" aria-hidden="true" tabindex="-1"></a>senda_clusters_mar <span class="ot">&lt;-</span> senda_clusters_mar <span class="sc">%&gt;%</span></span>
+<span id="cb42-29"><a href="#cb42-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">region =</span> <span class="fu">factor</span>(region, <span class="at">levels =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">16</span>, <span class="at">labels =</span> regiones_chile)) <span class="sc">%&gt;%</span></span>
+<span id="cb42-30"><a href="#cb42-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_to_rownames</span>(<span class="at">var =</span> <span class="st">"region"</span>)  <span class="co"># Convertir la columna 'region' en filas</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="cluster-1" class="level3" data-number="8.2.1">
+<h3 data-number="8.2.1" class="anchored" data-anchor-id="cluster-1"><span class="header-section-number">8.2.1</span> Cluster</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Componentes Principales </span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>pca_mar <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(senda_clusters_mar, <span class="at">scale. =</span> <span class="cn">TRUE</span>) <span class="co"># Cálculo de PCA</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(pca_mar<span class="sc">$</span>rotation, <span class="dv">3</span>) <span class="co"># Visualización de las cargas de las variables</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>             PC1    PC2    PC3    PC4    PC5    PC6    PC7
+mar_rec    0.465  0.197  0.313  0.035 -0.735 -0.269  0.181
+pr_1_4_rp -0.348 -0.428  0.416  0.235  0.126 -0.362  0.566
+pr_1_5_rp -0.515 -0.148  0.154  0.405 -0.446  0.068 -0.567
+op_1_2_rp -0.259  0.582 -0.170  0.455 -0.078  0.365  0.467
+op_1_4_rp -0.311  0.559 -0.050 -0.130  0.147 -0.721 -0.171
+op_2_3_rp -0.267  0.260  0.661 -0.534  0.021  0.372  0.001
+cc_3      -0.402 -0.193 -0.486 -0.520 -0.466 -0.009  0.277</code></pre>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pca_mar<span class="sc">$</span>x) <span class="co"># Puntuaciones de las observaciones en PCA</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>                           PC1         PC2        PC3        PC4        PC5
+Arica y Parinacota -0.07459453  1.30779377  0.4122129 -0.1512063  0.8242229
+Tarapacá           -2.86324804  0.43205584  0.7967093  0.5481063  0.3135814
+Antofagasta        -1.82718836  0.66530043  0.6416737 -0.8910956 -0.1235611
+Atacama            -0.85628701 -2.01101363  2.0837932  0.5099334 -0.5829082
+Coquimbo            2.71905502 -1.28745098 -0.5306775 -0.6218110 -0.4903874
+Valparaíso         -0.21528654  0.03826939 -0.7580777 -0.2957909 -0.1317617
+                           PC6         PC7
+Arica y Parinacota  0.04753804 -0.14640492
+Tarapacá            0.45911568  0.30241594
+Antofagasta        -0.24943153  0.35975037
+Atacama            -0.55005443 -0.10775444
+Coquimbo            0.23920201  0.21598770
+Valparaíso         -0.69528078 -0.03907922</code></pre>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Varianza explicada</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>prop_varianza_mar <span class="ot">&lt;-</span> pca_mar<span class="sc">$</span>sdev<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> <span class="fu">sum</span>(pca_mar<span class="sc">$</span>sdev<span class="sc">^</span><span class="dv">2</span>) <span class="co"># Proporción de varianza explicada</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>prop_varianza_mar</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.44318479 0.28171392 0.17722788 0.04229741 0.03165507 0.01899963 0.00492131</code></pre>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Varianza acumulada</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>prop_varianza_acum_mar <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(prop_varianza_mar) <span class="co"># Cálculo de la varianza acumulada</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(prop_varianza_acum_mar, <span class="dv">2</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.44 0.72 0.90 0.94 0.98 1.00 1.00</code></pre>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de varianza explicada acumulada</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear un data frame con los primeros 4 componentes principales</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>varianza_data_mar <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">prop_varianza_acum_mar =</span> prop_varianza_acum_mar[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>],</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">pc_mar =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="gráfico-de-pca-1" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="gráfico-de-pca-1"><span class="header-section-number">8.3</span> Gráfico de PCA</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de la varianza acumulada</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> varianza_data_mar, <span class="fu">aes</span>(<span class="at">x =</span> pc_mar, <span class="at">y =</span> prop_varianza_acum_mar)) <span class="sc">+</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span>  <span class="co"># Puntos en azul</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"darkblue"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span>  <span class="co"># Línea azul oscuro</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span>  <span class="co"># Tema de fondo limpio</span></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Proporción de varianza Mar explicada acumulada (primeros 4 PCA)"</span>,</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Componente principal"</span>,</span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Prop. varianza explicada acumulada"</span></span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) <span class="sc">+</span>  <span class="co"># Mostrar solo los primeros 4 componentes</span></span>
+<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>(<span class="at">accuracy =</span> <span class="dv">1</span>))  <span class="co"># Etiquetas en porcentaje</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de regiones</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">biplot</span>(pca_mar, <span class="at">scale =</span> <span class="dv">0</span>, <span class="at">cex =</span> <span class="fl">0.5</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"blue2"</span>, <span class="st">"red2"</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-31-2.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="cluster-2" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Cluster</h1>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurar K-means con 3 clusters</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)  <span class="co"># Semilla para reproducibilidad</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>kmeans_result <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(senda_clusters[,<span class="sc">-</span><span class="dv">1</span>], <span class="at">centers =</span> <span class="dv">3</span>)  <span class="co"># Excluir región para clustering</span></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Agregar el resultado a la base</span></span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>senda_clusters <span class="ot">&lt;-</span> senda_clusters <span class="sc">%&gt;%</span></span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cluster =</span> kmeans_result<span class="sc">$</span>cluster)</span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Ver los primeros resultados</span></span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(senda_clusters)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["oh_rec"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["pr_1_2_rp"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["pr_1_3_rp"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["cc_2"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["cluster"],"name":[5],"type":["int"],"align":["right"]}],"data":[{"1":"0.5031447","2":"1.475356","3":"1.921483","4":"1.901734","5":"1","_rn_":"Arica y Parinacota","_row":"Arica y Parinacota"},{"1":"0.4283784","2":"1.526027","3":"1.841962","4":"1.933852","5":"1","_rn_":"Tarapacá","_row":"Tarapacá"},{"1":"0.5859519","2":"1.586873","3":"1.883142","4":"1.913043","5":"3","_rn_":"Antofagasta","_row":"Antofagasta"},{"1":"0.5670290","2":"1.621818","3":"1.930909","4":"1.910995","5":"3","_rn_":"Atacama","_row":"Atacama"},{"1":"0.4820937","2":"1.448333","3":"1.889442","4":"1.939007","5":"1","_rn_":"Coquimbo","_row":"Coquimbo"},{"1":"0.3586957","2":"1.508537","3":"1.916262","4":"1.928339","5":"1","_rn_":"Valparaíso","_row":"Valparaíso"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Referencias</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
