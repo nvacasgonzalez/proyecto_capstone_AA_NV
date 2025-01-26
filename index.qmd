@@ -93,7 +93,7 @@ knitr::opts_chunk$set(warning = FALSE)
 
 ```{r, warning=TRUE}
 # Lista de paquetes necesarios
-paquetes <- c("dplyr", "haven", "rio", "ggplot2", "psych", "tidyr", "table1", "knitr", "kableExtra", "survey", "plotly", "sf", "tmap")
+paquetes <- c("dplyr", "haven", "rio", "ggplot2", "psych", "tidyr", "table1", "knitr", "kableExtra", "survey", "plotly", "sf", "tmap", "ggthemes")
 
 # Función para instalar y cargar paquetes
 load_packages <- function(paquetes) {
@@ -552,8 +552,6 @@ tabla_porcentajes_region
 ```
 
 ```{r, echo=TRUE, results="hide"}
-
-# Cargar el shapefile (reemplaza 'ruta_al_archivo.shp' con la ruta real al archivo)
 chile_map <- st_read("C:/Users/natal/OneDrive - Universidad Alberto Hurtado/PERSONAL/DIPLOMADO DATA SCIENCE/CAPSTONE/proyecto_capstone_AA_NV/proyecto_capstone_AA_NV/Regiones")
 
 
@@ -604,63 +602,67 @@ chile_map <- chile_map %>%
 
 
 ```{r, echo=TRUE, results="hide"}
-# Tuvimos algunos problemas para generar el mapa interactivo. Básicamente, porque nuestro shape file tenía geometrías invalidas  geometrías son válidas
-invalid_geometries <- chile_map[!st_is_valid(chile_map), ]
-print(invalid_geometries)
 
-```
+# Crear el mapa con ajustes en tamaño de mapa y leyenda
+ggplot(data = chile_map) +
+  geom_sf(aes(fill = `Marihuana (%)`), color = "white", size = 0.2) + # Líneas divisorias blancas más delgadas
+  scale_fill_gradientn(
+    colors = c("#ffffcc", "#a1dab4", "#41b6c4", "#2c7fb8", "#253494"), # Paleta diferenciada de verdes a azules
+    na.value = "grey90", # Color para valores NA
+    name = "Marihuana (%)" # Título de la escala
+  ) +
+  labs(
+    title = "Consumo de Marihuana por Región en Chile",
+    subtitle = "Porcentaje de consumo según región",
+    caption = "Fuente: Datos de consumo de marihuana y shapefile de regiones"
+  ) +
+  theme_minimal(base_size = 16) + # Base más grande para texto
+  theme(
+    panel.background = element_rect(fill = "#f5f5f5", color = NA), # Fondo claro
+    panel.grid = element_blank(), # Sin cuadrícula
+    plot.title = element_text(face = "bold", size = 18, hjust = 0.5), # Título más grande y centrado
+    plot.subtitle = element_text(size = 14, hjust = 0.5, color = "grey40"), # Subtítulo estilizado
+    legend.title = element_text(face = "bold", size = 12), # Título de la leyenda más pequeño
+    legend.text = element_text(size = 10), # Texto de la leyenda reducido
+    legend.key.size = unit(0.8, "cm"), # Tamaño de las claves de leyenda más pequeño
+    legend.position = "right" # Leyenda a la derecha
+  ) +
+  coord_sf(expand = FALSE)  # Ajustar los márgenes del mapa
 
-```{r, echo=TRUE, results="hide"}
-# Verificar si hay geometrías no válidas
-invalid_geometries <- chile_map[!st_is_valid(chile_map), ]
-print(invalid_geometries)
-
-```
-
-
-```{r, warning=FALSE}
-# Corregir las geometrías no válidas
-chile_map <- st_make_valid(chile_map)
-
-```
-
-```{r, echo=TRUE, results="hide"}
-# Verificar que ahora todas las geometrías sean válidas
-st_is_valid(chile_map)  # Debería devolver TRUE para todas las geometrías
-```
-```{r}
-# Activamos el modo interactivo de tmap
-tmap_mode("view")
-
-# Generamos el mapa interactivo con la paleta de verdes
-tm_shape(chile_map) +
-  tm_polygons("Marihuana (%)",   # Aseguramos que mostramos el porcentaje de marihuana en la capa
-              palette = "BuGn",  # Paleta de colores suaves de verde (azul a verde)
-              title = "Porcentaje de Consumo de Marihuana (%) por Región",  # Título de la leyenda
-              style = "jenks",  # Estilo de clasificación para el color
-              popup.vars = c("Region", "Marihuana (%)"),  # Mostramos tanto el nombre de la región como el porcentaje de marihuana en el popup
-              showNA = FALSE) +  # Evita mostrar valores NA si existen
-  tm_layout(legend.title.size = 1.4, 
-            frame = FALSE)  # Personalizar tamaño de título de la leyenda y quitar borde
 
 ```
 
 
-```{r}
 
-# Activamos el modo interactivo de tmap
-tmap_mode("view")
+```{r,echo=TRUE, results="hide" }
 
-# Generamos el mapa interactivo con la paleta de colores amarillos a rojizos
-tm_shape(chile_map) +
-  tm_polygons("Alcohol (%)",   # Aseguramos que mostramos el porcentaje de alcohol en la capa
-              palette = "YlOrRd",  # Paleta de colores de amarillo a rojo
-              title = "Porcentaje de Consumo de Alcohol (%) por Región",  # Título de la leyenda
-              style = "jenks",  # Estilo de clasificación para el color
-              popup.vars = c("Region", "Alcohol (%)"),  # Mostramos tanto el nombre de la región como el porcentaje de alcohol en el popup
-              showNA = FALSE) +  # Evita mostrar valores NA si existen
-  tm_layout(legend.title.size = 1.4, 
-            frame = FALSE)  # Personalizar tamaño de título de la leyenda y quitar borde
+# Crear el mapa con ajustes en tamaño de mapa y leyenda, utilizando el porcentaje de alcohol
+ggplot(data = chile_map) +
+  geom_sf(aes(fill = `Alcohol (%)`), color = "white", size = 0.2) + # Líneas divisorias blancas más delgadas
+  scale_fill_gradientn(
+    colors = c("#ffffcc", "#a1dab4", "#41b6c4", "#2c7fb8", "#253494"), # Paleta diferenciada de colores
+    na.value = "grey90", # Color para valores NA
+    name = "Alcohol (%)" # Título de la escala
+  ) +
+  labs(
+    title = "Consumo de Alcohol por Región en Chile",
+    subtitle = "Porcentaje de consumo según región",
+    caption = "Fuente: Datos de consumo de alcohol y shapefile de regiones"
+  ) +
+  theme_minimal(base_size = 16) + # Base más grande para texto
+  theme(
+    panel.background = element_rect(fill = "#f5f5f5", color = NA), # Fondo claro
+    panel.grid = element_blank(), # Sin cuadrícula
+    plot.title = element_text(face = "bold", size = 18, hjust = 0.5), # Título más grande y centrado
+    plot.subtitle = element_text(size = 14, hjust = 0.5, color = "grey40"), # Subtítulo estilizado
+    legend.title = element_text(face = "bold", size = 12), # Título de la leyenda más pequeño
+    legend.text = element_text(size = 10), # Texto de la leyenda reducido
+    legend.key.size = unit(0.8, "cm"), # Tamaño de las claves de leyenda más pequeño
+    legend.position = "right" # Leyenda a la derecha
+  ) +
+  coord_sf(expand = FALSE)  # Ajustar los márgenes del mapa
+
+
 
 
 ```
