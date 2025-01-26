@@ -82,11 +82,11 @@ Para la importación y exploración inicial de las bases de datos dummy y la ENP
 Junto a estos paquetes instalamos: 
 - Para la manipulación: "dplyr"
 - Para la elaboración de los estadísticos descriptivos: "psych", "tidyr", "table1","knitr", "kableExtra" y "survey"
-- Para las visualizaciones: "corrplot" y "ggplot2"
+- Para las visualizaciones: "corrplot", "ggplot2", "plotly"
 
 ```{r}
 # Lista de paquetes necesarios
-paquetes <- c("dplyr", "haven", "rio", "ggplot2", "psych", "tidyr", "table1", "knitr", "kableExtra", "survey")
+paquetes <- c("dplyr", "haven", "rio", "ggplot2", "psych", "tidyr", "table1", "knitr", "kableExtra", "survey", "plotly", "sf")
 
 # Función para instalar y cargar paquetes
 load_packages <- function(paquetes) {
@@ -106,7 +106,7 @@ rm(list = ls())
 
 ```
 
-```{r, warning=TRUE}
+```{r, warning=FALSE}
 # Aquí importamos la base desde github, 
 
 senda <-  import("https://raw.githubusercontent.com/nvacasgonzalez/proyecto_capstone_AA_NV/main/data/senda.xlsx")
@@ -254,6 +254,32 @@ tabla_porcentajes_sexo %>%
   kable_styling(font_size = 15)
 ```
 
+```{r}
+# Preparar los datos en formato largo
+tabla_porcentajes_sexo_long <- tabla_porcentajes_sexo %>%
+  pivot_longer(cols = c("Hombre", "Mujer"), 
+               names_to = "Sexo", 
+               values_to = "Porcentaje") %>%
+  mutate(Porcentaje = as.numeric(gsub("%", "", Porcentaje)))  # Convertir Porcentaje a numérico
+
+
+# Gráfico
+grafico_1 <- ggplot(tabla_porcentajes_sexo_long, aes(x = Variable, y = Porcentaje, fill = Sexo)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(
+    aes(label = paste0(round(Porcentaje, 1), "%")),
+    position = position_dodge(width = 0.9),
+    vjust = -0.5
+  ) +
+  labs(title = "Porcentaje de Consumo por Sexo", x = "Tipo de Consumo", y = "Porcentaje") +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +  # Formato de porcentaje en el eje Y
+  scale_fill_manual(values = c("Hombre" = "lightblue", "Mujer" = "lightcoral")) +  # Colores personalizados
+  theme_classic()
+
+grafico_1
+
+```
+
 ## Cruce de Edad con consumo
 
 La variable de edad en pro de temas de análisis fue agrupada en Tramos de edad en base a información del informe oficial de la Encuesta Nacional de Drogas 2022. Los datos iniciales descriptivos de Edad nos muestra que la media de edad de la encuesta son 42 años, una desviación estándar de 15,24 ampliandose relativamente alrededor de la media, y una skew de -0,11 lo que significa que hay un leve sesgo hacia edades más jovenes.
@@ -285,6 +311,34 @@ tabla_porcentajes_edad <- senda %>%
   mutate(Porcentaje = paste0(Porcentaje, "%")) %>%  # Agregar el símbolo de porcentaje
   select(-Frecuencia) %>%  # Eliminar la columna 'Frecuencia' si no es necesaria
   pivot_wider(names_from = tramos_edad, values_from = Porcentaje)  # Convertir columnas
+
+```
+
+
+```{r}
+# Preparar los datos en formato largo
+tabla_porcentajes_edad_long <- tabla_porcentajes_edad %>%
+  pivot_longer(cols = c("12 a 18 años", "19 a 25 años", "26 a 34 años", "35 a 44 años", "45 a 65 años"), 
+               names_to = "TramosEdad", 
+               values_to = "Porcentaje") %>%
+  mutate(Porcentaje = as.numeric(gsub("%", "", Porcentaje)))  # Convertir Porcentaje a numérico
+
+# Gráfico
+grafico_2 <- ggplot(tabla_porcentajes_edad_long, aes(x = Variable, y = Porcentaje, fill = TramosEdad)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(
+    aes(label = paste0(round(Porcentaje, 1), "%")),
+    position = position_dodge(width = 0.9),
+    vjust = -0.5
+  ) +
+  labs(title = "Porcentaje de Consumo por Tramos de Edad", x = "Tipo de Consumo", y = "Porcentaje") +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +  # Formato de porcentaje en el eje Y
+  scale_fill_manual(values = c("12 a 18 años" = "lightblue", "19 a 25 años" = "lightgreen", 
+                               "26 a 34 años" = "lightcoral", "35 a 44 años" = "lightskyblue", 
+                               "45 a 65 años" = "lightgoldenrodyellow")) +  # Colores personalizados
+  theme_classic()
+
+grafico_2
 
 ```
 
@@ -395,78 +449,6 @@ tabla_porcentajes_nse %>%
 ```
 
 
-
-# Gráficos
-
-## Gráfico de Sexo
-
-En este apartado se presentan visualización sobre nuestros datos de interés y los cruces sociodemográficos.
-
-En cuanto a la variable sexo, los hombres lideran el consumo en las tres categorías, consumo de alcohol y marihuana, consumo exclusivo de alcohol y consumo exclusivo de marihuana. Sin embargo, en la categoría de consumo simultaneo de alcohol y marihuana, existe mayor disparidad en la composición por sexo; el consumo de ambas substancias está más presente en hombres (61,3%) que en mujeres (38,7%).
-
-Sin embargo, en la categoría de consumo exclusivo de alcohol, el consumo de mujeres (48,3%) y hombres (51,7%) se encuentra más cercano.
-
-```{r}
-# Preparar los datos en formato largo
-tabla_porcentajes_sexo_long <- tabla_porcentajes_sexo %>%
-  pivot_longer(cols = c("Hombre", "Mujer"), 
-               names_to = "Sexo", 
-               values_to = "Porcentaje") %>%
-  mutate(Porcentaje = as.numeric(gsub("%", "", Porcentaje)))  # Convertir Porcentaje a numérico
-
-
-# Gráfico
-grafico_1 <- ggplot(tabla_porcentajes_sexo_long, aes(x = Variable, y = Porcentaje, fill = Sexo)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  geom_text(
-    aes(label = paste0(round(Porcentaje, 1), "%")),
-    position = position_dodge(width = 0.9),
-    vjust = -0.5
-  ) +
-  labs(title = "Porcentaje de Consumo por Sexo", x = "Tipo de Consumo", y = "Porcentaje") +
-  scale_y_continuous(labels = scales::percent_format(scale = 1)) +  # Formato de porcentaje en el eje Y
-  scale_fill_manual(values = c("Hombre" = "lightblue", "Mujer" = "lightcoral")) +  # Colores personalizados
-  theme_classic()
-
-grafico_1
-
-```
-
-## Gráfico de Edad
-
-Respecto al consumo de alcohol y marihuana en relación a los tramos etarios es posible realizar el segundo desglose según substancia: - Consumo simultaneo de alcohol y marihuana: la mayor prevalencia de este tipo de consumo se da en las personas con edades comprendidas entre 26 y 34 años (38,4%), seguidas de aquellas entre 19 y 25 años (25,1%) - Consumo exclusivo de alcohol: este tipo de consumo es más prevalente en personas entre los 45 y 65 años (34,2%) - Consumo exclusivo de marihuana: si bien los porcentajes de prevalencia de este tipo de consumo por cohorte etaria no son tan dispares, el grupo etario que muestra mayor consumo exclusivo de marihuana es el conformado por personas entre 35 y 44 años (28,2%). Junto a lo anterior, llama particularmente la atención la prevalencia del consumo de marihuana en menores de edad (9,9% del total de la composición etaria de este grupo de personas consumidoras)
-
-```{r}
-# Preparar los datos en formato largo
-tabla_porcentajes_edad_long <- tabla_porcentajes_edad %>%
-  pivot_longer(cols = c("12 a 18 años", "19 a 25 años", "26 a 34 años", "35 a 44 años", "45 a 65 años"), 
-               names_to = "TramosEdad", 
-               values_to = "Porcentaje") %>%
-  mutate(Porcentaje = as.numeric(gsub("%", "", Porcentaje)))  # Convertir Porcentaje a numérico
-
-# Gráfico
-grafico_2 <- ggplot(tabla_porcentajes_edad_long, aes(x = Variable, y = Porcentaje, fill = TramosEdad)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  geom_text(
-    aes(label = paste0(round(Porcentaje, 1), "%")),
-    position = position_dodge(width = 0.9),
-    vjust = -0.5
-  ) +
-  labs(title = "Porcentaje de Consumo por Tramos de Edad", x = "Tipo de Consumo", y = "Porcentaje") +
-  scale_y_continuous(labels = scales::percent_format(scale = 1)) +  # Formato de porcentaje en el eje Y
-  scale_fill_manual(values = c("12 a 18 años" = "lightblue", "19 a 25 años" = "lightgreen", 
-                               "26 a 34 años" = "lightcoral", "35 a 44 años" = "lightskyblue", 
-                               "45 a 65 años" = "lightgoldenrodyellow")) +  # Colores personalizados
-  theme_classic()
-
-grafico_2
-
-```
-
-## Gráfico de Ingreso
-
-Por último, en relación a la frecuencia relativa de consumo de alcohol y/o marihuana según nivel socioeconómico, caben destacar los siguientes hallazgos. (1) La personas que pertenecen al nivel socioeconómico medio y bajo poseen prevalencias de consumo simultaneo similares, con un 43,9% y un 42,1% respectivamente. (2) En el consumo exclusivo de alcohol predomina el grupo socioeconómico medio (46,9%), mientras que cuando se trata de consumo exclusivo de marihuana la mayor frecuencia se da en el nivel socioeconómico más bajo (49,2%).
-
 ```{r}
 # Preparar los datos en formato largo
 tabla_porcentajes_nse_long <- tabla_porcentajes_nse %>%
@@ -494,6 +476,194 @@ grafico_3
 
 
 ```
+
+## Cruce de Región con consumo
+
+
+
+```{r}
+etiquetas_regiones <- c(
+  "1" = "Región de Arica y Parinacota",
+  "2" = "Región de Tarapacá",
+  "3" = "Región de Antofagasta",
+  "4" = "Región de Atacama",
+  "5" = "Región de Coquimbo",
+  "6" = "Región de Valparaíso",
+  "7" = "Región Metropolitana de Santiago",
+  "8" = "Región del Libertador General Bernardo O'Higgins",
+  "9" = "Región del Maule",
+  "10" = "Región de Ñuble",
+  "11" = "Región del Biobío",
+  "12" = "Región de La Araucanía",
+  "13" = "Región de Los Ríos",
+  "14" = "Región de Los Lagos",
+  "15" = "Región de Aysén del General Carlos Ibáñez del Campo",
+  "16" = "Región de Magallanes y de la Antártica Chilena")
+
+# Tabla Porcentajes region
+tabla_porcentajes_region <- senda %>%
+  filter(mar_rec == 1 | oh_rec == 1) %>%  # Filtro de solo los valores 1
+  filter(!is.na(region)) %>%  # Asegurar que no haya valores NA en región
+  mutate(
+    region = recode(as.character(region), !!!etiquetas_regiones)) %>%  # Aplicar etiquetas 
+  group_by(region, Variable = case_when(
+    mar_rec == 1 ~ "Marihuana (%)",
+    oh_rec == 1 ~ "Alcohol (%)" )) %>%
+  summarise(Frecuencia = sum(factor_expansion), .groups = "drop") %>%  # Sumar ponderaciones
+  group_by(region) %>%  # Agrupar por región
+  mutate(
+  Porcentaje = round(Frecuencia / sum(Frecuencia) * 100, 1)  # Calcular porcentaje dentro de cada región
+  ) %>%
+  select(-Frecuencia) %>%  # Eliminar columna Frecuencia si no es necesaria
+  pivot_wider(
+    names_from = Variable, 
+    values_from = Porcentaje,
+    values_fill = 0)  # Rellenar valores faltantes con 0
+# Tabla HTML
+```
+
+```{r}
+tabla_porcentajes_region <- senda %>%
+  filter(mar_rec == 1 | oh_rec == 1) %>%  # Filtro de solo los valores 1
+  filter(!is.na(region)) %>%  # Asegurar que no haya valores NA en región
+  mutate(
+    region = recode(as.character(region), !!!etiquetas_regiones)) %>%  # Aplicar etiquetas 
+  group_by(region, Variable = case_when(
+    mar_rec == 1 ~ "Marihuana (%)",
+    oh_rec == 1 ~ "Alcohol (%)" )) %>%
+  summarise(Frecuencia = sum(factor_expansion), .groups = "drop") %>%  # Sumar ponderaciones
+  group_by(region) %>%  # Agrupar por región
+  mutate(
+  Porcentaje = round(Frecuencia / sum(Frecuencia) * 100, 1)  # Calcular porcentaje dentro de cada región
+  ) %>%
+  select(-Frecuencia) %>%  # Eliminar columna Frecuencia si no es necesaria
+  pivot_wider(
+    names_from = Variable, 
+    values_from = Porcentaje,
+    values_fill = 0) # Rellanar con valor 0
+tabla_porcentajes_region
+```
+
+```{r, warning=FALSE}
+
+# Cargar el shapefile (reemplaza 'ruta_al_archivo.shp' con la ruta real al archivo)
+chile_map <- st_read("C:/Users/natal/OneDrive - Universidad Alberto Hurtado/PERSONAL/DIPLOMADO DATA SCIENCE/CAPSTONE/proyecto_capstone_AA_NV/proyecto_capstone_AA_NV/Regiones")
+
+
+```
+
+```{r, warning=FALSE}
+# Verificamos los nombres de la regiones en el archivo shapefile
+unique(chile_map$Region)  
+
+```
+
+
+```{r, warning=FALSE}
+# Verificamos nombres en nuestra tabla
+unique(tabla_porcentajes_region$region)
+
+```
+
+```{r, warning=FALSE}
+# Lamentablemente, los nombres de algunas regiones de nuestra tabla no coinciden con sus respectivos nombres en el shapefile descargado. Por ello tenemos que crear una tabla de equivalencias para recodificar los nombres del shapefile. 
+recodificacion_regiones <- c(
+  "Región de Aysén del Gral.Ibañez del Campo" = "Región de Aysén del General Carlos Ibáñez del Campo",
+  "Región del Bío-Bío" = "Región del Biobío",
+  "Región del Libertador Bernardo O'Higgins" = "Región del Libertador General Bernardo O'Higgins", "Región de Magallanes y Antártica Chilena" = "Región de Magallanes y de la Antártica Chilena"
+)
+
+```
+
+
+
+```{r, warning=FALSE}
+
+# Recodificamos los nombres en el shapefile
+chile_map <- chile_map %>%
+  mutate(Region = recode(Region, !!!recodificacion_regiones))
+
+```
+
+
+```{r, warning=FALSE}
+# Aquí generamos el join necesario entre tablas
+chile_map <- chile_map %>%
+  left_join(tabla_porcentajes_region, by = c("Region" = "region"))
+
+```
+
+
+```{r, warning=FALSE}
+library(ggplot2)
+
+# Mapa con porcentajes de Marihuana
+ggplot(data = chile_map) +
+  geom_sf(aes(fill = `Marihuana (%)`), color = "black") +
+  scale_fill_gradient(low = "lightgreen", high = "darkgreen", na.value = "white") +
+  labs(
+    title = "Consumo de Marihuana (%) por Región",
+    fill = "Marihuana (%)"
+  ) +
+  theme_minimal()
+
+```
+
+
+```{r}
+# Cargar la librería tmap
+library(tmap)
+
+# Activar la opción para corregir geometrías
+tmap_options(check.and.fix = TRUE)
+
+# Activamos el modo interactivo de tmap
+tmap_mode("view")
+
+# Generamos el mapa interactivo
+tm_shape(chile_map) +
+  tm_polygons("Marihuana (%)",   # O "Alcohol (%)", según prefieras
+              palette = "Reds",  # Paleta de colores para los porcentajes
+              title = "Porcentaje de Consumo de Marihuana (%) por Región",  # Título de la leyenda
+              style = "jenks",  # Estilo de clasificación para el color
+              popup.vars = c("Region", "Marihuana (%)")  # Muestra en el popup el nombre de la región y el porcentaje
+              ) +
+  tm_layout(legend.title.size = 1.4, 
+            frame = FALSE)  # Personalizar tamaño de título de la leyenda y quitar borde
+
+```
+
+
+
+
+
+
+
+
+
+# Gráficos
+
+## Gráfico de Sexo
+
+En este apartado se presentan visualización sobre nuestros datos de interés y los cruces sociodemográficos.
+
+En cuanto a la variable sexo, los hombres lideran el consumo en las tres categorías, consumo de alcohol y marihuana, consumo exclusivo de alcohol y consumo exclusivo de marihuana. Sin embargo, en la categoría de consumo simultaneo de alcohol y marihuana, existe mayor disparidad en la composición por sexo; el consumo de ambas substancias está más presente en hombres (61,3%) que en mujeres (38,7%).
+
+Sin embargo, en la categoría de consumo exclusivo de alcohol, el consumo de mujeres (48,3%) y hombres (51,7%) se encuentra más cercano.
+
+
+
+## Gráfico de Edad
+
+Respecto al consumo de alcohol y marihuana en relación a los tramos etarios es posible realizar el segundo desglose según substancia: - Consumo simultaneo de alcohol y marihuana: la mayor prevalencia de este tipo de consumo se da en las personas con edades comprendidas entre 26 y 34 años (38,4%), seguidas de aquellas entre 19 y 25 años (25,1%) - Consumo exclusivo de alcohol: este tipo de consumo es más prevalente en personas entre los 45 y 65 años (34,2%) - Consumo exclusivo de marihuana: si bien los porcentajes de prevalencia de este tipo de consumo por cohorte etaria no son tan dispares, el grupo etario que muestra mayor consumo exclusivo de marihuana es el conformado por personas entre 35 y 44 años (28,2%). Junto a lo anterior, llama particularmente la atención la prevalencia del consumo de marihuana en menores de edad (9,9% del total de la composición etaria de este grupo de personas consumidoras)
+
+
+
+## Gráfico de Ingreso
+
+Por último, en relación a la frecuencia relativa de consumo de alcohol y/o marihuana según nivel socioeconómico, caben destacar los siguientes hallazgos. (1) La personas que pertenecen al nivel socioeconómico medio y bajo poseen prevalencias de consumo simultaneo similares, con un 43,9% y un 42,1% respectivamente. (2) En el consumo exclusivo de alcohol predomina el grupo socioeconómico medio (46,9%), mientras que cuando se trata de consumo exclusivo de marihuana la mayor frecuencia se da en el nivel socioeconómico más bajo (49,2%).
+
+
 
 
 # Prepación de variables para modelo de Machine Learning
