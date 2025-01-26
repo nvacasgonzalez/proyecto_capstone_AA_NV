@@ -30,7 +30,6 @@ execute:
   message: false
   fig-width: 8
   fig-height: 6
-  
 ---
 
 <img src="logo.png" style="width: 250px; position:absolute; top:0; left:0; padding:10px;"/>
@@ -51,7 +50,6 @@ En función de estos antecedentes, se vuelve relevante trazar una estrategia par
 
 A continuación, se presenta el objetivo general y los objetivos específicos del caso.
 
-
 # Objetivo:
 
 ## Objetivo General:
@@ -64,36 +62,36 @@ Identificar patrones latentes de consumo, percepción de riego, opinión públic
 
 -   Identificar variables relevantes para la elaboración de grupos o perfiles de personas que declaran haber consumido alcohol y/ o marihuana en el último año a través de la extracción de características, aplicando el análisis de componentes principales (PCA)
 
--   Explorar las agrupaciones producto de la aplicación de de algoritmo de clustering jerarquico aglomerativo. 
+-   Explorar las agrupaciones producto de la aplicación de de algoritmo de clustering jerarquico aglomerativo.
 
-
-# Componentes clave de la arquitectura de datos de la propuesta: 
+# Componentes clave de la arquitectura de datos de la propuesta:
 
 El presente proyecto se rige bajo el modelo ETL (Extract, Transform, Load) para el proceso de integración y gestión de datos y, particularmente, en la creación de Data Warehouses o sistema de análisis de datos. A continuación desglosaremos cada una de las etapas que lo componen:
 
-## Extracción: 
-
+## Extracción:
 
 Inicialmente, se trabajó con un conjunto de bases de datos dumy procedentes del Estudio Nacional de Drogas en Población General (ENPG 2022). Posteriormente, habiendo trabajado el objetivo de unión de bases de datos mediante la fundión fulljoint, se constató la perdida de un número relevante de casos. Particularmente, aquello que respondían a la categoría consumo de marihuna en el último año. Junto a lo anterior, ampliamos la exploración de variables de interés. Por esta razones, se decidió trabajar con la base original del ENPG 2022.
 
 Esta base se encuentra disponible en: <https://www.senda.gob.cl/senda-presenta-principales-resultados-del-15-estudio-de-drogas-en-poblacion-general/>
 
-Para la importación y exploración inicial de las bases de datos dummy y la ENPG 2022 original utilizamos los paquetes"readxl", "haven" y "rio". 
+Para la importación y exploración inicial de las bases de datos dummy y la ENPG 2022 original utilizamos los paquetes"readxl", "haven" y "rio".
 
-Junto a estos paquetes instalamos: 
-- Para la manipulación: "dplyr", "tibbles"
-- Para la elaboración de los estadísticos descriptivos: "psych", "tidyr", "table1","knitr", "kableExtra" y "survey"
-- Para la construcción de tablas interactivas: "DT"
-- Para las visualizaciones: "corrplot", "ggplot2", "plotly"
+Junto a estos paquetes instalamos:
 
+-   Para la manipulación: "dplyr", "tibbles"
 
+-   Para la elaboración de los estadísticos descriptivos: "psych", "tidyr", "table1","knitr", "kableExtra" y "survey"
+
+-   Para la construcción de tablas interactivas: "DT"
+
+-   Para las visualizaciones: "corrplot", "ggplot2", "plotly"
 
 ```{r}
 knitr::opts_chunk$set(warning = FALSE)
 ```
 
+```{r, echo=TRUE, results="hide"}
 
-```{r, warning=TRUE}
 # Lista de paquetes necesarios
 paquetes <- c("dplyr", "haven", "rio", "ggplot2", "psych", "tidyr", "table1", "knitr", "kableExtra", "survey", "plotly", "sf", "tmap", "ggthemes", "DT", "tibble"  )
 
@@ -122,19 +120,17 @@ senda <-  import("https://raw.githubusercontent.com/nvacasgonzalez/proyecto_caps
 
 ```
 
+## Transformación:
 
+A continuación se describe la serie de oporaciones realizadas para manipular nuestra base de datos final, es decir, la base ENPG 2022 original.
 
-## Transformación: 
+Se aplicó el factor de expasión especificado en la encuesta a la base de datos para poder trabajar con valores representativos a nivel nacional y regional
 
-A continuación se describe la serie de oporaciones realizadas para manipular nuestra base de datos final, es decir, la base ENPG 2022 original. 
+Se construyeron 2 variable de interés de tipo binario:
 
-Se aplicó el factor de expasión especificado en la encuesta a la base de datos para poder trabajar con valores representativos a nivel nacional y regional 
+-   oh_rec: que incluyen a personas que declaran consumo de alcohol en el último mes o hace menos de un mes y más de un año
 
-Se construyeron 2 variable de interés de tipo binario: 
-
-- oh_rec: que incluyen a personas que declaran consumo de alcohol en el último mes o hace menos de un mes y más de un año 
-
-- mar_rec: que contempla a personas que declaran consumo de marihuana en el últimos mes o hace menos de un mes pero menos de un año. 
+-   mar_rec: que contempla a personas que declaran consumo de marihuana en el últimos mes o hace menos de un mes pero menos de un año.
 
 ```{r, warning=TRUE}
 #Seleccionamos variables referentes al consumo de alcohol y marihuana, variables sociodemográficas y factores de expansión.
@@ -154,26 +150,21 @@ senda <- senda[senda$oh_1 %in% c(1, 2), ]
 ponderador <- svydesign(ids = ~1, data = senda, weights = ~factor_expansion) # Va el ponderador por cambios en la base
 ```
 
-
 El resto de alternativas de las variables originales realtivas al consumo de alcohol y marihuana (Hace más de un año, No sabe -88-, No contesta -99- ) fueron recodificadas como valores NA. Este conjunto de valores fue extraido de las operaciones mediante la función ifelse.
 
+Se recodificaron, y normalizaron algunas variables críticas adicionales que nos interesaba incluir en nuestro análisis. Así:
 
-Se recodificaron, y normalizaron algunas variables críticas adicionales que nos interesaba incluir en nuestro análisis. Así: 
-- la variable de edad fue agrupada por tramos de edad siguiendo la misma agrupación utilizada en el informe oficial de la ENPG 2022. 
+\- la variable de edad fue agrupada por tramos de edad siguiendo la misma agrupación utilizada en el informe oficial de la ENPG 2022.
 
-Por último, se aplicaron técnicas de estandarización al conjunto de variables de interés utilizadas para la generación de clusters en base al algoritmo de jerarquización aglomerativa. 
+Por último, se aplicaron técnicas de estandarización al conjunto de variables de interés utilizadas para la generación de clusters en base al algoritmo de jerarquización aglomerativa.
 
+## Carga:
 
-
-## Carga: 
-
-Nuestro Back Room o ambiente de trabajo donde se realizan todas las transformaciones, integraciones y armonizaciones de los datos es el presente repositorio de Github. Especificamente, nuestra carpeta data donde se enncuentra las base de datos ENPG 2022 original y las bases dumy. 
+Nuestro Back Room o ambiente de trabajo donde se realizan todas las transformaciones, integraciones y armonizaciones de los datos es el presente repositorio de Github. Especificamente, nuestra carpeta data donde se enncuentra las base de datos ENPG 2022 original y las bases dumy.
 
 En el caso de el Front Room o ambiente donde se comparten y publican los datos transformados y optimizados para consulta y análisis se ha generado la presente HTML producida en Github para la publicación de resultados.
 
-
-# Modelo entidad - relación y modelo lógico conceptual. 
-
+# Modelo entidad - relación y modelo lógico conceptual.
 
 Las variables seleccionadas para el presente proyecto se agupan en:
 
@@ -189,12 +180,9 @@ Las variables seleccionadas para el presente proyecto se agupan en:
 
 4.  Variables relacionadas a factores contextuales: consumo de drogas en el hogar ; dificultad en el acceso a la marihuana.
 
+# Exploración y análisis descriptivo de variables de interés:
 
-
-
-# Exploración y análisis descriptivo de variables de interés: 
-
-Como primer acercamiento, es posible señalar que la prevalencia del consumo declarado de alcohol en el último año alcanza un 52% en la apoblación chilena. Mientras que el consumo declarado de marihuana en el último año posee una prevalentcia del casi el 11%. 
+Como primer acercamiento, es posible señalar que la prevalencia del consumo declarado de alcohol en el último año alcanza un 52% en la apoblación chilena. Mientras que el consumo declarado de marihuana en el último año posee una prevalentcia del casi el 11%.
 
 ```{r}
 # Generar la tabla ponderada para mar_rec
@@ -230,11 +218,11 @@ tabla_consumo_combinada %>%
   add_header_above(c(" " = 1, "Estadísticos" = ncol(tabla_consumo_combinada) - 1))
 ```
 
-A continuación examinaremos los valores relativos a otras variables sociodemográficas de interés tales como sexo, tramo etario, nivel de educación y tramo de ingreso. 
+A continuación examinaremos los valores relativos a otras variables sociodemográficas de interés tales como sexo, tramo etario, nivel de educación y tramo de ingreso.
 
 ## Sexo y consumo declarado de alcohol y marihuana en el último año
 
-En términos generales, la población masculina lidera el consumo declarado  de alcohol y de marihuana en el último año, representando un 42% y un 13% de la población nacional. Sin embargo, la mayor distancia por género en términos de prevalencia de consumo declarado se produce con respecto a la marihuana. Donde las mujeres registran 5,7 puntos menos de consumo que los hombres, representando un 6,8% del total de la población chilena. 
+En términos generales, la población masculina lidera el consumo declarado de alcohol y de marihuana en el último año, representando un 42% y un 13% de la población nacional. Sin embargo, la mayor distancia por género en términos de prevalencia de consumo declarado se produce con respecto a la marihuana. Donde las mujeres registran 5,7 puntos menos de consumo que los hombres, representando un 6,8% del total de la población chilena.
 
 ```{r}
 # Tabla de Porcenajaje sexo
@@ -287,7 +275,7 @@ grafico_1
 
 ```
 
-##  Edad y consumo declarado de alcohol y marihuana en el último año
+## Edad y consumo declarado de alcohol y marihuana en el último año
 
 La exploración descriptiva de la variable edad nos muestra una edad promedio de 42 años. Esta coincide con el valor central (mediana), evidenciando una distribución simetrica de las edades. En cuanto a la desviación estándar, existe una dispersión significativa de 15,24 años, incluyendo a personas jóvenes y mayores con edades alejadas del promedio. Por otro lado exite un leve sego (-0,11) sesgo hacia edades más jovenes.
 
@@ -318,7 +306,6 @@ tabla_porcentajes_edad <- senda %>%
   pivot_wider(names_from = tramos_edad, values_from = Porcentaje)  # Convertir columnas
 
 ```
-
 
 ```{r}
 # Crear un data frame o tibble con los datos, incluyendo los nuevos estadísticos
@@ -352,10 +339,7 @@ datatable(
 
 ```
 
-
 En cuanto al tipo de consumo: Los tramos de edad que consumen más alcohol y marihuana son las personas de 26 a 34 años con un 37%, mientras quienes menos consumen ambos son personas de 12 a 18 años con un 4%. Esto tiene sentido debido a las leyes en Chile donde está prohibido que menores consuman algún tipo de droga. En cuanto a personas que consumen solo alcohol son las personas mayores de 45 a 65 años con un 34%, mientras que los tramos edad que consumen solo marihuana son las personas de 26 a 34 años con un 31%
-
-
 
 ```{r}
 # Preparar los datos en formato largo
@@ -490,7 +474,6 @@ tabla_porcentajes_nse %>%
 
 ```
 
-
 ```{r}
 # Preparar los datos en formato largo
 tabla_porcentajes_nse_long <- tabla_porcentajes_nse %>%
@@ -520,8 +503,6 @@ grafico_3
 ```
 
 ## Cruce de Región con consumo
-
-
 
 ```{r}
 etiquetas_regiones <- c(
@@ -598,7 +579,6 @@ unique(chile_map$Region)
 
 ```
 
-
 ```{r, echo=TRUE, results="hide"}
 # Verificamos nombres en nuestra tabla
 unique(tabla_porcentajes_region$region)
@@ -615,8 +595,6 @@ recodificacion_regiones <- c(
 
 ```
 
-
-
 ```{r, warning=FALSE}
 
 # Recodificamos los nombres en el shapefile
@@ -625,16 +603,12 @@ chile_map <- chile_map %>%
 
 ```
 
-
 ```{r, warning=FALSE}
 # Aquí generamos el join necesario entre tablas
 chile_map <- chile_map %>%
   left_join(tabla_porcentajes_region, by = c("Region" = "region"))
 
 ```
-
-
-
 
 ```{r, echo=TRUE, results="hide"}
 
@@ -666,8 +640,6 @@ ggplot(data = chile_map) +
 
 
 ```
-
-
 
 ```{r,echo=TRUE, results="hide" }
 
@@ -701,33 +673,6 @@ ggplot(data = chile_map) +
 
 
 ```
-
-
-
-
-
-# Gráficos
-
-## Gráfico de Sexo
-
-En este apartado se presentan visualización sobre nuestros datos de interés y los cruces sociodemográficos.
-
-En cuanto a la variable sexo, los hombres lideran el consumo en las tres categorías, consumo de alcohol y marihuana, consumo exclusivo de alcohol y consumo exclusivo de marihuana. Sin embargo, en la categoría de consumo simultaneo de alcohol y marihuana, existe mayor disparidad en la composición por sexo; el consumo de ambas substancias está más presente en hombres (61,3%) que en mujeres (38,7%).
-
-Sin embargo, en la categoría de consumo exclusivo de alcohol, el consumo de mujeres (48,3%) y hombres (51,7%) se encuentra más cercano.
-
-
-
-## Gráfico de Edad
-
-Respecto al consumo de alcohol y marihuana en relación a los tramos etarios es posible realizar el segundo desglose según substancia: - Consumo simultaneo de alcohol y marihuana: la mayor prevalencia de este tipo de consumo se da en las personas con edades comprendidas entre 26 y 34 años (38,4%), seguidas de aquellas entre 19 y 25 años (25,1%) - Consumo exclusivo de alcohol: este tipo de consumo es más prevalente en personas entre los 45 y 65 años (34,2%) - Consumo exclusivo de marihuana: si bien los porcentajes de prevalencia de este tipo de consumo por cohorte etaria no son tan dispares, el grupo etario que muestra mayor consumo exclusivo de marihuana es el conformado por personas entre 35 y 44 años (28,2%). Junto a lo anterior, llama particularmente la atención la prevalencia del consumo de marihuana en menores de edad (9,9% del total de la composición etaria de este grupo de personas consumidoras)
-
-
-
-## Gráfico de Ingreso
-
-Por último, en relación a la frecuencia relativa de consumo de alcohol y/o marihuana según nivel socioeconómico, caben destacar los siguientes hallazgos. (1) La personas que pertenecen al nivel socioeconómico medio y bajo poseen prevalencias de consumo simultaneo similares, con un 43,9% y un 42,1% respectivamente. (2) En el consumo exclusivo de alcohol predomina el grupo socioeconómico medio (46,9%), mientras que cuando se trata de consumo exclusivo de marihuana la mayor frecuencia se da en el nivel socioeconómico más bajo (49,2%).
-
 
 
 
@@ -841,7 +786,6 @@ tabla_op_opinion_exp %>%
 
 ## Conducción y tratamiento
 
-
 ```{r}
 # Datos de conducción
 senda <- senda %>%
@@ -891,9 +835,6 @@ tabla_cc_conduccion_exp %>%
                 
 ```
 
-
-
-
 # Modelo de Machine Learning
 
 ## PCA Alcohol
@@ -941,9 +882,9 @@ Una vez estandarizada las variables y agrupadas por su promedio por región. Uti
 
 La justificación de uso de PCA es debido a reducir la dimensionalidad, donde identificar los componentes principales que expliquen de mejor manera la varianza de los datos sean utilizados para realizar clustering.
 
-Los resultados Arrojaron 9 componentes principales que pueden ayudar a entender la asociación de las variables y el componente principal. En la tabla se observa la contribución de cada variable al componente principal. Donde valores más cercanos al 1 o -1 indican la influencia que tiene ese componente principal. Por ejemplo nuestra variable de interés sobre prevalencia de alcohol que es oh_rec en PC1 posee 0.510 que tiene una contribución positiva, siendo un factor importante en la variabilidad que puede explicar el PC1; Mientras que en PC9 posee un valor negativo de -0,662 de forma que este componente está influenciado de manera significativa pero inversa de la variable oh_rec. 
+Los resultados Arrojaron 9 componentes principales que pueden ayudar a entender la asociación de las variables y el componente principal. En la tabla se observa la contribución de cada variable al componente principal. Donde valores más cercanos al 1 o -1 indican la influencia que tiene ese componente principal. Por ejemplo nuestra variable de interés sobre prevalencia de alcohol que es oh_rec en PC1 posee 0.510 que tiene una contribución positiva, siendo un factor importante en la variabilidad que puede explicar el PC1; Mientras que en PC9 posee un valor negativo de -0,662 de forma que este componente está influenciado de manera significativa pero inversa de la variable oh_rec.
 
-En cuanto la interpratación de puntuaciones de (PCA$X) cada valor son cuanto puede contribuir cada componente a la representación de variabilidad de cada grupo. Esto permite identificar con mayor precisión para agrupar observaciones y visualizar cada PCA. 
+En cuanto la interpratación de puntuaciones de (PCA\$X) cada valor son cuanto puede contribuir cada componente a la representación de variabilidad de cada grupo. Esto permite identificar con mayor precisión para agrupar observaciones y visualizar cada PCA.
 
 También se realizaron pruebas de varianza y varianza acumulada para identificar cuantos componentes son necesarios para explicar de forma significativa la varianza. Esto para reducir la cantidad de PCA y no perder demasiada información. Primero realizamos una prueba de varianza y luego la acumulada, en la varianza acumulada identificamos que con 4 PC explicamos más del 80% de la varianzasiendo la mayor parte de información, por tanto los componentes principales de 5 a 9 aportan poca varianza acumulada y pueden ser descartadas.
 
@@ -969,10 +910,7 @@ varianza_data <- data.frame(
 
 ### Gráfico de PCA
 
-En este gráfico se observa la distribución regional del país en cuanto variables de consumo de alcohol.
-Donde por ejemplo la región de Bío-Bío tiene mayor probabilidad de consumo de alcohol que la Araucanía.
-En cuanto a las variables p_1_2_rp y p_1_3_rp sobre la percepción de peligro por tomar 3 o 5 tragos respectivamente están bastente relacionadas, lo están así también la cercanía entre regiones. En done Ñuble, Aysén y Atacama existe una alta percepción de riesgo sobre consumir cierta cantidad de alcohol.
-Por último en la Araucanía, Tarapacá y Metropolitana se encuentran cerca de la variable cc_2 que es sobre sí ha maneja después de beber, donde es más probable de encontrar personas que lo hayan hecho. Esto es interesante en el caso de la Araucanía, ya que se encuentra alejada de oh_rec pero está cercana a cc_2, lo que podría interpretarte como que apesar de que no haya tanta probabilidad de personas que beban alcohol, los que lo hacen es probable que hayan manejado después de hacerlo.
+En este gráfico se observa la distribución regional del país en cuanto variables de consumo de alcohol. Donde por ejemplo la región de Bío-Bío tiene mayor probabilidad de consumo de alcohol que la Araucanía. En cuanto a las variables p_1_2_rp y p_1_3_rp sobre la percepción de peligro por tomar 3 o 5 tragos respectivamente están bastente relacionadas, lo están así también la cercanía entre regiones. En done Ñuble, Aysén y Atacama existe una alta percepción de riesgo sobre consumir cierta cantidad de alcohol. Por último en la Araucanía, Tarapacá y Metropolitana se encuentran cerca de la variable cc_2 que es sobre sí ha maneja después de beber, donde es más probable de encontrar personas que lo hayan hecho. Esto es interesante en el caso de la Araucanía, ya que se encuentra alejada de oh_rec pero está cercana a cc_2, lo que podría interpretarte como que apesar de que no haya tanta probabilidad de personas que beban alcohol, los que lo hacen es probable que hayan manejado después de hacerlo.
 
 ```{r}
 # Gráfico de la varianza acumulada
@@ -993,6 +931,7 @@ pca$rotation <- -pca$rotation
 pca$x        <- -pca$x
 biplot(pca, scale = 0, cex = 0.5, col = c("blue2", "red2"))
 ```
+
 ## PCA Marihuana
 
 ```{r}
@@ -1073,11 +1012,7 @@ ggplot(data = varianza_data_mar, aes(x = pc_mar, y = prop_varianza_acum_mar)) +
 biplot(pca_mar, scale = 0, cex = 0.5, col = c("blue2", "red2"))
 ```
 
-
-
-
 # Cluster
-
 
 ```{r}
 # Configurar K-means con 3 clusters
