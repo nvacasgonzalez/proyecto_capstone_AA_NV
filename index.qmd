@@ -102,7 +102,7 @@ load_packages(paquetes)
 # Borrado de objetos, data frames, vectores y otros elmentos del environment previos 
 # a la ejecuión de presente archivo.  
 
-rm(list = ls())
+
 
 ```
 
@@ -640,6 +640,15 @@ st_is_valid(chile_map)  # Debería devolver TRUE para todas las geometrías
 
 
 ```{r}
+tm_shape(chile_map) +
+  tm_polygons("Marihuana (%)", 
+              palette = "YlGn", 
+              title = "Porcentaje de Consumo de Marihuana (%) por Región", 
+              style = "jenks", 
+              popup.vars = c("Region", "Marihuana (%)"), 
+              showNA = FALSE) +
+  tm_layout(legend.title.size = 1.4, 
+            frame = FALSE)
 
 
 ```
