@@ -84,9 +84,9 @@ Junto a estos paquetes instalamos:
 - Para la elaboración de los estadísticos descriptivos: "psych", "tidyr", "table1","knitr", "kableExtra" y "survey"
 - Para las visualizaciones: "corrplot", "ggplot2", "plotly"
 
-```{r}
+```{r, warning=TRUE}
 # Lista de paquetes necesarios
-paquetes <- c("dplyr", "haven", "rio", "ggplot2", "psych", "tidyr", "table1", "knitr", "kableExtra", "survey", "plotly", "sf")
+paquetes <- c("dplyr", "haven", "rio", "ggplot2", "psych", "tidyr", "table1", "knitr", "kableExtra", "survey", "plotly", "sf", "tmap")
 
 # Función para instalar y cargar paquetes
 load_packages <- function(paquetes) {
@@ -610,34 +610,39 @@ ggplot(data = chile_map) +
 ```
 
 
+```{r, warning=FALSE}
+# Tuvimos algunos problemas para generar el mapa interactivo. Básicamente, porque nuestro shape file tenía geometrías invalidas  geometrías son válidas
+invalid_geometries <- chile_map[!st_is_valid(chile_map), ]
+print(invalid_geometries)
+
+```
+
+```{r, warning=FALSE}
+# Verificar si hay geometrías no válidas
+invalid_geometries <- chile_map[!st_is_valid(chile_map), ]
+print(invalid_geometries)
+
+```
+
+
+```{r, warning=FALSE}
+# Corregir las geometrías no válidas
+chile_map <- st_make_valid(chile_map)
+
+```
+
 ```{r}
-# Cargar la librería tmap
-library(tmap)
-
-# Activar la opción para corregir geometrías
-tmap_options(check.and.fix = TRUE)
-
-# Activamos el modo interactivo de tmap
-tmap_mode("view")
-
-# Generamos el mapa interactivo
-tm_shape(chile_map) +
-  tm_polygons("Marihuana (%)",   # O "Alcohol (%)", según prefieras
-              palette = "Reds",  # Paleta de colores para los porcentajes
-              title = "Porcentaje de Consumo de Marihuana (%) por Región",  # Título de la leyenda
-              style = "jenks",  # Estilo de clasificación para el color
-              popup.vars = c("Region", "Marihuana (%)")  # Muestra en el popup el nombre de la región y el porcentaje
-              ) +
-  tm_layout(legend.title.size = 1.4, 
-            frame = FALSE)  # Personalizar tamaño de título de la leyenda y quitar borde
-
+# Verificar que ahora todas las geometrías sean válidas
+st_is_valid(chile_map)  # Debería devolver TRUE para todas las geometrías
 ```
 
 
 
 
+```{r}
 
 
+```
 
 
 
