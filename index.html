@@ -204,6 +204,7 @@ div.csl-indent {
   <li><a href="#cluster-alcohol" id="toc-cluster-alcohol" class="nav-link" data-scroll-target="#cluster-alcohol"><span class="header-section-number">8.1</span> Cluster Alcohol</a></li>
   <li><a href="#cluster-marihuana" id="toc-cluster-marihuana" class="nav-link" data-scroll-target="#cluster-marihuana"><span class="header-section-number">8.2</span> Cluster Marihuana</a></li>
   </ul></li>
+  <li><a href="#conclusiones" id="toc-conclusiones" class="nav-link" data-scroll-target="#conclusiones"><span class="header-section-number">9</span> Conclusiones:</a></li>
   </ul>
 </nav>
 </div>
@@ -249,7 +250,7 @@ div.csl-indent {
 <h2 data-number="3.1" class="anchored" data-anchor-id="extracción"><span class="header-section-number">3.1</span> Extracción:</h2>
 <p>Inicialmente, se trabajó con un conjunto de bases de datos dumy procedentes del Estudio Nacional de Drogas en Población General (ENPG 2022). Posteriormente, habiendo trabajado el objetivo de unión de bases de datos mediante la fundión fulljoint, se constató la perdida de un número relevante de casos. Particularmente, aquello que respondían a la categoría consumo de marihuna en el último año. Junto a lo anterior, ampliamos la exploración de variables de interés. Por esta razones, se decidió trabajar con la base original del ENPG 2022.</p>
 <p>Esta base se encuentra disponible en: <a href="https://www.senda.gob.cl/senda-presenta-principales-resultados-del-15-estudio-de-drogas-en-poblacion-general/" class="uri">https://www.senda.gob.cl/senda-presenta-principales-resultados-del-15-estudio-de-drogas-en-poblacion-general/</a></p>
-<p>Para la importación y exploración inicial de las bases de datos dummy y la ENPG 2022 original utilizamos los paquetes”readxl”, “haven” y “rio”. Junto a estos paquetes instalamos “dplyr” y “tibbles” para la manipulación; “psych”, “tidyr”, “table1”,“knitr”, “kableExtra” y “survey” para la elaboración de los estadísticos descriptivos; “DT” para la construcción de tablas interactivas; “corrplot”, “ggplot2”, “plotly” para las visualizaciones.</p>
+<p>Para la importación y exploración inicial de las bases de datos dummy y la ENPG 2022 original utilizamos los paquetes”readxl”, “haven” y “rio”. Junto a estos paquetes instalamos “dplyr” y “tibbles” para la manipulación; “psych”, “tidyr”, “table1”,“knitr”, “kableExtra” y “survey” para la elaboración de los estadísticos descriptivos; “DT” para la construcción de tablas interactivas; “corrplot”, “ggplot2”, “plotly” para las visualizaciones; y “renv” para asegurar la reproducibilidad.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
@@ -260,7 +261,7 @@ div.csl-indent {
 <details class="code-fold">
 <summary>Código</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Lista de paquetes necesarios</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>paquetes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"dplyr"</span>, <span class="st">"haven"</span>, <span class="st">"rio"</span>, <span class="st">"ggplot2"</span>, <span class="st">"psych"</span>, <span class="st">"tidyr"</span>, <span class="st">"table1"</span>, <span class="st">"knitr"</span>, <span class="st">"kableExtra"</span>, <span class="st">"survey"</span>, <span class="st">"plotly"</span>, <span class="st">"sf"</span>, <span class="st">"tmap"</span>, <span class="st">"ggthemes"</span>, <span class="st">"DT"</span>, <span class="st">"tibble"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>paquetes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"dplyr"</span>, <span class="st">"haven"</span>, <span class="st">"rio"</span>, <span class="st">"ggplot2"</span>, <span class="st">"psych"</span>, <span class="st">"tidyr"</span>, <span class="st">"table1"</span>, <span class="st">"knitr"</span>, <span class="st">"kableExtra"</span>, <span class="st">"survey"</span>, <span class="st">"plotly"</span>, <span class="st">"sf"</span>, <span class="st">"tmap"</span>, <span class="st">"ggthemes"</span>, <span class="st">"DT"</span>, <span class="st">"tibble"</span>, <span class="st">"renv"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Función para instalar y cargar paquetes</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>load_packages <span class="ot">&lt;-</span> <span class="cf">function</span>(paquetes) {</span>
@@ -565,8 +566,8 @@ Estadísticos
 <span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-6af0ea5d41a6fc9d9557" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-6af0ea5d41a6fc9d9557">{"x":{"filter":"none","vertical":false,"data":[["1"],[1],[17378],[41.99],[15.24],[42],[42.33],[19.27],[12],[65],[53],[-0.11],[-1.17],[0.12]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>vars<\/th>\n      <th>n<\/th>\n      <th>mean<\/th>\n      <th>sd<\/th>\n      <th>median<\/th>\n      <th>trimmed<\/th>\n      <th>mad<\/th>\n      <th>min<\/th>\n      <th>max<\/th>\n      <th>range<\/th>\n      <th>skew<\/th>\n      <th>kurtosis<\/th>\n      <th>se<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","pageLength":5,"columnDefs":[{"className":"dt-center","targets":"_all"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"vars","targets":1},{"name":"n","targets":2},{"name":"mean","targets":3},{"name":"sd","targets":4},{"name":"median","targets":5},{"name":"trimmed","targets":6},{"name":"mad","targets":7},{"name":"min","targets":8},{"name":"max","targets":9},{"name":"range","targets":10},{"name":"skew","targets":11},{"name":"kurtosis","targets":12},{"name":"se","targets":13}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-9dbb23af5cc9f451cae2" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-9dbb23af5cc9f451cae2">{"x":{"filter":"none","vertical":false,"data":[["1"],[1],[17378],[41.99],[15.24],[42],[42.33],[19.27],[12],[65],[53],[-0.11],[-1.17],[0.12]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>vars<\/th>\n      <th>n<\/th>\n      <th>mean<\/th>\n      <th>sd<\/th>\n      <th>median<\/th>\n      <th>trimmed<\/th>\n      <th>mad<\/th>\n      <th>min<\/th>\n      <th>max<\/th>\n      <th>range<\/th>\n      <th>skew<\/th>\n      <th>kurtosis<\/th>\n      <th>se<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","pageLength":5,"columnDefs":[{"className":"dt-center","targets":"_all"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"vars","targets":1},{"name":"n","targets":2},{"name":"mean","targets":3},{"name":"sd","targets":4},{"name":"median","targets":5},{"name":"trimmed","targets":6},{"name":"mad","targets":7},{"name":"min","targets":8},{"name":"max","targets":9},{"name":"range","targets":10},{"name":"skew","targets":11},{"name":"kurtosis","targets":12},{"name":"se","targets":13}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>En cuanto al consumo declaradado de alcohol en el último año, el grupo etario que muestra mayor prevalencia es el conformado por personas mayores de 45 años (30,1%) seguido de personas con edades comprendidas entre los 12 y 19 años (18,1%) y entre los 26 y 34 (17,9%). Por su parte, el consumo declarado de marihuana en el último años posee su mayor prevalencia entre personas de 26 a 34 año (7,1%) y personas que se encuentran en el tramo etario de de 19 a 25 años (5,5%).</p>
@@ -862,7 +863,7 @@ Estadísticos
 <section id="regiones-y-consumo-declarado-de-alcohol-y-marihuana-en-el-último-año." class="level2" data-number="5.5">
 <h2 data-number="5.5" class="anchored" data-anchor-id="regiones-y-consumo-declarado-de-alcohol-y-marihuana-en-el-último-año."><span class="header-section-number">5.5</span> Regiones y consumo declarado de alcohol y marihuana en el último año.</h2>
 <p>Si abordamos el análisis exploratorio según región, aquellas que muestran un alto procentaje de prevalencia del consumo declarado de alcohol y marihuana en el último año son Coquimbo, Valparaíso y Maule con más del 75% en alcohol y más del 20% en marihuana. Los Lagos destaca por tener el consumo declarado de marihuana más alto (31.3%) del país, aunque su consumo declarado de alcohol es relativamente bajo (68.7%); el menor de todas las regiones. Esto podría indicar patrones de consumo diferenciados según la sustancia.</p>
-<p>Respecto a las regiones con moderación en el consumo delclarado de ambas sustancias, Antofagasta y Ñuble presentan consumos bajos de marihuana (alrededor del 12.6% y 12.8%, respectivamente) y valores intermedios o altos en consumo de alcohol. Tarapacá tiene el porcentaje más bajo de prevalencia de consumo declarado de marihuana (9.1%) pero el más alto de alcohol (90.9%). Esto podría indicar un comportamiento divergente respecto al consumos de estas sustancias en esta región.</p>
+<p>Respecto a las regiones con moderación en el consumo declarado de ambas sustancias, Antofagasta y Ñuble presentan consumos bajos de marihuana (alrededor del 12.6% y 12.8%, respectivamente) y valores intermedios o altos en consumo de alcohol. Tarapacá tiene el porcentaje más bajo de prevalencia de consumo declarado de marihuana (9.1%) pero el más alto de alcohol (90.9%). Esto podría indicar un comportamiento divergente respecto al consumos de estas sustancias en esta región.</p>
 <p>En síntesis, es posible señalar que las regiones del norte (como Tarapacá y Antofagasta) tienden a tener un consumo declarado de alcohol más alto pero un consumo delarado de marihuana más bajo. Mientras que, algunas regiones del sur (como Los Lagos y Los Ríos) tienden a tener un consumo declarado de marihuana más alto, aunque el consumo delcarado de alcohol varía ampliamente.</p>
 <p>Por último, algunas regiones centrales ( como por ejemplo Maule, Valparaíso y Coquimbo) combinan altos consumos de ambas sustancias, mostrando una tendencia más equilibrada entre ellas.</p>
 <div class="cell">
@@ -2051,8 +2052,32 @@ Estadísticos
 </div>
 </div>
 </div>
-
 </section>
+</section>
+<section id="conclusiones" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Conclusiones:</h1>
+<p>A partir del análisis realizado sobre el consumo de alcohol y marihuana en diferentes regiones, se pueden extraer las siguientes conclusiones principales:</p>
+<ol type="1">
+<li>Análisis del Consumo de Alcohol</li>
+</ol>
+<p>PCA y Varianza: Mediante el Análisis de Componentes Principales (PCA), se identificaron 4 componentes principales que explican más del 90% de la variabilidad en los datos, con los primeros 3 componentes explicando la mayor parte de la varianza acumulada. Esto permitió simplificar el conjunto de datos sin pérdida significativa de información, destacando el consumo de alcohol (oh_rec) como una variable clave en los primeros componentes.</p>
+<p>Clusters: El análisis de clustering generó 4 grupos bien definidos:</p>
+<p>Grupo 1: Regiones con menor consumo de alcohol, alta percepción de riesgo y baja probabilidad de manejar bajo efectos del alcohol. Grupo 2: Regiones con consumo moderado, percepción de riesgo baja al consumo ocasional, pero alta al frecuente, con baja probabilidad de manejar habiendo consumodo alcohol previamente. Grupo 3: Regiones con mayor probabilidad de consumo, percepción moderada a baja sobre el riesgo y de manejar habiendo consumodo alcohol previamente. Grupo 4 (Los Lagos): Presenta un perfil distinto, con mayor consumo, baja percepción de riesgo al consumo ocasional y frecuente, y la mayor probabilidad de manejar habiendo consumodo alcohol previamente.</p>
+<ol start="2" type="1">
+<li>Análisis del Consumo de Marihuana</li>
+</ol>
+<p>PCA y Varianza: Para las variables relacionadas con marihuana, se identificaron 6 componentes principales, donde los primeros 3 explican casi el 90% de la variabilidad. La variable mar_rec (prevalencia de consumo declarado de marihuana) destacó en el primer componente como un determinante clave.</p>
+<p>Clusters: De manera similar al alcohol, se generaron 4 clusters:</p>
+<p>Grupo 1: Consumo moderado, percepción moderada del riesgo experimental y alta al frecuente. Apoyo al uso terapéutico de marihuana y acuerdo con que causa menos daño que el alcohol. Grupo 2: Consumo moderado, baja percepción del riesgo al uso experimental y alta al frecuente, con menor apoyo al uso terapéutico, pero más acuerdo con que la marihuana es menos dañina que el alcohol. Grupo 3: Menor consumo de marihuana, mayor percepción de riesgo tanto en uso experimental como frecuente, y mayor apoyo al uso terapéutico. Grupo 4: Mayor consumo de marihuana, baja percepción de riesgo, mayor probabilidad de manejar bajo efectos de la sustancia, y niveles bajos de apoyo al uso terapéutico.</p>
+<ol start="3" type="1">
+<li>Hallazgos Generales</li>
+</ol>
+<p>Las regiones chilenas presentan diferencias significativas en el consumo, percepción de riesgo y comportamientos asociados tanto para el alcohol como para la marihuana. Los patrones observados muestran que las variables relacionadas con la percepción de riesgo son determinantes clave en la segmentación de las regiones, afectando tanto los niveles de consumo como las actitudes hacia el manejo bajo los efectos de estas sustancias. La región de Los Lagos destaca como un caso atípico en el consumo de alcohol, mientras que en el caso de marihuana, las diferencias se distribuyen más uniformemente entre los clusters, siendo la percepción de riesgo un factor diferenciador clave.</p>
+<ol start="4" type="1">
+<li>Implicaciones y Aplicaciones</li>
+</ol>
+<p>Este análisis podría representar una base para el diseño de estrategias regionales de prevención y políticas públicas. Las regiones con mayor consumo o baja percepción de riesgo pueden ser objetivo de campañas específicas para reducir el consumo y sus efectos asociados, mientras que las regiones con mayor percepción de riesgo podrían requerir menos intervención directa en términos de consumo, pero más educación sobre los efectos de conducción bajo sustancias.</p>
+
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Referencias</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">

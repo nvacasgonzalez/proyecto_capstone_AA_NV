@@ -74,7 +74,7 @@ Inicialmente, se trabajó con un conjunto de bases de datos dumy procedentes del
 
 Esta base se encuentra disponible en: <https://www.senda.gob.cl/senda-presenta-principales-resultados-del-15-estudio-de-drogas-en-poblacion-general/>
 
-Para la importación y exploración inicial de las bases de datos dummy y la ENPG 2022 original utilizamos los paquetes"readxl", "haven" y "rio". Junto a estos paquetes instalamos "dplyr" y "tibbles" para la manipulación; "psych", "tidyr", "table1","knitr", "kableExtra" y "survey" para la elaboración de los estadísticos descriptivos; "DT" para la construcción de tablas interactivas; "corrplot", "ggplot2", "plotly" para las visualizaciones.
+Para la importación y exploración inicial de las bases de datos dummy y la ENPG 2022 original utilizamos los paquetes"readxl", "haven" y "rio". Junto a estos paquetes instalamos "dplyr" y "tibbles" para la manipulación; "psych", "tidyr", "table1","knitr", "kableExtra" y "survey" para la elaboración de los estadísticos descriptivos; "DT" para la construcción de tablas interactivas; "corrplot", "ggplot2", "plotly" para las visualizaciones; y "renv" para asegurar la reproducibilidad. 
 
 ```{r}
 knitr::opts_chunk$set(warning = FALSE)
@@ -83,7 +83,7 @@ knitr::opts_chunk$set(warning = FALSE)
 ```{r, echo=TRUE, results="hide"}
 
 # Lista de paquetes necesarios
-paquetes <- c("dplyr", "haven", "rio", "ggplot2", "psych", "tidyr", "table1", "knitr", "kableExtra", "survey", "plotly", "sf", "tmap", "ggthemes", "DT", "tibble")
+paquetes <- c("dplyr", "haven", "rio", "ggplot2", "psych", "tidyr", "table1", "knitr", "kableExtra", "survey", "plotly", "sf", "tmap", "ggthemes", "DT", "tibble", "renv")
 
 # Función para instalar y cargar paquetes
 load_packages <- function(paquetes) {
@@ -520,7 +520,7 @@ grafico_3
 
 Si abordamos el análisis exploratorio según región, aquellas que muestran un alto procentaje de prevalencia del consumo declarado de alcohol y marihuana en el último año son Coquimbo, Valparaíso y Maule con más del 75% en alcohol y más del 20% en marihuana. Los Lagos destaca por tener el consumo declarado de marihuana más alto (31.3%) del país, aunque su consumo declarado de alcohol es relativamente bajo (68.7%); el menor de todas las regiones. Esto podría indicar patrones de consumo diferenciados según la sustancia.
 
-Respecto a las regiones con moderación en el consumo delclarado de ambas sustancias, Antofagasta y Ñuble presentan consumos bajos de marihuana (alrededor del 12.6% y 12.8%, respectivamente) y valores intermedios o altos en consumo de alcohol. Tarapacá tiene el porcentaje más bajo de prevalencia de consumo declarado de marihuana (9.1%) pero el más alto de alcohol (90.9%). Esto podría indicar un comportamiento divergente respecto al consumos de estas sustancias en esta región.
+Respecto a las regiones con moderación en el consumo declarado de ambas sustancias, Antofagasta y Ñuble presentan consumos bajos de marihuana (alrededor del 12.6% y 12.8%, respectivamente) y valores intermedios o altos en consumo de alcohol. Tarapacá tiene el porcentaje más bajo de prevalencia de consumo declarado de marihuana (9.1%) pero el más alto de alcohol (90.9%). Esto podría indicar un comportamiento divergente respecto al consumos de estas sustancias en esta región.
 
 En síntesis, es posible señalar que las regiones del norte (como Tarapacá y Antofagasta) tienden a tener un consumo declarado de alcohol más alto pero un consumo delarado de marihuana más bajo. Mientras que, algunas regiones del sur (como Los Lagos y Los Ríos) tienden a tener un consumo declarado de marihuana más alto, aunque el consumo delcarado de alcohol varía ampliamente.
 
@@ -1297,4 +1297,40 @@ legend("bottomright",
        pch = 16, 
        title = "Clusters")
 ```
+
+# Conclusiones: 
+
+A partir del análisis realizado sobre el consumo de alcohol y marihuana en diferentes regiones, se pueden extraer las siguientes conclusiones principales:
+
+1. Análisis del Consumo de Alcohol
+
+PCA y Varianza: Mediante el Análisis de Componentes Principales (PCA), se identificaron 4 componentes principales que explican más del 90% de la variabilidad en los datos, con los primeros 3 componentes explicando la mayor parte de la varianza acumulada. Esto permitió simplificar el conjunto de datos sin pérdida significativa de información, destacando el consumo de alcohol (oh_rec) como una variable clave en los primeros componentes.
+
+Clusters: El análisis de clustering generó 4 grupos bien definidos:
+
+Grupo 1: Regiones con menor consumo de alcohol, alta percepción de riesgo y baja probabilidad de manejar bajo efectos del alcohol.
+Grupo 2: Regiones con consumo moderado, percepción de riesgo baja al consumo ocasional, pero alta al frecuente, con baja probabilidad de manejar habiendo consumodo alcohol previamente.
+Grupo 3: Regiones con mayor probabilidad de consumo, percepción moderada a baja sobre el riesgo y de manejar habiendo consumodo alcohol previamente.
+Grupo 4 (Los Lagos): Presenta un perfil distinto, con mayor consumo, baja percepción de riesgo al consumo ocasional y frecuente, y la mayor probabilidad de manejar habiendo consumodo alcohol previamente.
+
+2. Análisis del Consumo de Marihuana
+
+PCA y Varianza: Para las variables relacionadas con marihuana, se identificaron 6 componentes principales, donde los primeros 3 explican casi el 90% de la variabilidad. La variable mar_rec (prevalencia de consumo declarado de marihuana) destacó en el primer componente como un determinante clave.
+
+Clusters: De manera similar al alcohol, se generaron 4 clusters:
+
+Grupo 1: Consumo moderado, percepción moderada del riesgo experimental y alta al frecuente. Apoyo al uso terapéutico de marihuana y acuerdo con que causa menos daño que el alcohol.
+Grupo 2: Consumo moderado, baja percepción del riesgo al uso experimental y alta al frecuente, con menor apoyo al uso terapéutico, pero más acuerdo con que la marihuana es menos dañina que el alcohol.
+Grupo 3: Menor consumo de marihuana, mayor percepción de riesgo tanto en uso experimental como frecuente, y mayor apoyo al uso terapéutico.
+Grupo 4: Mayor consumo de marihuana, baja percepción de riesgo, mayor probabilidad de manejar bajo efectos de la sustancia, y niveles bajos de apoyo al uso terapéutico.
+
+3. Hallazgos Generales
+
+Las regiones chilenas presentan diferencias significativas en el consumo, percepción de riesgo y comportamientos asociados tanto para el alcohol como para la marihuana.
+Los patrones observados muestran que las variables relacionadas con la percepción de riesgo son determinantes clave en la segmentación de las regiones, afectando tanto los niveles de consumo como las actitudes hacia el manejo bajo los efectos de estas sustancias.
+La región de Los Lagos destaca como un caso atípico en el consumo de alcohol, mientras que en el caso de marihuana, las diferencias se distribuyen más uniformemente entre los clusters, siendo la percepción de riesgo un factor diferenciador clave.
+
+4. Implicaciones y Aplicaciones
+
+Este análisis podría representar una base para el diseño de estrategias regionales de prevención y políticas públicas. Las regiones con mayor consumo o baja percepción de riesgo pueden ser objetivo de campañas específicas para reducir el consumo y sus efectos asociados, mientras que las regiones con mayor percepción de riesgo podrían requerir menos intervención directa en términos de consumo, pero más educación sobre los efectos de conducción bajo sustancias.
 
