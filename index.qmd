@@ -612,15 +612,9 @@ chile_map <- st_read("C:/Users/natal/OneDrive - Universidad Alberto Hurtado/PERS
 # Verificamos los nombres de la regiones en el archivo shapefile
 unique(chile_map$Region)  
 
-```
-
-```{r, echo=TRUE, results="hide"}
 # Verificamos nombres en nuestra tabla
 unique(tabla_porcentajes_region$region)
 
-```
-
-```{r, warning=FALSE}
 # Lamentablemente, los nombres de algunas regiones de nuestra tabla no coinciden con sus respectivos nombres en el shapefile descargado. Por ello tenemos que crear una tabla de equivalencias para recodificar los nombres del shapefile. 
 recodificacion_regiones <- c(
   "Región de Aysén del Gral.Ibañez del Campo" = "Región de Aysén del General Carlos Ibáñez del Campo",
@@ -628,17 +622,10 @@ recodificacion_regiones <- c(
   "Región del Libertador Bernardo O'Higgins" = "Región del Libertador General Bernardo O'Higgins", "Región de Magallanes y Antártica Chilena" = "Región de Magallanes y de la Antártica Chilena"
 )
 
-```
-
-```{r, warning=FALSE}
-
 # Recodificamos los nombres en el shapefile
 chile_map <- chile_map %>%
   mutate(Region = recode(Region, !!!recodificacion_regiones))
 
-```
-
-```{r, warning=FALSE}
 # Aquí generamos el join necesario entre tablas
 chile_map <- chile_map %>%
   left_join(tabla_porcentajes_region, by = c("Region" = "region"))
