@@ -683,7 +683,7 @@ ggplot(data = chile_map) +
 
 ```
 
-# Otras variables interés de para la aplicación de modelos de Machine Learning no supervisados
+# Otras variables de interés para la aplicación de modelos de Machine Learning no supervisados
 
 Para la generación de posibles clusters fueron seleccionadas, adicionalmente, un conjunto de variables relativas a la percepción de riesgo (PR), conducción con consumo declarado de alcohol o marihuana (CC_2 y CC_3, repectivamente) y opinión pública (OP_1 y OP_2). En relación a estas variables fueron seleccionadas solo las categorías que hacen referencia sea a alcohol o marihuana, ya que existen otras categorías sobre otros tipos de droga.
 
@@ -733,6 +733,7 @@ tabla_pr_gran_riesgo_expansion %>%
   kable_styling("striped", full_width = F) %>%
   kable_styling(font_size = 15)
 ```
+
 
 La percepción de riesgo varía según las conductas relacionadas con el consumo de alcohol y marihuana. De este modo, tomar más de 5 tragos diarios tiene la mayor percepción de riesgo, con un 89.5% de las personas considerándolo un gran riesgo. Fumar marihuana frecuentemente es percibido como un gran riesgo por el 72.7% de la problación. Tomar más de 3 tragos ocasionalmente tiene una percepción de riesgo menor, con un 45.0%.Por último, consumir marihuana de forma experimental es visto como un gran riesgo por solo el 42.4% de las personas.
 
@@ -919,7 +920,7 @@ En cuanto la interpratación de puntuaciones de (PCA\$X) cada valor refiere a cu
 
 También se realizaron pruebas de varianza y varianza acumulada para identificar cuantos componentes son necesarios para explicar de forma significativa la varianza. Esto para reducir la cantidad de PCA y no perder demasiada información. Primero realizamos una prueba de varianza y luego la acumulada, en la varianza acumulada identificamos que con 3 PC explicamos más del 90% de la varianzasiendo la mayor parte de información, por tanto el último componente principal solo aporta un 9% de varianza.
 
-```{r}
+```{r, echo=TRUE, results="hide"}
 # Componentes Principales 
 pca <- prcomp(senda_clusters_alcohol, scale = TRUE) #Calculo de PCA
 round(pca$rotation,3) # Visualización
@@ -937,6 +938,42 @@ varianza_data <- data.frame(
   prop_varianza_acum = cumsum(prop_varianza)[1:4],
   pc = 1:4
 )
+
+```
+```{r}
+# Instalar librería si no está instalada
+if (!require(kableExtra)) install.packages("kableExtra")
+
+library(kableExtra)
+
+# Crear el primer conjunto de datos
+tabla1 <- data.frame(
+  Variable = c("consumo_alcohol", "percepcion_alcohol_ocasional", 
+               "percepcion_alcohol_frecuente", "maneja"),
+  PC1 = c(-0.629, 0.416, -0.053, -0.655),
+  PC2 = c(-0.171, -0.577, -0.787, -0.138),
+  PC3 = c(0.452, 0.665, -0.593, 0.037),
+  PC4 = c(0.609, -0.227, 0.163, -0.743)
+)
+
+# Crear el segundo conjunto de datos
+tabla2 <- data.frame(
+  Region = c("Arica y Parinacota", "Tarapacá", "Antofagasta", "Atacama", 
+             "Coquimbo", "Valparaíso"),
+  PC1 = c(-0.34191312, 1.20449934, 0.09628096, 0.33677886, 0.39243032, 1.34075475),
+  PC2 = c(-0.3840387, 1.0557723, -0.6874829, -1.9445260, 0.6975287, -0.2033517),
+  PC3 = c(-0.3954515, 0.9550266, 1.7066983, 1.2411086, -0.3176753, -0.6874840),
+  PC4 = c(0.2560324, -0.0239736, 0.4814640, 0.3974548, 0.9013300, -0.2121714)
+)
+
+# Tabla 1: Rotaciones
+kable(tabla1, caption = "Rotaciones de Componentes Principales", digits = 3) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+# Tabla 2: Puntuaciones de las Regiones
+kable(tabla2, caption = "Puntuaciones de las Regiones en los Componentes Principales", digits = 3) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
 ```
 
 
@@ -1022,7 +1059,7 @@ senda_clusters_mar <- senda_clusters_mar %>%
 
 ```
 
-```{r}
+```{r,echo=TRUE, results="hide" }
 # Componentes Principales 
 pca_mar <- prcomp(senda_clusters_mar, scale. = TRUE) # Cálculo de PCA
 round(pca_mar$rotation, 3) # Visualización de las cargas de las variables
@@ -1042,6 +1079,42 @@ varianza_data_mar <- data.frame(
   prop_varianza_acum_mar = prop_varianza_acum_mar[1:4],
   pc_mar = 1:4
 )
+
+```
+```{r}
+
+# Crear la primera tabla: Rotaciones
+tabla1 <- data.frame(
+  Variable = c("consumo_mar", "marihuana_experimental", 
+               "marihuana_frecuente", "maneja", 
+               "permitir_marihuana_terapeutico", "marihuana_menos_dano_que_alcohol"),
+  PC1 = c(0.502, -0.438, -0.547, 0.438, -0.215, -0.136),
+  PC2 = c(0.200, -0.130, 0.112, 0.304, 0.675, 0.618),
+  PC3 = c(0.253, 0.556, 0.101, 0.393, 0.364, -0.574),
+  PC4 = c(-0.018, -0.291, -0.366, -0.552, 0.588, -0.360),
+  PC5 = c(-0.772, 0.048, -0.451, 0.429, 0.122, -0.002),
+  PC6 = c(0.218, 0.628, -0.584, -0.269, -0.069, 0.374)
+)
+
+# Crear la segunda tabla: Puntuaciones de las regiones
+tabla2 <- data.frame(
+  Region = c("Arica y Parinacota", "Tarapacá", "Antofagasta", "Atacama", 
+             "Coquimbo", "Valparaíso"),
+  PC1 = c(0.36421749, -2.63681354, -1.46742238, -1.42310937, 2.10936309, -0.07524146),
+  PC2 = c(1.0073284, 1.3691836, 0.8707461, -0.3251271, -1.3864812, -0.6889271),
+  PC3 = c(-0.06596363, 0.09782481, 0.26646992, 2.56132225, 0.15316809, -0.43461619),
+  PC4 = c(0.1045180, -0.4632197, 0.8664489, -0.5755338, 0.6684709, 0.1863619),
+  PC5 = c(0.8278329, 0.3965407, -0.1187327, -0.7233270, -0.4154565, -0.2606413),
+  PC6 = c(-0.12189255, 0.20554528, 0.42498888, -0.02268974, 0.13894490, 0.11577817)
+)
+
+# Tabla 1: Rotaciones
+kable(tabla1, caption = "Rotaciones de Componentes Principales (Marihuana)", digits = 3) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+# Tabla 2: Puntuaciones de las Regiones
+kable(tabla2, caption = "Puntuaciones de las Regiones en los Componentes Principales (Marihuana)", digits = 3) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
 
 ```
 
@@ -1100,7 +1173,7 @@ En cuanto a los resultados promedios de cada cluster podemos inferir lo siguient
 
 En la visualización de los clusters se realizó en base al PCA obtenido de alcohol, donde buscamos representar las regiones según los dos principales componentes principales. Cada punto es una región y los colores el cluster al que pertencen. Por tanto, regiones que comparten color y se encuentran cercas es debido a que comparten características similares como es el caso de Valparaíso y Tarapacá.
 
-```{r}
+```{r, echo=TRUE, results="hide" }
 # Método del codo
 set.seed(123)  # Para reproducibilidad
 wss <- sapply(1:10, function(k) {kmeans(senda_clusters_alcohol, centers = k, nstart = 25)$tot.withinss})
@@ -1175,7 +1248,7 @@ En cuanto al resultado promedio por grupo se observa lo siguiente:
 
 En la visualización se observan las distintas agrupaciones de las regiones y su grupo correspondiente. Donde el cluster 1 se encuentra mucho más agrupado a diferencia de los otros. Sin embargo, la mayoría de casos se encuentran relativamente cerca debido a que existen bajo niveles de consumo a nivel regional, siendo las principales discrepancias la percepción de riesgo sobre el consumo de Marihuana.
 
-```{r}
+```{r, echo=TRUE, results="hide"}
 # Método del codo
 set.seed(123)  # Para reproducibilidad
 wss_mar <- sapply(1:10, function(k) {
