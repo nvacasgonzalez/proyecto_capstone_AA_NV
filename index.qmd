@@ -709,7 +709,7 @@ ggplot(data = chile_map) +
 
 ```
 
-# Otras variables de para la aplicación de modelos de Machine Learning no supervisados
+# Otras variables interés de para la aplicación de modelos de Machine Learning no supervisados
 
 Para la generación de posibles clusters fueron seleccionadas, adicionalmente, un conjunto de variables relativas a la percepción de riesgo (PR), conducción con consumo declarado de alcohol o marihuana (CC_2 y CC_3, repectivamente) y opinión pública (OP). En relación a estas variables fueron seleccionadas solo las categorías que hacen referencia sea a alcohol o marihuana, ya que existen otras categorías sobre otros tipos de droga.
 
@@ -817,15 +817,23 @@ tabla_op_opinion_exp %>%
 
 ```
 
-## Conducción y tratamiento
+## Conducción
+
+Dentro de la Encuesta Nacional hay un apartado sobre actividades que han realizado bajo el consumo de diferentes tipos de drogas. En línea con nuestra investigación seleccionamos dos preguntas de caractér binaria sobre si ha consumido bajo el efecto del alcohol o de marihuana. Esto de forma exploratoria y debido al bajo porcentaje que afirma haber conducido bajo el efecto de alguna droga, mostramos el número de observaciones.
+
+En cuanto a personas que han manejado después de beber alcohol independiente del número de tragos, un 3,9% afirma haberlo hecho. Mientras que un 1,2% afirma haber manejado después de consumir marihuana.
 
 ```{r}
 # Datos de conducción
-senda <- senda %>%
-  mutate(across(starts_with("cc"), ~ factor(.,
-                                            levels =c(1,2),
-                                            labels = c("Sí", "No"))))
-
+ senda <- senda %>%
+    mutate(across(starts_with("cc"), ~ case_when(
+      . %in% c(2) ~ 0,  # Valores 1 ningun riesgo se mantiene pero como 0
+      . %in% (1) ~ 1,      # Valores que identifican algún riesgo se codifican como 1 de    algún riesgo
+      TRUE ~ NA_real_          # Valores NA
+    ))) %>%
+    mutate(across(starts_with("cc"), ~ factor(., 
+                                              levels = c(0, 1),
+                                              labels = c("No", "Sí"))))
 # Tabla
 tabla_cc_conduccion <- senda %>%
   select(starts_with("cc")) %>%
@@ -863,9 +871,10 @@ tabla_cc_conduccion_exp %>%
   kable("html", caption = "Porcentaje Sí ha manejado bajo efectos de") %>%
   kable_styling("striped", full_width = F) %>%
   kable_styling(font_size = 15)  # Cerrar correctamente el paréntesis aquí
+```
 
-
-                
+```{r}
+rm(list = setdiff(ls(), "senda"))
 ```
 
 # Modelo de Machine Learning
@@ -878,16 +887,20 @@ Se generaron dos bases solo con información de alcohol y otra solo con informac
 
 ```{r}
 # Base nueva
-senda_clusters <- senda %>%
-  select(region, oh_rec, pr_1_2_rp, pr_1_3_rp, cc_2) %>%
+senda_clusters_alcohol <- senda %>%
+  select(region, 
+         consumo_alcohol = oh_rec,
+         percepcion_alcohol_ocasional = pr_1_2_rp, 
+         percepcion_alcohol_frecuente = pr_1_3_rp, 
+         maneja = cc_2) %>%
   mutate(across(-region, as.numeric))  # Convertir todo excepto 'region' a numérico
 
 # Escalar las variables (excepto la región)
-senda_clusters <- senda_clusters %>%
+senda_clusters_alcohol <- senda_clusters_alcohol %>%
   mutate(across(-region, scale))  # Escalar las variables numéricas
 
 # Manejo de valores faltantes: eliminar filas con NA
-senda_clusters <- na.omit(senda_clusters)
+senda_clusters_alcohol <- na.omit(senda_clusters_alcohol)
 
 # Asignar etiquetas de las regiones de Chile a la variable 'region'
 regiones_chile <- c(
@@ -897,33 +910,37 @@ regiones_chile <- c(
   "Aysén", "Magallanes")
 
 # Crear la base con las regiones y las demás variables
-senda_clusters <- senda %>%
-  select(region, oh_rec, pr_1_2_rp, pr_1_3_rp, cc_2) %>%
+senda_clusters_alcohol <- senda %>%
+select(region, 
+         consumo_alcohol = oh_rec,
+         percepcion_alcohol_ocasional = pr_1_2_rp, 
+         percepcion_alcohol_frecuente = pr_1_3_rp, 
+         maneja = cc_2) %>%
   mutate(across(-region, as.numeric)) %>%  # Convertir todo excepto 'region' a numérico
   group_by(region) %>%  # Agrupar por región
   summarise(across(everything(), mean, na.rm = TRUE))  # Calcular promedio por región
 
 # Asignar las etiquetas de las regiones
-senda_clusters <- senda_clusters %>%
+senda_clusters_alcohol <- senda_clusters_alcohol %>%
   mutate(region = factor(region, levels = 1:16, labels = regiones_chile)) %>%
   column_to_rownames(var = "region")  # Convertir la columna 'region' en filas
 ```
 
-### Cluster
+### PCA Alcohol
 
 Una vez estandarizada las variables y agrupadas por su promedio por región. Utilizaremos un Análisis de Componentes Principales (PCA) para transformar los datos originales estandarizados en nuevas variables que explican la variación de los datos.
 
 La justificación de uso de PCA es debido a reducir la dimensionalidad, donde identificar los componentes principales que expliquen de mejor manera la varianza de los datos sean utilizados para realizar clustering.
 
-Los resultados Arrojaron 9 componentes principales que pueden ayudar a entender la asociación de las variables y el componente principal. En la tabla se observa la contribución de cada variable al componente principal. Donde valores más cercanos al 1 o -1 indican la influencia que tiene ese componente principal. Por ejemplo nuestra variable de interés sobre prevalencia de alcohol que es oh_rec en PC1 posee 0.510 que tiene una contribución positiva, siendo un factor importante en la variabilidad que puede explicar el PC1; Mientras que en PC9 posee un valor negativo de -0,662 de forma que este componente está influenciado de manera significativa pero inversa de la variable oh_rec.
+Los resultados Arrojaron 4 componentes principales que pueden ayudar a entender la asociación de las variables y el componente principal. En la tabla se observa la contribución de cada variable al componente principal. Donde valores más cercanos al 1 o -1 indican la influencia que tiene ese componente principal. Por ejemplo nuestra variable de interés sobre prevalencia de alcohol que es oh_rec en PC1 posee -0.510 que tiene una contribución negativa, siendo un factor importante en la variabilidad que puede explicar el PC1; Mientras que en PC3 posee un valor positivo de 0,681 de forma que este componente está influenciado de manera significativa pero inversa de la variable oh_rec.
 
 En cuanto la interpratación de puntuaciones de (PCA\$X) cada valor son cuanto puede contribuir cada componente a la representación de variabilidad de cada grupo. Esto permite identificar con mayor precisión para agrupar observaciones y visualizar cada PCA.
 
-También se realizaron pruebas de varianza y varianza acumulada para identificar cuantos componentes son necesarios para explicar de forma significativa la varianza. Esto para reducir la cantidad de PCA y no perder demasiada información. Primero realizamos una prueba de varianza y luego la acumulada, en la varianza acumulada identificamos que con 4 PC explicamos más del 80% de la varianzasiendo la mayor parte de información, por tanto los componentes principales de 5 a 9 aportan poca varianza acumulada y pueden ser descartadas.
+También se realizaron pruebas de varianza y varianza acumulada para identificar cuantos componentes son necesarios para explicar de forma significativa la varianza. Esto para reducir la cantidad de PCA y no perder demasiada información. Primero realizamos una prueba de varianza y luego la acumulada, en la varianza acumulada identificamos que con 3 PC explicamos más del 90% de la varianzasiendo la mayor parte de información, por tanto el último componente principal solo aporta un 9% de varianza.
 
 ```{r}
 # Componentes Principales 
-pca <- prcomp(senda_clusters, scale = TRUE) #Calculo de PCA
+pca <- prcomp(senda_clusters_alcohol, scale = TRUE) #Calculo de PCA
 round(pca$rotation,3) # Visualización
 head(pca$x) # Puntuaciones de obs en PCA
 # Varianza 
@@ -943,7 +960,11 @@ varianza_data <- data.frame(
 
 ### Gráfico de PCA
 
-En este gráfico se observa la distribución regional del país en cuanto variables de consumo de alcohol. Donde por ejemplo la región de Bío-Bío tiene mayor probabilidad de consumo de alcohol que la Araucanía. En cuanto a las variables p_1_2_rp y p_1_3_rp sobre la percepción de peligro por tomar 3 o 5 tragos respectivamente están bastente relacionadas, lo están así también la cercanía entre regiones. En done Ñuble, Aysén y Atacama existe una alta percepción de riesgo sobre consumir cierta cantidad de alcohol. Por último en la Araucanía, Tarapacá y Metropolitana se encuentran cerca de la variable cc_2 que es sobre sí ha maneja después de beber, donde es más probable de encontrar personas que lo hayan hecho. Esto es interesante en el caso de la Araucanía, ya que se encuentra alejada de oh_rec pero está cercana a cc_2, lo que podría interpretarte como que apesar de que no haya tanta probabilidad de personas que beban alcohol, los que lo hacen es probable que hayan manejado después de hacerlo.
+En los siguientes dos gráficos se muestra primero la varianza acumulada según los PCA, donde con 3 PCA ya tenemos el 90% de la varianza. Minetras que en el otro gráfico se observa la distribución regional del país en cuanto variables de consumo de alcohol.
+
+Acá se puede observar que regiones como Bío-Bío tiene mayor probabilidad de consumo de alcohol que la Araucanía, y además mayor probabilidad de encontrar personas con que manejan bajo el efecto del alcohol. No así en regiones como Arica y Tarapacá, Valparaíso y la Metropolitana.
+
+En cuanto las variables de percepción de riesgo sobre tomar alcohol de manera ocasional y frecuentemente, regiones como Aysén y Atacama se encuentran cercanas al considerar ambos hábitos como riesgosos, a diferencia de regiones como Maule, O'higgins e incluso Los Lagos que se encuentra más alejados.
 
 ```{r}
 # Gráfico de la varianza acumulada
@@ -967,10 +988,25 @@ biplot(pca, scale = 0, cex = 0.5, col = c("blue2", "red2"))
 
 ## PCA Marihuana
 
+Obtenido los PCA de alcohol, también realizamos un análisis de componentes principales para nuestra variable de Marihuana siguiendo los mismos pasos de estandarización y pruebas de varianza.
+
+Esta selección cumple los mismos objetivos de identificar las principales variables que explican la varianza de los datos para generar clusters. Se utilizaron las mismas variables de Alcohol pero especificadas en Marihuana. Siendo mar_rec la prevelancia de consumo de marihuana, percepción de riesgo sobre el consumo de marihuana, si ha conducido después de manejar bajos efectos de la marihuana.
+
+En cuanto a los PCA se generaron 6 componentes principales. Esto debido a la mayor cantidad de variables a comparación con el modulo de Alcohol. Nuestra variable mar_rec tiene un valor positivo de correlación en PC1, siendo el componente principal que puede explicar de mejor forma el consumo de marihuana.
+
+En línea las pruebas de varianza y varianza acumulada con los primeros 3 componentes principales se explica casi un 90% de la varianza, mientras que con los otros solo se explica el 10% restante. Esto es importante ya que perdemos poca información con menor grupos posibles.
+
+
 ```{r}
-# Base nueva
+# Asignar etiquetas breves a las variables
 senda_clusters_mar <- senda %>%
-  select(region, mar_rec, pr_1_4_rp, pr_1_5_rp, op_1_2_rp, op_1_4_rp, op_2_3_rp, cc_3) %>%
+  select(region, 
+         consumo_marihuana = mar_rec, 
+         riesgo_marihuana_experimental = pr_1_4_rp, 
+         riesgo_marihuana_frecuente = pr_1_5_rp, 
+         maneja = cc_3, 
+         permitir_marihuana_exp = op_2_3_rp, 
+         marihuana_menos_dano_que_alcohol = op_1_2_rp) %>%
   mutate(across(-region, as.numeric))  # Convertir todo excepto 'region' a numérico
 
 # Escalar las variables (excepto la región)
@@ -980,16 +1016,22 @@ senda_clusters_mar <- senda_clusters_mar %>%
 # Manejo de valores faltantes: eliminar filas con NA
 senda_clusters_mar <- na.omit(senda_clusters_mar)
 
-# Asignar etiquetas de las regiones de Chile a la variable 'region'
+# Etiquetas de las regiones de Chile
 regiones_chile <- c(
   "Arica y Parinacota", "Tarapacá", "Antofagasta", "Atacama", "Coquimbo",
   "Valparaíso", "Metropolitana", "O'Higgins", "Maule",
   "Ñuble", "Biobío", "Araucanía", "Los Ríos", "Los Lagos",
   "Aysén", "Magallanes")
 
-# Crear la base con las regiones y las demás variables
+# Agrupar por región y calcular promedios
 senda_clusters_mar <- senda %>%
- select(region, mar_rec, pr_1_4_rp, pr_1_5_rp, op_1_2_rp, op_1_4_rp, op_2_3_rp, cc_3) %>%
+  select(region, 
+         consumo_mar = mar_rec, 
+         marihuana_experimental = pr_1_4_rp, 
+         marihuana_frecuente = pr_1_5_rp, 
+         maneja = cc_3, 
+         permitir_marihuana_exp = op_2_3_rp, 
+         marihuana_menos_dano_que_alcohol = op_1_2_rp) %>%
   mutate(across(-region, as.numeric)) %>%  # Convertir todo excepto 'region' a numérico
   group_by(region) %>%  # Agrupar por región
   summarise(across(everything(), mean, na.rm = TRUE))  # Calcular promedio por región
@@ -998,9 +1040,8 @@ senda_clusters_mar <- senda %>%
 senda_clusters_mar <- senda_clusters_mar %>%
   mutate(region = factor(region, levels = 1:16, labels = regiones_chile)) %>%
   column_to_rownames(var = "region")  # Convertir la columna 'region' en filas
-```
 
-### Cluster
+```
 
 ```{r}
 # Componentes Principales 
@@ -1027,6 +1068,12 @@ varianza_data_mar <- data.frame(
 
 ## Gráfico de PCA
 
+Para una mejor visualización de la varianza de nuestras variables en las regiones de Chile. Primero se muestra el gráfico de varianza acumulada y en segundo la distribución de las regiones. En esto identificamos que:
+
+Como mencionamos en el consumo y regiones, Los Lagos es una región cercana a nuestra variable mar_rec, indicando que el consumo de marihuana es predominante a comparación de otres regiones del país siendo casi la única región relativamente cercana tanto al consumo como al manejar después de haber fumado marihuana. Por lo que las otras regiones es poco probable encontrar consumidores de Marihuana.
+
+Con respecto a la percepción de riesgo de fumar marihuana frecunemente y de uso experimental, Arica y Tarapacá y Atacama se encuentran cercanas a estas variables, por lo que es probable que las personas consideren que es riesgoso. No así en regiones como Coquimbo o Bío-Bío que si bien no es predominante el consumo de marihuana no consideran riesgosos esos habitos.
+
 ```{r}
 # Gráfico de la varianza acumulada
 ggplot(data = varianza_data_mar, aes(x = pc_mar, y = prop_varianza_acum_mar)) +
@@ -1046,16 +1093,160 @@ biplot(pca_mar, scale = 0, cex = 0.5, col = c("blue2", "red2"))
 ```
 
 # Cluster
+## Cluster Alcohol
+
+Obtenidas las bases simplificadas y estandarizadas procedemos con la generación de clusters.
+
+Usaremos un K-means clustering para identificar los posibles grupos en la base. Primero ejectuamos una semilla para asegurar que se obtengan los mismos resultados debido a la aleatoriedad de los centroides (los puntos que representan cada cluster en el algoritmo). Luego implementamos el método wss para identificar el número óptimo de clusters para el análisis de los k-means. En el gráfico sobre el método se observa que al tener 1 o 2 cluster la suma de los errores cuadradas es alta lo que no asegura una variabilidad en los datos, pero a medida que se suman más cluster los datos se van agrupando y explican el modolo. En base al gráfico optamos por 4 cluster para el análisis.
+
+Con los resultados del k-means identificamos que las regiones fueron agrupadas en 4 grupos en base a las características de las variables seleccionadas sobre consumo, percepción de riesgo y comportamiento de manejar bajo efectos del alcohol, en estos grupos se distribuye:
+
+\- Grupo 1: Tarapacá, Valparaíso, Araucanía y Ñuble. 
+
+\- Grupo 2: Arica, Coquimbo, Metropolitana, Maule, Los Ríos, Aysén y Magallanes. 
+
+\-Grupo 3: Antofagasta, Atacama y Maule. 
+
+\- Grupo 4: Los Lagos.
+
+En cuanto a los resultados promedios de cada cluster podemos inferir lo siguiente:
+
+\- Grupo 1: Las regiones presentan un menor consumo de alcohol a comparación de los otros clusters, tienen una alta percepción de riesgo y es poco probable que manejen bajo efectos del alcohol.
+
+\- Grupo 2: Las regiones presentan levemente consumo de alcohol, baja percepción de riesgo a beber de forma ocasial pero sí a beber frecuentemente, y poco probable que manejen bajo efectos del alcohol.
+
+\- Grupo 3: Regiones más probable al consumo de alcohol, percepción de riesgo moderada al consumo ocasional pero alta a beber frecuentemente y poco probable que manejen bajo efectos del alcohol
+
+\- Grupo 4: Región de los Lagos queda desagrupado de las otras regiones, esto debido a que es más probable que se consuma alcohol, baja percepción de riesgo al consumo ocasional y de beber frecuentemente. También presente un leve aumento en conducir bajo efectos del alcohol, si bien es bajo, es el grupo más alto.
+
+En la visualización de los clusters se realizó en base al PCA obtenido de alcohol, donde buscamos representar las regiones según los dos principales componentes principales. Cada punto es una región y los colores el cluster al que pertencen. Por tanto, regiones que comparten color y se encuentran cercas es debido a que comparten características similares como es el caso de Valparaíso y Tarapacá.
 
 ```{r}
-# Configurar K-means con 3 clusters
-set.seed(123)  # Semilla para reproducibilidad
-kmeans_result <- kmeans(senda_clusters[,-1], centers = 3)  # Excluir región para clustering
+# Método del codo
+set.seed(123)  # Para reproducibilidad
+wss <- sapply(1:10, function(k) {kmeans(senda_clusters_alcohol, centers = k, nstart = 25)$tot.withinss})
+plot(1:10, wss, type = "b", main = "Método del Codo", xlab = "Número de clusters", ylab = "Suma de errores al cuadrado")
 
-# Agregar el resultado a la base
-senda_clusters <- senda_clusters %>%
-  mutate(cluster = kmeans_result$cluster)
+# Aplicar K-means con k = 3
+set.seed(123)
+kmeans_result <- kmeans(senda_clusters_alcohol, centers = 4, nstart = 25)
 
-# Ver los primeros resultados
-head(senda_clusters)
+# Ver los resultados
+kmeans_result$cluster  # Asignación de cada observación a un cluster
+
+# Visualización de los clusters en las dos primeras componentes principales
+pca_result <- pca$x  # Usar las puntuaciones de PCA
+plot(pca_result[, 1], pca_result[, 2], 
+     col = kmeans_result$cluster, pch = 16, 
+     main = "Clustering de K-means",
+     xlab = "Componente Principal 1",  # Nombre del eje X
+     ylab = "Componente Principal 2")  # Nombre del eje Y
+
+
+# Obtener las medias de las variables para cada cluster
+cluster_means <- aggregate(senda_clusters_alcohol, by = list(Cluster = kmeans_result$cluster), FUN = mean)
+
+cluster_means %>%
+  rename(
+    "N° de Cluster" = "Cluster",
+    "Consumo de Alcohol" = "consumo_alcohol",
+    "Percepción beber ocasional" = "percepcion_alcohol_ocasional",
+    "Percepción beber frecuentemente" = "percepcion_alcohol_frecuente",
+    "Manejo bajo efectos" = "maneja") %>%
+  kable("html", caption = "Porcentaje de consumo por tipo y Nivel socioecónomico") %>%
+  kable_styling("striped", full_width = F) %>%
+  kable_styling(font_size = 15)
+
+
+# Agregar los nombres de las regiones
+text(pca_result[, 1], pca_result[, 2], labels = rownames(senda_clusters_alcohol), 
+     cex = 0.7, pos = 3, col = "black")  # 'cex' ajusta el tamaño del texto, 'pos' coloca el texto arriba del punto
+
+# Agregar leyenda
+legend("bottomleft", 
+       legend = paste("Cluster", 1:4), 
+       col = 1:4, 
+       pch = 16, 
+       title = "Clusters")
 ```
+
+## Cluster Marihuana
+
+En la visualización de los clusters se realizó en base al PCA obtenido de alcohol, donde buscamos representar las regiones según los dos principales componentes principales. Cada punto es una región y los colores el cluster al que pertencen. Por tanto, regiones que comparten color y se encuentran cercas es debido a que comparten características similares como es el caso de Valparaíso y Tarapacá.
+
+Al igual que con el Alcohol se siguieron los mismos pasos para realizar clustering con personas que consumen Marihuana. Usamos una semilla para generar mismos resultados, y K-means para identificar el número óptimo de clusters. En cuanto a los resultados de Marihuana:
+
+El número óptimos de clusters es 4, donde existe un bajo número de errores al cuadrado. Por, tanto se generaron 4 grupos agrupado de la siguiente forma:
+
+\- Grupo 1: Arica y Parinocata, Metropolitana, Maule, Ñuble, Los Ríos y Aysén
+\- Grupo 2: Antofagasta, Valparaíso y Magallanes
+
+\- Grupo 3: Tarapacá, Atacame u Araucanía.
+
+\- Grupo 4: Coquimbo, O'Higgins, Bio-Bío y Los Lagos
+
+En cuanto al resultado promedio por grupo se observa lo siguiente:
+
+\- Grupo 1: Región con personas con consumo moderado de marihuana, percepción moderada al consumo experimental y alta al consumo frecuente. Poco probable conducir bajo efectos de la marihuana. Sobre opinión pública Están más de acuerdo con permitir la  marihuana de uso terapeutico y que la marihuana hace menos daño que el alcohol.
+
+\- Grupo 2: Las regiones del cluster 2 presentan un consumo moderado de marihuana, percepción de riesgo leve al uso de marihuana de forma experimental pero una percepción de riesgo más alta al consumir marihuana de forma frecuente. Es poco probable que manejen después de consumir marihuana. En cuanto opinión pública están menos de acuerdo con el uso de forma terapeutica y están más de acuerdo con que hace menos daño alcohol.
+
+
+\- Grupo 3: Regiones con el menor consumo de los tres clusters, y mayores niveles de percepción de riesgo sobre el consumo tanto experimental como frecuente. También menor probabilidad de manejar bajo los efectos de la marihuana. Sobre opinión pública es el grupo que está más de acuerdo con el uso de marihuana de forma experimental pero presenta niveles moderados en cuanto que hace menos daño que el alcohol.
+
+\- Grupo 4: Regiones con el mayor consumo de marihuana, presenta menor percepción de riesgo al uso experimental y frecuente. Mayor probabilidad de manejar bajo efectos de la marihuana. Aunque presenta menor niveles de opinión pública sobre el uso de forma experimental y nivel moderado de dañp que el alcohol.
+
+
+En la visualización se observan las distintas agrupaciones de las regiones y su grupo correspondiente. Donde el cluster 1 se encuentra mucho más agrupado a diferencia de los otros. Sin embargo, la mayoría de casos se encuentran relativamente cerca debido a que existen bajo niveles de consumo a nivel regional, siendo las principales discrepancias la percepción de riesgo sobre el consumo de Marihuana.
+
+```{r}
+# Método del codo
+set.seed(123)  # Para reproducibilidad
+wss_mar <- sapply(1:10, function(k) {
+  kmeans(senda_clusters_mar, centers = k, nstart = 25)$tot.withinss
+})
+plot(1:10, wss_mar, type = "b", main = "Método del Codo", xlab = "Número de clusters", ylab = "Suma de errores al cuadrado")
+
+# Aplicar K-means con k = 4 (ajusté el número de clusters a 4)
+set.seed(123)
+kmeans_result_mar <- kmeans(senda_clusters_mar, centers = 4, nstart = 25)
+kmeans_result_mar$cluster  # Asignación de cada observación a un cluster
+
+
+# Tabla
+cluster_means_mar <- aggregate(senda_clusters_mar, by = list(Cluster = kmeans_result_mar$cluster), FUN = mean)
+
+# Mostrar las medias de las variables para cada cluster
+cluster_means_mar %>%
+  rename(
+    "N° de Cluster" = "Cluster",
+    "Consumo de Marihuana" = "consumo_mar",
+    "Percepción Marihuana experimental" = "marihuana_experimental",
+    "Percepción Marihuana frecuentemente" = "marihuana_frecuente",
+    "Manejo bajo efectos" = "maneja",
+     "Acuerdo sobre Marihuana experimental" = "permitir_marihuana_exp",
+    "Acuerdo sobre Marihuana menos dañina que alcohol" = "marihuana_menos_dano_que_alcohol"
+    ) %>%
+  kable("html", caption = "Porcentaje de consumo por tipo") %>%
+  kable_styling("striped", full_width = F) %>%
+  kable_styling(font_size = 15)
+
+
+# Visualización de los clusters en las dos primeras componentes principales
+pca_result_mar <- pca_mar$x  # Usar las puntuaciones de PCA
+plot(pca_result_mar[, 1], pca_result_mar[, 2], 
+     col = kmeans_result_mar$cluster, pch = 16, 
+     main = "Clustering de K-means",
+     xlab = "Componente Principal 1",  # Nombre del eje X
+     ylab = "Componente Principal 2")  # Nombre del eje Y
+
+text(pca_result_mar[, 1], pca_result_mar[, 2], labels = rownames(senda_clusters_mar), 
+     cex = 0.7, pos = 3, col = "black")  
+legend("bottomright", 
+       legend = paste("Cluster", 1:4), 
+       col = 1:4, 
+       pch = 16, 
+       title = "Clusters")
+```
+
+# Conclusiones
