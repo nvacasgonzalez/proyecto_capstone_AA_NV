@@ -58,7 +58,7 @@ Identificar patrones latentes de consumo, percepción de riego, opinión públic
 
 ## Obetivos específicos:
 
--   Examinar las caracterísiticas sociodemográficas y la distribución regional de las personas que declaran haber consumido alcohol y/ o marihuana en el último año, asi como de otras variables críticas relacionadas con la percepción de riesgo, la opinión pública y conductas de riesgo en la conducción.
+-   Examinar las caracterísiticas sociodemográficas y la distribución regional de las personas que declaran haber consumido alcohol y/ o marihuana en el último año, asi como de otras variables críticas relacionadas con la percepción de riesgo, la opinión pública y la conducción con consumo.
 
 -   Identificar variables relevantes para la elaboración de grupos o perfiles de personas que declaran haber consumido alcohol y/ o marihuana en el último año a través de la extracción de características, aplicando el análisis de componentes principales (PCA)
 
@@ -142,9 +142,9 @@ Se recodificaron, y normalizaron algunas variables sociodemográficas críticas 
 
 \- la variable relacionada con el nivel educacional (DP_12) fue recodificada y agrupada para facilitar el análisis. Se diseñaron las siguientes categorías "Sin educación", "Sistema antiguo", "Educación básica", "Educación media", "Técnico", "Universitaria", "Postgrado".
 
-\-  se generó una nueva variable a partir de la recodificación de la variable ingresos (DP_16), agrupándola niveles socio económicos "Bajo", "Medio y "Alto". Cabe señalar que esta nueva categorización no es coincidente con su homonima presente en informe de la ENPG (2022). En este informe la categoriza el nivel socioeconomico se genera en función de la la calidad de la vivienda y el barrio. 
+\- se generó una nueva variable a partir de la recodificación de la variable ingresos (DP_16), agrupándola niveles socio económicos "Bajo", "Medio y "Alto". Cabe señalar que esta nueva categorización no es coincidente con su homonima presente en informe de la ENPG (2022). En este informe la categoriza el nivel socioeconomico se genera en función de la la calidad de la vivienda y el barrio.
 
-Por último, se aplicaron técnicas de estandarización al conjunto de variables de interés utilizadas para la generación de clusters en base al PCA y al algoritmo de jerarquización aglomerativa. Entre estas variables se encuentran percepción de riesgo, accesibilidad y conducción. 
+Por último, se aplicaron técnicas de estandarización al conjunto de variables de interés utilizadas para la generación de clusters en base al PCA y al algoritmo de jerarquización aglomerativa. Entre estas variables se encuentran percepción de riesgo, accesibilidad y conducción.
 
 ## Carga:
 
@@ -154,19 +154,13 @@ En el caso de el Front Room o ambiente donde se comparten y publican los datos t
 
 # Modelo entidad - relación y modelo lógico conceptual.
 
-Las variables seleccionadas para el presente proyecto se agupan en:
+Nuestro modelo presenta la selección de variables de interés estructuradas en dos tipos de entidades principales:
 
-1.  Variables de consumo de alcohol y marihuna:
+INDIVIDUO: correspondiente a nuestro unidad básica de observación y lleva aparejada una serie de caractéristicas socio demográficas informativas (SEXO, EDAD, NIVEL DE INGRESOS Y REGIÓN).
 
-    -   consumo del alcohol durante los últimos 30 días y consumo de alcohol hace más de un mes pero menos de un año.
+DECLARACIONES Y MANIFIESTACIONES: conjunto de variables que recogen el relacionamiento de los individuos con el alcohol y la marihuana en términos de consumo delcarado, opinión pública, percepción del riesgo en el consumo y conduccción previo consumo de esta sustancias.
 
-    -   consumo de marihuana durante los últimos 30 días y consumo de marihuana hace más de un mes pero menos de un año.
-
-2.  Variables socio demográficas: edad, género, nivel socioeconómico y nivel educacional.
-
-3.  Variables de percepción de riesgo relacionadas al consumo de marihuana y/o alcohol.
-
-4.  Variables relacionadas a factores contextuales: consumo de drogas en el hogar ; dificultad en el acceso a la marihuana.
+![Modelo entidad relación](fig/Modelo%20entidad%20relación.png)
 
 # Exploración y análisis descriptivo de variables de interés:
 
@@ -360,7 +354,6 @@ grafico_2
 
 Centrándo la exploración en el nivel educacional de las personas con consumo declarado en el último año, aquellas cuyos estudios llegan a hasta la educación media concentran la mayor prevalencia de consumo declarado tanto en alcohol (31,6%) como en marihuana (7,1%). Seguidas de las personas con estudios universitarios que presentan la segunda mayor prevalencia tanto en el consumo de alcohol (22,8%) como de marihuana (6,3%) a nivel nacional.
 
-
 ```{r}
 # Recodificación de nivel educacional
 senda <- senda %>% 
@@ -449,12 +442,9 @@ grafico_3 <- ggplot(tabla_porcentajes_educacion_long, aes(x = Variable, y = Porc
 grafico_3
 ```
 
+## Nivel de ingresos y consumo declarado de alcohol y marihuana en el último año.
 
-
-## Tramo de ingresos y consumo declarado de alcohol y marihuana en el último año.
-
-En términos de nivel socioeconómico, las personas clasificadas en el nivel socioeconómico medio muestran porcentaje más alto de consumo de alcohol (38.3%), seguido por el Bajo (29.8%) y, finalmente, el Alto (12.6%). De forma similar, el consumo declarado de merihuna en el último año muestra la mayor prevalencia el nivel socioeconómico medio  (9%), seguido por el Bajo (7.3%) y el Alto (2.9%). En síntesis, el consumo declarado de alcohol y marihuana en el último año disminuye conforme aumenta el nivel socioeconómico, siendo más alto en el nivel Medio y más bajo en el nivel Alto. 
-
+En términos de nivel socioeconómico, las personas clasificadas en el nivel socioeconómico medio muestran porcentaje más alto de consumo de alcohol (38.3%), seguido por el Bajo (29.8%) y, finalmente, el Alto (12.6%). De forma similar, el consumo declarado de merihuna en el último año muestra la mayor prevalencia el nivel socioeconómico medio (9%), seguido por el Bajo (7.3%) y el Alto (2.9%). En síntesis, el consumo declarado de alcohol y marihuana en el último año disminuye conforme aumenta el nivel socioeconómico, siendo más alto en el nivel Medio y más bajo en el nivel Alto.
 
 ```{r}
 # Recodificación tramo de ingresos
@@ -532,12 +522,9 @@ Si abordamos el análisis exploratorio según región, aquellas que muestran un 
 
 Respecto a las regiones con moderación en el consumo delclarado de ambas sustancias, Antofagasta y Ñuble presentan consumos bajos de marihuana (alrededor del 12.6% y 12.8%, respectivamente) y valores intermedios o altos en consumo de alcohol. Tarapacá tiene el porcentaje más bajo de prevalencia de consumo declarado de marihuana (9.1%) pero el más alto de alcohol (90.9%). Esto podría indicar un comportamiento divergente respecto al consumos de estas sustancias en esta región.
 
-
 En síntesis, es posible señalar que las regiones del norte (como Tarapacá y Antofagasta) tienden a tener un consumo declarado de alcohol más alto pero un consumo delarado de marihuana más bajo. Mientras que, algunas regiones del sur (como Los Lagos y Los Ríos) tienden a tener un consumo declarado de marihuana más alto, aunque el consumo delcarado de alcohol varía ampliamente.
 
 Por último, algunas regiones centrales ( como por ejemplo Maule, Valparaíso y Coquimbo) combinan altos consumos de ambas sustancias, mostrando una tendencia más equilibrada entre ellas.
-
-
 
 ```{r}
 etiquetas_regiones <- c(
@@ -698,13 +685,13 @@ ggplot(data = chile_map) +
 
 # Otras variables interés de para la aplicación de modelos de Machine Learning no supervisados
 
-Para la generación de posibles clusters fueron seleccionadas, adicionalmente, un conjunto de variables relativas a la percepción de riesgo (PR), conducción con consumo declarado de alcohol o marihuana (CC_2 y CC_3, repectivamente) y opinión pública (OP). En relación a estas variables fueron seleccionadas solo las categorías que hacen referencia sea a alcohol o marihuana, ya que existen otras categorías sobre otros tipos de droga.
+Para la generación de posibles clusters fueron seleccionadas, adicionalmente, un conjunto de variables relativas a la percepción de riesgo (PR), conducción con consumo declarado de alcohol o marihuana (CC_2 y CC_3, repectivamente) y opinión pública (OP_1 y OP_2). En relación a estas variables fueron seleccionadas solo las categorías que hacen referencia sea a alcohol o marihuana, ya que existen otras categorías sobre otros tipos de droga.
 
 Las variables fueron recodificadas de variables categoricas a variables binarias para faciltiar el análsis. Estas recodificaciones fueron hechas en base a la presentación de resultados de la ENPG (2022).
 
 ## Percepción de Riesgo
 
-Dentro de estas variables se encuentra la percepción de riesgo de consumir ciertos tipos de drogas o la frecuencia de consumo de estos. Para esta variable se transformo de una variable categorica (4 categorías) a una variabla binaria (2 categorías), donde los valores 1,2,3 fueron catalogados como "Ningún o algo de riesgo", mientras que el valor 4 fue catalago como "Gran riesgo". A partir de esto se identificaron las principales hábitos que pueden tener un gran riesgo de alcohol y marihuana.
+Dentro de estas variables se encuentra la percepción de riesgo de consumir ciertos tipos de drogas o la frecuencia de consumo de estas. Para esta variable se transformo de una variable categorica (4 categorías) a una variabla binaria (2 categorías), donde los valores 1,2,3 fueron catalogados como "Ningún o algo de riesgo", mientras que el valor 4 fue catalago como "Gran riesgo". A partir de esto se identificaron los principales hábitos de consumo declarado de alcohol y marihuana que pueden tener un gran riesgo.
 
 ```{r}
 # Recodificación de variables de Percepción
@@ -747,9 +734,13 @@ tabla_pr_gran_riesgo_expansion %>%
   kable_styling(font_size = 15)
 ```
 
+La percepción de riesgo varía según las conductas relacionadas con el consumo de alcohol y marihuana. De este modo, tomar más de 5 tragos diarios tiene la mayor percepción de riesgo, con un 89.5% de las personas considerándolo un gran riesgo. Fumar marihuana frecuentemente es percibido como un gran riesgo por el 72.7% de la problación. Tomar más de 3 tragos ocasionalmente tiene una percepción de riesgo menor, con un 45.0%.Por último, consumir marihuana de forma experimental es visto como un gran riesgo por solo el 42.4% de las personas.
+
+En base a lo descrito, la percepción de riesgo es significativamente mayor para comportamientos frecuentes o intensivos (como tomar más de 5 tragos diarios o fumar marihuana frecuentemente) en comparación con comportamientos ocasionales o experimentales.
+
 ## Opinión Pública
 
-A los encuestados se le realizaron sobre su nivel de acuerdo en temas de consumo, legalización y penalización de drogas. Para esta variable también fue recodificada de forma binaria para facilitar su análisis. Donde los valores 3 y 4 fueron dejados como No estoy de acuerdo, mientras que valores 1 y 2 fueron catalogados como Estoy de acuerdo. Es esta tabla se presentan donde hay mayores niveles de acuerdo según diversos temas:
+La ENPG 2022 contempla varios ítems (OP_1 y OP_2) sobre el nivel de acuerdo en temas relacionados con consumo, legalización y penalización relativa al porte y tráfico de drogas. Estas variables de opinión también fueron recodificadas de forma binaria para facilitar su análisis. Donde los valores 3 y 4 fueron dejados como No estoy de acuerdo, mientras que valores 1 y 2 fueron catalogados como Estoy de acuerdo. En esta tabla se representan los mayores niveles de acuerdo según diversos temas:
 
 ```{r}
 # Recodificación de Var de opinión
@@ -804,11 +795,15 @@ tabla_op_opinion_exp %>%
 
 ```
 
-## Conducción
+Las alternativas donde existe mayor grado de acuerdo son "Permitir el uso de Marihuana para fines terapéuticos" (82,4%) y "La mayoría de jóvenes consume marihuana" (71,6%) lo que refleja una percepción extendida sobre su consumo en este grupo etario.
 
-Dentro de la Encuesta Nacional hay un apartado sobre actividades que han realizado bajo el consumo de diferentes tipos de drogas. En línea con nuestra investigación seleccionamos dos preguntas de caractér binaria sobre si ha consumido bajo el efecto del alcohol o de marihuana. Esto de forma exploratoria y debido al bajo porcentaje que afirma haber conducido bajo el efecto de alguna droga, mostramos el número de observaciones.
+Existe un acuerdo moderado con respecto a las premisas "dar la misma pena a quienes trafican marihuana como los que trafican cocaína o pasta base" (60.9%) y a la premisa "penalizar el porte y consumo de marihuana auqnue sea en pequeñas cantidades y para uso personal" (55,7%) .
 
-En cuanto a personas que han manejado después de beber alcohol independiente del número de tragos, un 3,9% afirma haberlo hecho. Mientras que un 1,2% afirma haber manejado después de consumir marihuana.
+El menor grado de acuerdo se genera entorno a las premisas "La Marihuana debería ser legal para mayores de 18 años" (47,6%) y "La Marihuana produce menos daño que el Alcohol" (41,5%)
+
+## Consumo y conducción
+
+La ENPG 2022 también posee un apartado sobre consumo y conducción. En línea con nuestra investigación seleccionamos dos preguntas de caractér binario sobre conducción con consimo previo de alcohol (CC_2) o de marihuana (CC_3). Los resultados muestran un bajo porcentaje de este tipo de conductas de riesgo con un 3,9% de personas que afirma haber conducido con consumo previo de alcohol. Mientras que tan solo 1,2% afirma haber manejado después de consumir marihuana.
 
 ```{r}
 # Datos de conducción
@@ -866,11 +861,10 @@ rm(list = setdiff(ls(), "senda"))
 
 # Modelo de Machine Learning
 
-## PCA Alcohol
 
-A partir de la recodificación y preparación de variable anteriores se propone un modelo de Clustering para identificar los posibles grupos de la encuesta. Para esto se harán diversos clusters en base a variables inciales de alcohol y variables de marihuana, esperamos encontrar diversos grupos en cuanto al consumo de alcohol/marihuana.
+A partir de la recodificación y preparación de las variables anteriores se propone un modelo de Clustering para identificar los posibles grupos poblacionales. Para esto se harán diversos clusters en base a variables inciales de alcohol y variables de marihuana; esperamos encontrar diversos grupos en cuanto al consumo de alcohol/marihuana.
 
-Se generaron dos bases solo con información de alcohol y otra solo con información de marihuana tipificada por región.
+Se generaron dos bases, una solo con información de alcohol y otra solo con información de marihuana tipificadas por región.
 
 ```{r}
 # Base nueva
@@ -913,15 +907,15 @@ senda_clusters_alcohol <- senda_clusters_alcohol %>%
   column_to_rownames(var = "region")  # Convertir la columna 'region' en filas
 ```
 
-### PCA Alcohol
+## PCA Alcohol
 
-Una vez estandarizada las variables y agrupadas por su promedio por región. Utilizaremos un Análisis de Componentes Principales (PCA) para transformar los datos originales estandarizados en nuevas variables que explican la variación de los datos.
+Una vez estandarizadas las variables y agrupadas por su promedio por región. Utilizaremos un Análisis de Componentes Principales (PCA) para transformar los datos originales estandarizados en nuevas variables que explican la variación de los datos.
 
-La justificación de uso de PCA es debido a reducir la dimensionalidad, donde identificar los componentes principales que expliquen de mejor manera la varianza de los datos sean utilizados para realizar clustering.
+La justificación del uso de PCA está relacionada con reducir la dimensionalidad y poder, de esta manera, identificar los componentes principales que expliquen de mejor manera la varianza de los datos utilizados para realizar clustering.
 
-Los resultados Arrojaron 4 componentes principales que pueden ayudar a entender la asociación de las variables y el componente principal. En la tabla se observa la contribución de cada variable al componente principal. Donde valores más cercanos al 1 o -1 indican la influencia que tiene ese componente principal. Por ejemplo nuestra variable de interés sobre prevalencia de alcohol que es oh_rec en PC1 posee -0.510 que tiene una contribución negativa, siendo un factor importante en la variabilidad que puede explicar el PC1; Mientras que en PC3 posee un valor positivo de 0,681 de forma que este componente está influenciado de manera significativa pero inversa de la variable oh_rec.
+Los resultados arrojaron 4 componentes principales que pueden ayudar a entender la asociación de las variables y el componente principal. En la tabla se observa la contribución de cada variable al componente principal. Donde valores más cercanos al 1 o -1 indican la influencia que tiene ese componente principal. Por ejemplo nuestra variable de interés sobre prevalencia de alcohol que es oh_rec en PC1 posee -0.510 que tiene una contribución negativa, siendo un factor importante en la variabilidad que puede explicar el PC1; Mientras que en PC3 posee un valor positivo de 0,681 de forma que este componente está influenciado de manera significativa pero inversa a la variable oh_rec.
 
-En cuanto la interpratación de puntuaciones de (PCA\$X) cada valor son cuanto puede contribuir cada componente a la representación de variabilidad de cada grupo. Esto permite identificar con mayor precisión para agrupar observaciones y visualizar cada PCA.
+En cuanto la interpratación de puntuaciones de (PCA\$X) cada valor refiere a cuanto puede contribuir cada componente a la representación de variabilidad de cada grupo. Esto permite identificar con mayor precisión para agrupar observaciones y visualizar cada PCA.
 
 También se realizaron pruebas de varianza y varianza acumulada para identificar cuantos componentes son necesarios para explicar de forma significativa la varianza. Esto para reducir la cantidad de PCA y no perder demasiada información. Primero realizamos una prueba de varianza y luego la acumulada, en la varianza acumulada identificamos que con 3 PC explicamos más del 90% de la varianzasiendo la mayor parte de información, por tanto el último componente principal solo aporta un 9% de varianza.
 
@@ -945,13 +939,12 @@ varianza_data <- data.frame(
 )
 ```
 
-### Gráfico de PCA
 
-En los siguientes dos gráficos se muestra primero la varianza acumulada según los PCA, donde con 3 PCA ya tenemos el 90% de la varianza. Minetras que en el otro gráfico se observa la distribución regional del país en cuanto variables de consumo de alcohol.
+En los siguientes dos gráficos se muestra primero la varianza acumulada según los PCA, donde con 3 PCA ya tenemos el 90% de la varianza. Minetras que en el otro gráfico se observa la distribución regional del país en cuanto a variables de consumo de alcohol.
 
-Acá se puede observar que regiones como Bío-Bío tiene mayor probabilidad de consumo de alcohol que la Araucanía, y además mayor probabilidad de encontrar personas con que manejan bajo el efecto del alcohol. No así en regiones como Arica y Tarapacá, Valparaíso y la Metropolitana.
+Acá se puede observar que regiones como Bío-Bío tiene mayor probabilidad de consumo de alcohol que la Araucanía, y además mayor probabilidad de encontrar personas que manejan bajo el efecto del alcohol. No así en regiones como Arica y Tarapacá, Valparaíso y la Metropolitana.
 
-En cuanto las variables de percepción de riesgo sobre tomar alcohol de manera ocasional y frecuentemente, regiones como Aysén y Atacama se encuentran cercanas al considerar ambos hábitos como riesgosos, a diferencia de regiones como Maule, O'higgins e incluso Los Lagos que se encuentra más alejados.
+En cuanto las variables de percepción de riesgo sobre tomar alcohol de manera ocasional y frecuentemente, regiones como Aysén y Atacama se encuentran cercanas a considerar ambos hábitos como riesgosos, a diferencia de regiones como Maule, O'higgins e incluso Los Lagos que se encuentra más alejados.
 
 ```{r}
 # Gráfico de la varianza acumulada
@@ -977,12 +970,11 @@ biplot(pca, scale = 0, cex = 0.5, col = c("blue2", "red2"))
 
 Obtenido los PCA de alcohol, también realizamos un análisis de componentes principales para nuestra variable de Marihuana siguiendo los mismos pasos de estandarización y pruebas de varianza.
 
-Esta selección cumple los mismos objetivos de identificar las principales variables que explican la varianza de los datos para generar clusters. Se utilizaron las mismas variables de Alcohol pero especificadas en Marihuana. Siendo mar_rec la prevelancia de consumo de marihuana, percepción de riesgo sobre el consumo de marihuana, si ha conducido después de manejar bajos efectos de la marihuana.
+Esta selección cumple los mismos objetivos de identificar las principales variables que explican la varianza de los datos para generar clusters. Se utilizaron las mismas variables de Alcohol pero especificas de Marihuana. Siendo mar_rec la prevelancia de consumo (declarado) de marihuana, percepción de riesgo sobre el consumo de marihuana, si ha  manejado habiendo consimido de la marihuana.
 
-En cuanto a los PCA se generaron 6 componentes principales. Esto debido a la mayor cantidad de variables a comparación con el modulo de Alcohol. Nuestra variable mar_rec tiene un valor positivo de correlación en PC1, siendo el componente principal que puede explicar de mejor forma el consumo de marihuana.
+En cuanto a los PCA, se generaron 6 componentes principales. Esto debido a la mayor cantidad de variables vs. el modulo de Alcohol. Nuestra variable mar_rec tiene un valor positivo de correlación en PC1, siendo evidentemente el componente principal que puede explicar de mejor forma el consumo de marihuana.
 
-En línea las pruebas de varianza y varianza acumulada con los primeros 3 componentes principales se explica casi un 90% de la varianza, mientras que con los otros solo se explica el 10% restante. Esto es importante ya que perdemos poca información con menor grupos posibles.
-
+Finalmente, las pruebas de varianza y varianza acumulada de los primeros 3 componentes principales explica casi un 90% de la varianza, mientras que con los otros solo se explica el 10% restante. Esto es importante ya que perdemos poca información con el menor número de grupos posibles.
 
 ```{r}
 # Asignar etiquetas breves a las variables
@@ -992,7 +984,7 @@ senda_clusters_mar <- senda %>%
          riesgo_marihuana_experimental = pr_1_4_rp, 
          riesgo_marihuana_frecuente = pr_1_5_rp, 
          maneja = cc_3, 
-         permitir_marihuana_exp = op_2_3_rp, 
+         permitir_marihuana_terapeutico = op_2_3_rp, 
          marihuana_menos_dano_que_alcohol = op_1_2_rp) %>%
   mutate(across(-region, as.numeric))  # Convertir todo excepto 'region' a numérico
 
@@ -1017,7 +1009,7 @@ senda_clusters_mar <- senda %>%
          marihuana_experimental = pr_1_4_rp, 
          marihuana_frecuente = pr_1_5_rp, 
          maneja = cc_3, 
-         permitir_marihuana_exp = op_2_3_rp, 
+         permitir_marihuana_terapeutico = op_2_3_rp, 
          marihuana_menos_dano_que_alcohol = op_1_2_rp) %>%
   mutate(across(-region, as.numeric)) %>%  # Convertir todo excepto 'region' a numérico
   group_by(region) %>%  # Agrupar por región
@@ -1053,7 +1045,6 @@ varianza_data_mar <- data.frame(
 
 ```
 
-## Gráfico de PCA
 
 Para una mejor visualización de la varianza de nuestras variables en las regiones de Chile. Primero se muestra el gráfico de varianza acumulada y en segundo la distribución de las regiones. En esto identificamos que:
 
@@ -1080,6 +1071,7 @@ biplot(pca_mar, scale = 0, cex = 0.5, col = c("blue2", "red2"))
 ```
 
 # Cluster
+
 ## Cluster Alcohol
 
 Obtenidas las bases simplificadas y estandarizadas procedemos con la generación de clusters.
@@ -1088,11 +1080,11 @@ Usaremos un K-means clustering para identificar los posibles grupos en la base. 
 
 Con los resultados del k-means identificamos que las regiones fueron agrupadas en 4 grupos en base a las características de las variables seleccionadas sobre consumo, percepción de riesgo y comportamiento de manejar bajo efectos del alcohol, en estos grupos se distribuye:
 
-\- Grupo 1: Tarapacá, Valparaíso, Araucanía y Ñuble. 
+\- Grupo 1: Tarapacá, Valparaíso, Araucanía y Ñuble.
 
-\- Grupo 2: Arica, Coquimbo, Metropolitana, Maule, Los Ríos, Aysén y Magallanes. 
+\- Grupo 2: Arica, Coquimbo, Metropolitana, Maule, Los Ríos, Aysén y Magallanes.
 
-\-Grupo 3: Antofagasta, Atacama y Maule. 
+-Grupo 3: Antofagasta, Atacama y Maule.
 
 \- Grupo 4: Los Lagos.
 
@@ -1165,8 +1157,7 @@ Al igual que con el Alcohol se siguieron los mismos pasos para realizar clusteri
 
 El número óptimos de clusters es 4, donde existe un bajo número de errores al cuadrado. Por, tanto se generaron 4 grupos agrupado de la siguiente forma:
 
-\- Grupo 1: Arica y Parinocata, Metropolitana, Maule, Ñuble, Los Ríos y Aysén
-\- Grupo 2: Antofagasta, Valparaíso y Magallanes
+\- Grupo 1: Arica y Parinocata, Metropolitana, Maule, Ñuble, Los Ríos y Aysén - Grupo 2: Antofagasta, Valparaíso y Magallanes
 
 \- Grupo 3: Tarapacá, Atacame u Araucanía.
 
@@ -1174,15 +1165,13 @@ El número óptimos de clusters es 4, donde existe un bajo número de errores al
 
 En cuanto al resultado promedio por grupo se observa lo siguiente:
 
-\- Grupo 1: Región con personas con consumo moderado de marihuana, percepción moderada al consumo experimental y alta al consumo frecuente. Poco probable conducir bajo efectos de la marihuana. Sobre opinión pública Están más de acuerdo con permitir la  marihuana de uso terapeutico y que la marihuana hace menos daño que el alcohol.
+\- Grupo 1: Región con personas con consumo moderado de marihuana, percepción moderada al consumo experimental y alta al consumo frecuente. Poco probable conducir bajo efectos de la marihuana. Sobre opinión pública Están más de acuerdo con permitir la marihuana de uso terapeutico y que la marihuana hace menos daño que el alcohol.
 
 \- Grupo 2: Las regiones del cluster 2 presentan un consumo moderado de marihuana, percepción de riesgo leve al uso de marihuana de forma experimental pero una percepción de riesgo más alta al consumir marihuana de forma frecuente. Es poco probable que manejen después de consumir marihuana. En cuanto opinión pública están menos de acuerdo con el uso de forma terapeutica y están más de acuerdo con que hace menos daño alcohol.
-
 
 \- Grupo 3: Regiones con el menor consumo de los tres clusters, y mayores niveles de percepción de riesgo sobre el consumo tanto experimental como frecuente. También menor probabilidad de manejar bajo los efectos de la marihuana. Sobre opinión pública es el grupo que está más de acuerdo con el uso de marihuana de forma experimental pero presenta niveles moderados en cuanto que hace menos daño que el alcohol.
 
 \- Grupo 4: Regiones con el mayor consumo de marihuana, presenta menor percepción de riesgo al uso experimental y frecuente. Mayor probabilidad de manejar bajo efectos de la marihuana. Aunque presenta menor niveles de opinión pública sobre el uso de forma experimental y nivel moderado de dañp que el alcohol.
-
 
 En la visualización se observan las distintas agrupaciones de las regiones y su grupo correspondiente. Donde el cluster 1 se encuentra mucho más agrupado a diferencia de los otros. Sin embargo, la mayoría de casos se encuentran relativamente cerca debido a que existen bajo niveles de consumo a nivel regional, siendo las principales discrepancias la percepción de riesgo sobre el consumo de Marihuana.
 
@@ -1211,7 +1200,7 @@ cluster_means_mar %>%
     "Percepción Marihuana experimental" = "marihuana_experimental",
     "Percepción Marihuana frecuentemente" = "marihuana_frecuente",
     "Manejo bajo efectos" = "maneja",
-     "Acuerdo sobre Marihuana experimental" = "permitir_marihuana_exp",
+     "Acuerdo sobre Marihuana terapeútica" = "permitir_marihuana_terapeutico",
     "Acuerdo sobre Marihuana menos dañina que alcohol" = "marihuana_menos_dano_que_alcohol"
     ) %>%
   kable("html", caption = "Porcentaje de consumo por tipo") %>%
@@ -1236,4 +1225,3 @@ legend("bottomright",
        title = "Clusters")
 ```
 
-# Conclusiones
