@@ -83,7 +83,7 @@ knitr::opts_chunk$set(warning = FALSE)
 ```{r, echo=TRUE, results="hide"}
 
 # Lista de paquetes necesarios
-paquetes <- c("dplyr", "haven", "rio", "ggplot2", "psych", "tidyr", "table1", "knitr", "kableExtra", "survey", "plotly", "sf", "tmap", "ggthemes", "DT", "tibble"  )
+paquetes <- c("dplyr", "haven", "rio", "ggplot2", "psych", "tidyr", "table1", "knitr", "kableExtra", "survey", "plotly", "sf", "tmap", "ggthemes", "DT", "tibble")
 
 # Función para instalar y cargar paquetes
 load_packages <- function(paquetes) {
@@ -136,15 +136,15 @@ ponderador <- svydesign(ids = ~1, data = senda, weights = ~factor_expansion) # V
 
 El resto de alternativas de las variables originales realtivas al consumo de alcohol y marihuana (Hace más de un año, No sabe -88-, No contesta -99- ) fueron recodificadas como valores NA. Este conjunto de valores fue extraido de las operaciones mediante la función ifelse.
 
-Se recodificaron, y normalizaron algunas variables críticas adicionales que nos interesaba incluir en nuestro análisis. Así:
+Se recodificaron, y normalizaron algunas variables sociodemográficas críticas que nos interesaba incluir en nuestro análisis. Así:
 
 \- la variable de edad fue agrupada por tramos de edad siguiendo la misma agrupación utilizada en el informe oficial de la ENPG 2022.
 
 \- la variable relacionada con el nivel educacional (DP_12) fue recodificada y agrupada para facilitar el análisis. Se diseñaron las siguientes categorías "Sin educación", "Sistema antiguo", "Educación básica", "Educación media", "Técnico", "Universitaria", "Postgrado".
 
-\-  se generó Observando los datos según tramos de ingresos, estos fueron agrupados en nivel socioeconomicos bajo, medio y alto. El informe de SENDA (2022) categoriza el nivel socioeconomico en a la calidad de la vivienda y el barrio. En nuestra investigación la justificación de variable de nivel socioeconomica será en base al tramo de ingresos que se encuetra la persona de la variable (DP_16).
+\-  se generó una nueva variable a partir de la recodificación de la variable ingresos (DP_16), agrupándola niveles socio económicos "Bajo", "Medio y "Alto". Cabe señalar que esta nueva categorización no es coincidente con su homonima presente en informe de la ENPG (2022). En este informe la categoriza el nivel socioeconomico se genera en función de la la calidad de la vivienda y el barrio. 
 
-Por último, se aplicaron técnicas de estandarización al conjunto de variables de interés utilizadas para la generación de clusters en base al algoritmo de jerarquización aglomerativa.
+Por último, se aplicaron técnicas de estandarización al conjunto de variables de interés utilizadas para la generación de clusters en base al PCA y al algoritmo de jerarquización aglomerativa. Entre estas variables se encuentran percepción de riesgo, accesibilidad y conducción. 
 
 ## Carga:
 
@@ -360,6 +360,7 @@ grafico_2
 
 Centrándo la exploración en el nivel educacional de las personas con consumo declarado en el último año, aquellas cuyos estudios llegan a hasta la educación media concentran la mayor prevalencia de consumo declarado tanto en alcohol (31,6%) como en marihuana (7,1%). Seguidas de las personas con estudios universitarios que presentan la segunda mayor prevalencia tanto en el consumo de alcohol (22,8%) como de marihuana (6,3%) a nivel nacional.
 
+
 ```{r}
 # Recodificación de nivel educacional
 senda <- senda %>% 
@@ -408,13 +409,52 @@ tabla_porcentajes_educacion %>%
   kable("html", caption = "Porcentaje de consumo por nivel educativo") %>%
   kable_styling("striped", full_width = F) %>%
   kable_styling(font_size = 15)
+
+
 ```
 
-## ## Tramo de ingresos y consumo declarado de alcohol y marihuana en el último año
+```{r}
+# Gráfico Nivel Educacional
+# Transformar a formato largo
+tabla_porcentajes_educacion_long <- tabla_porcentajes_educacion %>%
+  pivot_longer(
+    cols = c("Sin educación", "Sistema antiguo", "Educación básica", "Educación media", "Técnico", "Universitaria", "Postgrado"),
+    names_to = "NivelEducacional",
+    values_to = "Porcentaje")%>% 
+  mutate( Porcentaje = as.numeric(gsub("%", "", Porcentaje)))  # Convertir Porcentaje
+
+# Crear el gráfico
+grafico_3 <- ggplot(tabla_porcentajes_educacion_long, aes(x = Variable, y = Porcentaje, fill = NivelEducacional)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(
+    aes(label = paste0(round(Porcentaje, 1), "%")),
+    position = position_dodge(width = 0.9),
+    vjust = -0.5) +
+  labs(
+    title = "Porcentaje de Consumo según Nivel Educacional",
+    x = "Tipo de Consumo",
+    y = "Porcentaje",
+    fill = "Nivel Educacional"
+  ) +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +  # Formato 
+  scale_fill_manual(
+    values = c(
+      "Sin educación" = "lightblue", "Sistema antiguo" = "lightgreen", 
+      "Educación básica" = "lightcoral", "Educación media" = "lightskyblue", 
+      "Técnico" = "lightgoldenrodyellow", "Universitaria" = "orchid", 
+      "Postgrado" = "tomato"
+    )) +  
+ theme_classic()
+
+grafico_3
+```
 
 
 
-Sobre los grupos socioeconomicos que consumen ambos tipos son en mayor medida las personas de nivel socioeconómico medio 45%, y que también son quienes más consumen solo alcohol 47%. Respecto al consumo de solo marihuana son las personas de nivel socioeconómico bajo quienes más consumen con un 49%.
+## Tramo de ingresos y consumo declarado de alcohol y marihuana en el último año.
+
+En términos de nivel socioeconómico, las personas clasificadas en el nivel socioeconómico medio muestran porcentaje más alto de consumo de alcohol (38.3%), seguido por el Bajo (29.8%) y, finalmente, el Alto (12.6%). De forma similar, el consumo declarado de merihuna en el último año muestra la mayor prevalencia el nivel socioeconómico medio  (9%), seguido por el Bajo (7.3%) y el Alto (2.9%). En síntesis, el consumo declarado de alcohol y marihuana en el último año disminuye conforme aumenta el nivel socioeconómico, siendo más alto en el nivel Medio y más bajo en el nivel Alto. 
+
 
 ```{r}
 # Recodificación tramo de ingresos
@@ -486,7 +526,18 @@ grafico_3
 
 ```
 
-## Cruce de Región con consumo
+## Regiones y consumo declarado de alcohol y marihuana en el último año.
+
+Si abordamos el análisis exploratorio según región, aquellas que muestran un alto procentaje de prevalencia del consumo declarado de alcohol y marihuana en el último año son Coquimbo, Valparaíso y Maule con más del 75% en alcohol y más del 20% en marihuana. Los Lagos destaca por tener el consumo declarado de marihuana más alto (31.3%) del país, aunque su consumo declarado de alcohol es relativamente bajo (68.7%); el menor de todas las regiones. Esto podría indicar patrones de consumo diferenciados según la sustancia.
+
+Respecto a las regiones con moderación en el consumo delclarado de ambas sustancias, Antofagasta y Ñuble presentan consumos bajos de marihuana (alrededor del 12.6% y 12.8%, respectivamente) y valores intermedios o altos en consumo de alcohol. Tarapacá tiene el porcentaje más bajo de prevalencia de consumo declarado de marihuana (9.1%) pero el más alto de alcohol (90.9%). Esto podría indicar un comportamiento divergente respecto al consumos de estas sustancias en esta región.
+
+
+En síntesis, es posible señalar que las regiones del norte (como Tarapacá y Antofagasta) tienden a tener un consumo declarado de alcohol más alto pero un consumo delarado de marihuana más bajo. Mientras que, algunas regiones del sur (como Los Lagos y Los Ríos) tienden a tener un consumo declarado de marihuana más alto, aunque el consumo delcarado de alcohol varía ampliamente.
+
+Por último, algunas regiones centrales ( como por ejemplo Maule, Valparaíso y Coquimbo) combinan altos consumos de ambas sustancias, mostrando una tendencia más equilibrada entre ellas.
+
+
 
 ```{r}
 etiquetas_regiones <- c(
@@ -658,11 +709,11 @@ ggplot(data = chile_map) +
 
 ```
 
-# Prepación de variables para modelo de Machine Learning
+# Otras variables de para la aplicación de modelos de Machine Learning no supervisados
 
-Otras variables de interés para generar posibles clusters son: Percepción de riesgo, accesibilidad y conducción y tratamiento. Estas variables fueron seleccionadas solo las que hacen referencia sea a alcohol o marihuana, ya que existen otras categorías sobre otros tipos de droga.
+Para la generación de posibles clusters fueron seleccionadas, adicionalmente, un conjunto de variables relativas a la percepción de riesgo (PR), conducción con consumo declarado de alcohol o marihuana (CC_2 y CC_3, repectivamente) y opinión pública (OP). En relación a estas variables fueron seleccionadas solo las categorías que hacen referencia sea a alcohol o marihuana, ya que existen otras categorías sobre otros tipos de droga.
 
-Las variables fueron recodificadas de variables categoricas a variables binarias para faciltiar el análsis. Estas recodificaciones fueron hechas en base a la presentación de resultados de SENDA (2022).
+Las variables fueron recodificadas de variables categoricas a variables binarias para faciltiar el análsis. Estas recodificaciones fueron hechas en base a la presentación de resultados de la ENPG (2022).
 
 ## Percepción de Riesgo
 
