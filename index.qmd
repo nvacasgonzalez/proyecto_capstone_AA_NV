@@ -914,11 +914,11 @@ Una vez estandarizadas las variables y agrupadas por su promedio por región. Ut
 
 La justificación del uso de PCA está relacionada con reducir la dimensionalidad y poder, de esta manera, identificar los componentes principales que expliquen de mejor manera la varianza de los datos utilizados para realizar clustering.
 
-Los resultados arrojaron 4 componentes principales que pueden ayudar a entender la asociación de las variables y el componente principal. En la tabla se observa la contribución de cada variable al componente principal. Donde valores más cercanos al 1 o -1 indican la influencia que tiene ese componente principal. Por ejemplo nuestra variable de interés sobre prevalencia de alcohol que es oh_rec en PC1 posee -0.510 que tiene una contribución negativa, siendo un factor importante en la variabilidad que puede explicar el PC1; Mientras que en PC3 posee un valor positivo de 0,681 de forma que este componente está influenciado de manera significativa pero inversa a la variable oh_rec.
+Los resultados arrojaron 4 componentes principales que pueden ayudar a entender la asociación de las variables y el componente principal. En la tabla se observa la contribución de cada variable al componente principal. Donde valores más cercanos al 1 o -1 indican la influencia que tiene ese componente principal. Por ejemplo, nuestra variable de interés sobre prevalencia de alcohol que es oh_rec en PC1 posee -0.510 que tiene una contribución negativa, siendo un factor importante en la variabilidad que puede explicar el PC1; Mientras que en PC3 posee un valor positivo de 0,681 de forma que este componente está influenciado de manera significativa pero inversa a la variable oh_rec.
 
 En cuanto la interpratación de puntuaciones de (PCA\$X) cada valor refiere a cuanto puede contribuir cada componente a la representación de variabilidad de cada grupo. Esto permite identificar con mayor precisión para agrupar observaciones y visualizar cada PCA.
 
-También se realizaron pruebas de varianza y varianza acumulada para identificar cuantos componentes son necesarios para explicar de forma significativa la varianza. Esto para reducir la cantidad de PCA y no perder demasiada información. Primero realizamos una prueba de varianza y luego la acumulada, en la varianza acumulada identificamos que con 3 PC explicamos más del 90% de la varianzasiendo la mayor parte de información, por tanto el último componente principal solo aporta un 9% de varianza.
+También se realizaron pruebas de varianza y varianza acumulada para identificar cuantos componentes son necesarios para explicar de forma significativa la varianza. Esto para reducir la cantidad de PCA y no perder demasiada información. Primero realizamos una prueba de varianza y luego de la acumulada. En la varianza acumulada identificamos que con 3 PC explicamos más del 90% de la varianza, siendo la mayor parte de información. Por lo que el último componente principal solo aporta un 9% de varianza.
 
 ```{r, echo=TRUE, results="hide"}
 # Componentes Principales 
@@ -977,11 +977,11 @@ kable(tabla2, caption = "Puntuaciones de las Regiones en los Componentes Princip
 ```
 
 
-En los siguientes dos gráficos se muestra primero la varianza acumulada según los PCA, donde con 3 PCA ya tenemos el 90% de la varianza. Minetras que en el otro gráfico se observa la distribución regional del país en cuanto a variables de consumo de alcohol.
+En los siguientes dos gráficos se muestra primero la varianza acumulada según los PCA, donde con 3 PCA ya tenemos el 90% de la varianza. Mientras que en el otro gráfico se observa la distribución regional del país en cuanto a variables de consumo de alcohol.
 
-Acá se puede observar que regiones como Bío-Bío tiene mayor probabilidad de consumo de alcohol que la Araucanía, y además mayor probabilidad de encontrar personas que manejan bajo el efecto del alcohol. No así en regiones como Arica y Tarapacá, Valparaíso y la Metropolitana.
+Acá se puede observar que regiones como Bío-Bío tiene mayor probabilidad de consumo de alcohol que la Araucanía, y además mayor probabilidad de encontrar personas que manejan habiendo ingerido alcohol. No así en regiones como Arica y Tarapacá, Valparaíso y la Metropolitana.
 
-En cuanto las variables de percepción de riesgo sobre tomar alcohol de manera ocasional y frecuentemente, regiones como Aysén y Atacama se encuentran cercanas a considerar ambos hábitos como riesgosos, a diferencia de regiones como Maule, O'higgins e incluso Los Lagos que se encuentra más alejados.
+En cuanto las variables de percepción de riesgo sobre tomar alcohol de manera ocasional y frecuentemente, regiones como Aysén y Atacama se encuentran cercanas a considerar ambos hábitos como riesgosos. A diferencia de regiones como Maule, O'higgins e incluso Los Lagos que se encuentra más alejados.
 
 ```{r}
 # Gráfico de la varianza acumulada
@@ -1005,13 +1005,13 @@ biplot(pca, scale = 0, cex = 0.5, col = c("blue2", "red2"))
 
 ## PCA Marihuana
 
-Obtenido los PCA de alcohol, también realizamos un análisis de componentes principales para nuestra variable de Marihuana siguiendo los mismos pasos de estandarización y pruebas de varianza.
+Obtenidos los PCA de alcohol, también realizamos un análisis de componentes principales para nuestra variable de Marihuana siguiendo los mismos pasos de estandarización y pruebas de varianza.
 
-Esta selección cumple los mismos objetivos de identificar las principales variables que explican la varianza de los datos para generar clusters. Se utilizaron las mismas variables de Alcohol pero especificas de Marihuana. Siendo mar_rec la prevelancia de consumo (declarado) de marihuana, percepción de riesgo sobre el consumo de marihuana, si ha  manejado habiendo consimido de la marihuana.
+Esta selección cumple el mismo objetivo de identificar las principales variables que explican la varianza de los datos para generar clusters. Se utilizaron las mismas variables de Alcohol pero especificas de Marihuana. Siendo mar_rec la prevelancia de consumo (declarado) de marihuana, la percepción de riesgo sobre el consumo de marihuana, y si ha  manejado habiendo consumido de la marihuana.
 
 En cuanto a los PCA, se generaron 6 componentes principales. Esto debido a la mayor cantidad de variables vs. el modulo de Alcohol. Nuestra variable mar_rec tiene un valor positivo de correlación en PC1, siendo evidentemente el componente principal que puede explicar de mejor forma el consumo de marihuana.
 
-Finalmente, las pruebas de varianza y varianza acumulada de los primeros 3 componentes principales explica casi un 90% de la varianza, mientras que con los otros solo se explica el 10% restante. Esto es importante ya que perdemos poca información con el menor número de grupos posibles.
+Finalmente, las pruebas de varianza y varianza acumulada de los primeros 3 componentes principales indican que estos explicarían casi un 90% de la varianza, mientras que con los otros solo se explica el 10% restante. Esto es importante ya que perdemos poca información con el menor número de grupos posibles.
 
 ```{r}
 # Asignar etiquetas breves a las variables
@@ -1119,11 +1119,12 @@ kable(tabla2, caption = "Puntuaciones de las Regiones en los Componentes Princip
 ```
 
 
-Para una mejor visualización de la varianza de nuestras variables en las regiones de Chile. Primero se muestra el gráfico de varianza acumulada y en segundo la distribución de las regiones. En esto identificamos que:
+Para una mejor visualización de la varianza de nuestras variables en las regiones de Chile, primero se muestra el gráfico de varianza acumulada y, en segundo lugar, su distribución en las regiones. En base esto identificamos que:
 
-Como mencionamos en el consumo y regiones, Los Lagos es una región cercana a nuestra variable mar_rec, indicando que el consumo de marihuana es predominante a comparación de otres regiones del país siendo casi la única región relativamente cercana tanto al consumo como al manejar después de haber fumado marihuana. Por lo que las otras regiones es poco probable encontrar consumidores de Marihuana.
+Como mencionamos en el consumo y regiones, Los Lagos es una región cercana a nuestra variable mar_rec, indicando que el consumo de marihuana es predominante en comparación a otras regiones del país. Se trata de casi la única región relativamente cercana tanto al consumo declarado de maihuana como al manejo habiendo fumado marihuana. 
 
-Con respecto a la percepción de riesgo de fumar marihuana frecunemente y de uso experimental, Arica y Tarapacá y Atacama se encuentran cercanas a estas variables, por lo que es probable que las personas consideren que es riesgoso. No así en regiones como Coquimbo o Bío-Bío que si bien no es predominante el consumo de marihuana no consideran riesgosos esos habitos.
+
+Con respecto a la percepción de riesgo de fumar marihuana frecuentemente y el riesgo en uso experimental, Arica y Parinacota, Tarapacá y Atacama se encuentran cercanas a estas variables, por lo que es probable que las personas consideren que es riesgoso. No así en regiones como Coquimbo o Bío-Bío donde si bien no es predominante el consumo de marihuana no consideran riesgosos esos habitos.
 
 ```{r}
 # Gráfico de la varianza acumulada
@@ -1149,27 +1150,27 @@ biplot(pca_mar, scale = 0, cex = 0.5, col = c("blue2", "red2"))
 
 Obtenidas las bases simplificadas y estandarizadas procedemos con la generación de clusters.
 
-Usaremos un K-means clustering para identificar los posibles grupos en la base. Primero ejectuamos una semilla para asegurar que se obtengan los mismos resultados debido a la aleatoriedad de los centroides (los puntos que representan cada cluster en el algoritmo). Luego implementamos el método wss para identificar el número óptimo de clusters para el análisis de los k-means. En el gráfico sobre el método se observa que al tener 1 o 2 cluster la suma de los errores cuadradas es alta lo que no asegura una variabilidad en los datos, pero a medida que se suman más cluster los datos se van agrupando y explican el modolo. En base al gráfico optamos por 4 cluster para el análisis.
+Usaremos un K-means clustering para identificar los posibles grupos en la base. Primero ejectuamos una semilla para asegurar que se obtengan los mismos resultados debido a la aleatoriedad de los centroides (los puntos que representan cada cluster en el algoritmo). Luego implementamos el método wss para identificar el número óptimo de clusters para el análisis de los k-means. En el gráfico sobre el método se observa que al tener 1 o 2 cluster la suma de los errores cuadrados es alta lo que no asegura una variabilidad en los datos. No obstante, a medida que se suman más clusters los datos se van agrupando y explican el modelo. En base al gráfico optamos por 4 cluster para el análisis.
 
-Con los resultados del k-means identificamos que las regiones fueron agrupadas en 4 grupos en base a las características de las variables seleccionadas sobre consumo, percepción de riesgo y comportamiento de manejar bajo efectos del alcohol, en estos grupos se distribuye:
+Con los resultados del k-means identificamos que las regiones fueron agrupadas en 4 grupos en base a las características de las variables seleccionadas sobre consumo, percepción de riesgo y manejo habiendo consumido alcohol previamente. Estos grupos se distribuye de la siguiente manera:
 
-\- Grupo 1: Tarapacá, Valparaíso, Araucanía y Ñuble.
+\- Grupo 1: Metropolitana, Tarapacá, Valparaíso, Araucanía y Ñuble.
 
-\- Grupo 2: Arica, Coquimbo, Metropolitana, Maule, Los Ríos, Aysén y Magallanes.
+\- Grupo 2: Arica y Parinacota, Coquimbo, Metropolitana, Maule, Los Ríos, Aysén y Magallanes.
 
--Grupo 3: Antofagasta, Atacama y Maule.
+\- Grupo 3: Antofagasta, Atacama y Maule.
 
-\- Grupo 4: Los Lagos.
+\- Grupo 4: O'Higgins, Bíobío, Los Lagos.
 
-En cuanto a los resultados promedios de cada cluster podemos inferir lo siguiente:
+En cuanto a los resultados promedio de cada cluster podemos inferir lo siguiente:
 
-\- Grupo 1: Las regiones presentan un menor consumo de alcohol a comparación de los otros clusters, tienen una alta percepción de riesgo y es poco probable que manejen bajo efectos del alcohol.
+\- Grupo 1: Las regiones presentan un menor consumo de alcohol en comparación con los otros clusters, tienen una alta percepción de riesgo y es poco probable que manejen habiendo consumido alcohol previamente.
 
-\- Grupo 2: Las regiones presentan levemente consumo de alcohol, baja percepción de riesgo a beber de forma ocasial pero sí a beber frecuentemente, y poco probable que manejen bajo efectos del alcohol.
+\- Grupo 2: Las regiones presentan un consumo moderado de alcohol, baja percepción de riesgo al beber de forma ocasional pero sí al beber frecuentemente, y poco probable que manejen habiendo consumido alcohol previamente.
 
-\- Grupo 3: Regiones más probable al consumo de alcohol, percepción de riesgo moderada al consumo ocasional pero alta a beber frecuentemente y poco probable que manejen bajo efectos del alcohol
+\- Grupo 3: Regiones con alto consumo de alcohol, percepción de riesgo moderada respecto al consumo ocasional pero alta a beber frecuentemente y poco probable que manejen habiendo consumido alcohol previamente
 
-\- Grupo 4: Región de los Lagos queda desagrupado de las otras regiones, esto debido a que es más probable que se consuma alcohol, baja percepción de riesgo al consumo ocasional y de beber frecuentemente. También presente un leve aumento en conducir bajo efectos del alcohol, si bien es bajo, es el grupo más alto.
+\- Grupo 4: Regiones con alto consumo de alcohol, baja percepción de riesgo respecto al consumo ocasional de alcohol pero también con respecto al consumo frecuente de alcohol. Con una probabilidad moderada de manejo habiendo consumido alcohol previamente. 
 
 En la visualización de los clusters se realizó en base al PCA obtenido de alcohol, donde buscamos representar las regiones según los dos principales componentes principales. Cada punto es una región y los colores el cluster al que pertencen. Por tanto, regiones que comparten color y se encuentran cercas es debido a que comparten características similares como es el caso de Valparaíso y Tarapacá.
 
@@ -1230,19 +1231,21 @@ Al igual que con el Alcohol se siguieron los mismos pasos para realizar clusteri
 
 El número óptimos de clusters es 4, donde existe un bajo número de errores al cuadrado. Por, tanto se generaron 4 grupos agrupado de la siguiente forma:
 
-\- Grupo 1: Arica y Parinocata, Metropolitana, Maule, Ñuble, Los Ríos y Aysén - Grupo 2: Antofagasta, Valparaíso y Magallanes
+\- Grupo 1:  Atacama y Araucanía
 
-\- Grupo 3: Tarapacá, Atacame u Araucanía.
+\- Grupo 2: Ñuble, Tarapacá y Antofagasta
 
-\- Grupo 4: Coquimbo, O'Higgins, Bio-Bío y Los Lagos
+\- Grupo 3: Arica y Parinacota, Metropolitana, Los Ríos, Magallanes, Vapariso Maule y Aysén
+
+\- Grupo 4: Coquimbo, O'Higgins, Biobío y Los Lagos
 
 En cuanto al resultado promedio por grupo se observa lo siguiente:
 
-\- Grupo 1: Región con personas con consumo moderado de marihuana, percepción moderada al consumo experimental y alta al consumo frecuente. Poco probable conducir bajo efectos de la marihuana. Sobre opinión pública Están más de acuerdo con permitir la marihuana de uso terapeutico y que la marihuana hace menos daño que el alcohol.
+\- Grupo 1: Región con personas con consumo bajo de marihuana, percepción moderada de riego en el consumo experimental y alta en el consumo frecuente. Poco probable conducir habiendo consumido la sustancia. Sobre opinión pública, están más de acuerdo con permitir la marihuana de uso terapeutico y con la premisa de que la marihuana hace menos daño que el alcohol.
 
-\- Grupo 2: Las regiones del cluster 2 presentan un consumo moderado de marihuana, percepción de riesgo leve al uso de marihuana de forma experimental pero una percepción de riesgo más alta al consumir marihuana de forma frecuente. Es poco probable que manejen después de consumir marihuana. En cuanto opinión pública están menos de acuerdo con el uso de forma terapeutica y están más de acuerdo con que hace menos daño alcohol.
+\- Grupo 2: Las regiones del cluster 2 presentan un consumo moderado de marihuana, leve percepción de riesgo en el uso de marihuana de forma experimental pero una percepción de riesgo más alta al consumir marihuana de forma frecuente. Es poco probable que manejen después de consumir marihuana. En cuanto opinión pública están menos de acuerdo con el uso de forma terapeutica y están más de acuerdo con que hace menos daño alcohol.
 
-\- Grupo 3: Regiones con el menor consumo de los tres clusters, y mayores niveles de percepción de riesgo sobre el consumo tanto experimental como frecuente. También menor probabilidad de manejar bajo los efectos de la marihuana. Sobre opinión pública es el grupo que está más de acuerdo con el uso de marihuana de forma experimental pero presenta niveles moderados en cuanto que hace menos daño que el alcohol.
+\- Grupo 3: Regiones con el menor consumo de los tres clusters, y mayores niveles de percepción de riesgo sobre el consumo tanto experimental como frecuente. También menor probabilidad de manejar habiendo consumido marihuana. Sobre opinión pública es el grupo que está más de acuerdo con el uso de marihuana de forma experimental pero presenta niveles moderados en cuanto que hace menos daño que el alcohol.
 
 \- Grupo 4: Regiones con el mayor consumo de marihuana, presenta menor percepción de riesgo al uso experimental y frecuente. Mayor probabilidad de manejar bajo efectos de la marihuana. Aunque presenta menor niveles de opinión pública sobre el uso de forma experimental y nivel moderado de dañp que el alcohol.
 
@@ -1310,8 +1313,10 @@ Clusters: El análisis de clustering generó 4 grupos bien definidos:
 
 Grupo 1: Regiones con menor consumo de alcohol, alta percepción de riesgo y baja probabilidad de manejar bajo efectos del alcohol.
 Grupo 2: Regiones con consumo moderado, percepción de riesgo baja al consumo ocasional, pero alta al frecuente, con baja probabilidad de manejar habiendo consumodo alcohol previamente.
-Grupo 3: Regiones con mayor probabilidad de consumo, percepción moderada a baja sobre el riesgo y de manejar habiendo consumodo alcohol previamente.
-Grupo 4 (Los Lagos): Presenta un perfil distinto, con mayor consumo, baja percepción de riesgo al consumo ocasional y frecuente, y la mayor probabilidad de manejar habiendo consumodo alcohol previamente.
+Grupo 3: Regiones con mayor probabilidad de consumo, percepción moderada del riesgo que represeta el consumo de alcohol ocasional pero alta cuando ese consumo se convierte en frecuente. También con una baja ocurrencia de manejo habiendo consumido alcohol previamente.
+Grupo 4:  Presenta un perfil distinto, con mayor consumo, baja percepción de riesgo sobre el consumo ocasional y el consumo frecuente, y una ligeramente mayor probabilidad de manejar habiendo consumido alcohol previamente.
+
+
 
 2. Análisis del Consumo de Marihuana
 
@@ -1319,10 +1324,14 @@ PCA y Varianza: Para las variables relacionadas con marihuana, se identificaron 
 
 Clusters: De manera similar al alcohol, se generaron 4 clusters:
 
-Grupo 1: Consumo moderado, percepción moderada del riesgo experimental y alta al frecuente. Apoyo al uso terapéutico de marihuana y acuerdo con que causa menos daño que el alcohol.
+Grupo 1: Consumo moderado, percepción moderada del riesgo del sonsumo experimental de marihuana y percepción alta del reisgo que supoen un consumo frecuente. Apoyo al uso terapéutico de marihuana y acuerdo con que causa menos daño que el alcohol.
 Grupo 2: Consumo moderado, baja percepción del riesgo al uso experimental y alta al frecuente, con menor apoyo al uso terapéutico, pero más acuerdo con que la marihuana es menos dañina que el alcohol.
 Grupo 3: Menor consumo de marihuana, mayor percepción de riesgo tanto en uso experimental como frecuente, y mayor apoyo al uso terapéutico.
 Grupo 4: Mayor consumo de marihuana, baja percepción de riesgo, mayor probabilidad de manejar bajo efectos de la sustancia, y niveles bajos de apoyo al uso terapéutico.
+
+
+En la visualización se observan las distintas agrupaciones de las regiones y su grupo correspondiente. Donde el cluster 1 se encuentra mucho más agrupado a diferencia de los otros. Sin embargo, la mayoría de casos se encuentran relativamente cerca debido a que existen bajo niveles de consumo a nivel regional, siendo las principales discrepancias la percepción de riesgo sobre el consumo de Marihuana.
+
 
 3. Hallazgos Generales
 
